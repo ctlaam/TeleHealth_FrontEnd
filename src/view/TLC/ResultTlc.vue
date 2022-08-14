@@ -1,0 +1,66 @@
+<template>
+  <div class="modal-result" hidden   id="resultTlc">
+    <div class="" id="contentTlc" >
+      <div class="modal-content box-shadow mb-4">
+        <div class="modal-header">
+          <h5 class="modal-title">Kết quả thể tích phổi</h5>
+          <button class="close" data-dismiss="modal" @click="closeResult">
+            ×
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Phổi trái : {{ resultLeft }}</p>
+          <p>Phổi trái : {{ resultRight }}</p>
+          <p>
+            <b> Tổng : {{ total }}</b>
+          </p>
+        </div>
+        <div class="modal-footer flex">
+          <button class="btn btn-primary" @click="closeResult">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["resultLeft", "resultRight", "total"],
+  methods: {
+    closeResult() {
+      const a = document.getElementById("resultTlc");
+      a.setAttribute("hidden", true);
+    },
+    showResult() {
+      const a = document.getElementById("resultTlc");
+      a.removeAttribute("hidden", true);
+    },
+  },
+};
+</script>
+
+<style scoped>
+.modal-result {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+div#contentTlc {
+  width: 500px;
+  direction: ltr;
+}
+.modal-footer.flex {
+  display: flex;
+  justify-content: center;
+}
+button.btn.btn-primary {
+  width: 75px;
+}
+</style>
