@@ -1,5 +1,15 @@
 1.Tải Nodejs (nếu chưa có)
-2.Mở Visual Studio Code
-3.Gõ npm -i trong Terminal
-4.Gõ npm install -g @vue/cli
-5.Gõ npm run serve để chạy prj
+
+2.Tải GitBash (nếu chưa có)
+
+3.Tạo nơi lưu trữ project mở Gitbash tại nơi lưu trữ project
+
+4.Gõ "git clone https://github.com/ctlaam/TeleHealth_FrontEnd.git"
+
+5.Mở Visual Studio Code
+
+6.Gõ npm -i trong Terminal
+
+7.Gõ npm install -g @vue/cli
+
+8.Gõ npm run serve để chạy prj
