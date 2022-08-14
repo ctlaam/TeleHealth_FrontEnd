@@ -6,9 +6,9 @@
 
 4.Gõ "git clone https://github.com/ctlaam/TeleHealth_FrontEnd.git"
 
-5.Mở Visual Studio Code
+5.Mở project bằng Visual Studio Code
 
-6.Gõ npm -i trong Terminal
+6.Gõ npm -i trong VSC
 
 7.Gõ npm install -g @vue/cli
 
