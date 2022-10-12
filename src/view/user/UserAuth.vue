@@ -63,7 +63,9 @@
               </button>
               <div>
                 Bạn chưa có tài khoản?
-                <a href="" class="text-primary" data-pjax-state="">Đăng kí</a>
+                <router-link to="signup" >
+                  <a href="" class="text-primary" data-pjax-state="">Đăng kí</a>
+                </router-link>
               </div>
             </form>
           </div>
