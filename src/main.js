@@ -26,6 +26,10 @@ import TheContent from "./components/layout/TheContent.vue";
 import SignUp from "./view/user/SignUp.vue";
 import ResultTlc from "./view/TLC/ResultTlc.vue"
 import ListResults from "./view/TLC/ListReults.vue"
+import { DatePicker } from "ant-design-vue";
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+
 const abc = [
   { path: "/", redirect: "/content/maincontent/dashboard" },
   {
@@ -89,6 +93,9 @@ router.beforeEach(function (to, from, next) {
 });
 
 let app = createApp(App);
+app.config.productionTip = false;
+app.use(DatePicker);
+app.use(Antd);
 app.component('ResultTlc',ResultTlc)
 app.component('ListResults',ListResults)
 app.config.globalProperties.TeleHealthEnum = TeleHealthEnum;

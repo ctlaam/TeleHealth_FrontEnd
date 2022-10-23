@@ -116,7 +116,7 @@
       </div>
       <ul v-if="isAuthenticated" class="nav navbar-menu order-1 order-lg-2">
         <!-- User dropdown menu -->
-        <li class="nav-item dropdown" @click="LogOut">
+        <!-- <li class="nav-item dropdown" @click="LogOut">
           <a
             href="#"
             data-toggle="dropdown"
@@ -132,13 +132,35 @@
         </li>
         <li v-if="role === 'role1'" @click="updateProfileDoctor">
           Update thông tin
-        </li>
+        </li> -->
+        <a-dropdown>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item key="1" @click="updateProfileDoctor">
+                <UserOutlined />
+                Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
+              </a-menu-item>
+              <a-menu-item key="2">
+                <UserOutlined />
+                Cài đặt <i class="fa-solid fa-gear"></i>
+              </a-menu-item>
+              <a-menu-item key="3" @click="LogOut">
+                <UserOutlined />
+                Đăng xuất <i class="fa-solid fa-right-from-bracket"></i>
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <a-avatar
+            size="large"
+            src="https://joeschmoe.io/api/v1/random"
+          />
+        </a-dropdown>
       </ul>
       <router-link
         v-if="!isAuthenticated"
         class="nav navbar-menu order-1 order-lg-2"
         to="/auth"
-        ><p>Đăng nhập</p></router-link
+        ><a-button type="primary">Đăng nhập</a-button></router-link
       >
     </div>
     <FormDoctor
@@ -173,6 +195,8 @@ export default {
 
   methods: {
     LogOut() {
+      localStorage.removeItem('lastname');
+      this.$router.push('/') 
       this.$store.dispatch("logout");
     },
     showOrHideDialog(isShow) {
@@ -197,6 +221,6 @@ export default {
 }
 div#header {
   position: absolute;
-  width: calc(100% - 243px);
+  width: calc(100% - 216px);
 }
 </style>

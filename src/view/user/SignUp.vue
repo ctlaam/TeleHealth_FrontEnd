@@ -114,10 +114,10 @@ export default {
         phone: this.phone,
       };
       axios
-        .post("http://127.0.0.1:8000/auth/doctor_register/",accountDoctor)
+        .post("http://127.0.0.1:8000/auth/doctor_register/", accountDoctor)
         .then((result) => {
-          console.log(result)
-          this.$router.replace('/auth')
+          console.log(result);
+          this.$router.replace("/auth");
         })
         .catch((err) => {
           console.log(err);

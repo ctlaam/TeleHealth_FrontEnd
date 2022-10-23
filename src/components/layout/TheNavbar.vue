@@ -117,7 +117,7 @@
                                 </a>
                             </li>
                                     </router-link>
-                                                                    <router-link to="/content/maincontent/tlc">
+                        <!-- <router-link to="/content/maincontent/tlc">
 
                                     <li class="">
                                         <a href="app.user.html" data-pjax-state="load">
@@ -125,7 +125,7 @@
                                             <span class="nav-text">Tính thể tích phổi</span>
                                 </a>
                             </li>
-                                    </router-link>
+                        </router-link> -->
 
                             <li class="nav-header hidden-folded">
                                 <span class="text-muted">Cá nhân</span>

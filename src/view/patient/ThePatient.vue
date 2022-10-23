@@ -1,6 +1,7 @@
 <template>
   <div id="content" class="flex">
     <input
+      hidden
       type="file"
       webkitdirectory
       directory
@@ -34,7 +35,7 @@
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                <span class="mx-1">Add</span>
+                <span class="mx-1">Thêm</span>
               </button>
               <div class="btn-group">
                 <button
@@ -220,7 +221,7 @@
                   </div>
                 </div>
                 <div>
-                  <div @click="showChoiceAction" class="item-action dropdown">
+                  <!-- <div @click="showChoiceAction" class="item-action dropdown">
                     <p
                       href="#"
                       data-toggle="dropdown"
@@ -273,73 +274,36 @@
                         Delete item
                       </a>
                     </div>
-                  </div>
+                  </div> -->
+                  <a-dropdown-button>
+                    <template #overlay>
+                      <a-menu @click="handleMenuClick">
+                        <a-menu-item key="1">
+                          <UserOutlined />
+                          Chi tiết
+                        </a-menu-item>
+                        <a-menu-item key="2" @click="seeResults(patient.id)">
+                          <UserOutlined />
+                          Xem các kết quả trước
+                        </a-menu-item>
+                        <a-menu-item key="3" @click="clickInput(patient.id)">
+                          <UserOutlined />
+                          Tính thể tích phổi
+                        </a-menu-item>
+                      </a-menu>
+                    </template>
+                  </a-dropdown-button>
                 </div>
               </div>
-            </div>
-            <div class="no-result hide">
-              <div class="p-4 text-center">No Results</div>
             </div>
           </div>
-          <div class="px-3 py-3 mt-auto">
-            <div id="flexVue" class="d-flex align-items-center">
-              <div class="flex d-flex flex-row">
-                <button class="btn btn-sm no-bg no-shadow px-0 pager-prev">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-chevron-left"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </button>
-                <div class="pagination pagination-sm mx-1">
-                  <li class="active">
-                    <a
-                      class="page"
-                      href='javascript:function Z(){Z=""}Z()'
-                      data-pjax-state=""
-                      >1</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="page"
-                      href='javascript:function Z(){Z=""}Z()'
-                      data-pjax-state=""
-                      >2</a
-                    >
-                  </li>
-                </div>
-                <button class="btn btn-sm no-bg no-shadow px-0 pager-next">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-chevron-right"
-                  >
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              </div>
-              <div>
-                <span class="text-muted">Total:</span>
-                <span id="count">20</span>
-              </div>
-            </div>
+          <div class="pagination">
+            <a-pagination
+              v-model:pageSize="pageSize"
+              v-model:current="current"
+              :total="50"
+              show-less-items
+            />
           </div>
         </div>
       </div>
@@ -369,6 +333,8 @@ export default {
   },
   data() {
     return {
+      current: 1,
+      pageSize: 10,
       resultRight: "",
       resultLeft: "",
       totalLung: "",
@@ -388,11 +354,11 @@ export default {
   },
   methods: {
     assignResult(result) {
-      console.log(result)
+      console.log(result);
       if (result) {
-        this.resultRight = result.right_lung
-        this.resultLeft = result.left_lung
-        this.totalLung = result.lung_volume
+        this.resultRight = result.right_lung;
+        this.resultLeft = result.left_lung;
+        this.totalLung = result.lung_volume;
         this.showResult();
       }
     },
@@ -523,6 +489,10 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  direction: ltr;
+  margin: 30px auto 0px;
+}
 div#content {
   width: 86vw;
   position: relative;

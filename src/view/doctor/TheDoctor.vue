@@ -26,7 +26,7 @@
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                <span class="mx-1">Add</span>
+                <span class="mx-1">Thêm</span>
               </button>
               <div class="btn-group">
                 <button
@@ -162,7 +162,7 @@
           <!-- brand -->
           <a class="navbar-brand title" data-pjax-state="">
             <!-- <img src="../assets/img/logo.png" alt="..."> -->
-            <span class="hidden-folded d-inline l-s-n-1x"
+            <span class="hidden-folded d-inline l-s-n-1x" style="color: #1890ff"
               >Danh sách bác sĩ</span
             >
           </a>
@@ -215,7 +215,7 @@
                   </div>
                 </div>
                 <div>
-                  <div @click="showChoiceAction" class="item-action dropdown">
+                  <!-- <div @click="showChoiceAction" class="item-action dropdown">
                     <p
                       data-toggle="dropdown"
                       class="text-muted"
@@ -260,68 +260,36 @@
                         Delete item
                       </a>
                     </div>
-                  </div>
+                  </div> -->
+                  <a-dropdown-button>
+                    <template #overlay>
+                      <a-menu @click="detailDoctor(doctor)">
+                        <a-menu-item key="1">
+                          <UserOutlined />
+                          Chi tiết
+                        </a-menu-item>
+                        <a-menu-item key="2" @click="seeResults(patient.id)">
+                          <UserOutlined />
+                          Xóa
+                        </a-menu-item>
+                        <a-menu-item key="3" @click="clickInput(patient.id)">
+                          <UserOutlined />
+                          Tính thể tích phổi
+                        </a-menu-item>
+                      </a-menu>
+                    </template>
+                  </a-dropdown-button>
                 </div>
               </div>
-            </div>
-            <div class="no-result hide">
-              <div class="p-4 text-center">No Results</div>
             </div>
           </div>
-          <div class="px-3 py-3 mt-auto">
-            <div id="flexVue" class="d-flex align-items-center">
-              <div class="flex d-flex flex-row">
-                <button class="btn btn-sm no-bg no-shadow px-0 pager-prev">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-chevron-left"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </button>
-                <div class="pagination pagination-sm mx-1">
-                  <li class="active">
-                    <a class="page" data-pjax-state="">1</a>
-                  </li>
-                  <li>
-                    <a
-                      class="page"
-                      href='javascript:function Z(){Z=""}Z()'
-                      data-pjax-state=""
-                      >2</a
-                    >
-                  </li>
-                </div>
-                <button class="btn btn-sm no-bg no-shadow px-0 pager-next">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-chevron-right"
-                  >
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              </div>
-              <div>
-                <span class="text-muted">Total:</span>
-                <span id="count">20</span>
-              </div>
-            </div>
+          <div class="pagination">
+            <a-pagination
+              v-model:pageSize="pageSize"
+              v-model:current="current"
+              :total="50"
+              show-less-items
+            />
           </div>
         </div>
       </div>
@@ -347,6 +315,8 @@ export default {
   },
   data() {
     return {
+      current: 1,
+      pageSize: 10,
       isShowDialog: false,
       doctors: [
         {
@@ -362,21 +332,21 @@ export default {
           email: "dung.nguyenviet1@hust.edu.vn",
         },
         {
-          name:"Trịnh Quang Đức",
-          email: "duc.trinhquang@hust.edu.vn"
+          name: "Trịnh Quang Đức",
+          email: "duc.trinhquang@hust.edu.vn",
         },
         {
-          name:"Nguyễn Thái Hà",
-          email:"ha.nguyenthai@hust.edu.vn"
+          name: "Nguyễn Thái Hà",
+          email: "ha.nguyenthai@hust.edu.vn",
         },
         {
-          name:"Dương Trọng Lượng",
+          name: "Dương Trọng Lượng",
           email: "luong.duongtrong@hust.edu.vn",
         },
         {
           name: "Phạm Phúc Ngọc",
-          email :"ngoc.phamphuc@hust.edu.vn"
-        }
+          email: "ngoc.phamphuc@hust.edu.vn",
+        },
       ],
       doctorSelected: {},
       // formMode để biết là form dùng để thêm mới hoặc là sửa
@@ -411,26 +381,6 @@ export default {
      * Created by: Cao Thanh Lâm - MF1103
      * Created date: 18:32 05/07/2022
      */
-    showChoiceAction(e) {
-      console.log(e.target);
-      let choicesAction = e.target.querySelector(
-        ".dropdown-menu.dropdown-menu-right.bg-black"
-      );
-      if (!choicesAction) {
-        console.log(123);
-        choicesAction = e.target.parentElement.parentElement.querySelector(
-          ".dropdown-menu.dropdown-menu-right.bg-black"
-        );
-      }
-      try {
-        if (choicesAction.classList.contains("show")) {
-          choicesAction.classList.remove("show");
-        } else {
-          console.log("show");
-          choicesAction.classList.add("show");
-        }
-      } catch (error) {}
-    },
     /**
      * Mô tả : Xem chi tiết bác sĩ
      * @param
@@ -460,6 +410,10 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  direction: ltr;
+  margin: 30px auto 0px;
+}
 div#content {
   width: 86vw;
   position: relative;

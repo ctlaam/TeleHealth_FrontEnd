@@ -63,7 +63,7 @@
               </button>
               <div>
                 Bạn chưa có tài khoản?
-                <router-link to="signup" >
+                <router-link to="signup">
                   <a href="" class="text-primary" data-pjax-state="">Đăng kí</a>
                 </router-link>
               </div>
@@ -90,6 +90,8 @@ export default {
   },
   methods: {
     async login() {
+      localStorage.setItem("lastname", "Smith");
+      console.log(localStorage.getItem("lastname"));
       const me = this;
       const accountLoggin = {
         email: me.email,
@@ -100,7 +102,6 @@ export default {
         .post("http://127.0.0.1:8000/auth/login/", accountLoggin)
         .then((result) => {
           user = result.data.data;
-          console.log(user);
           me.$store.dispatch("login", user);
           console.log(result.data.success);
           if (result.data.success) {
