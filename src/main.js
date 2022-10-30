@@ -27,7 +27,7 @@ import SignUp from "./view/user/SignUp.vue";
 import ResultTlc from "./view/TLC/ResultTlc.vue"
 import ListResults from "./view/TLC/ListReults.vue"
 import { DatePicker } from "ant-design-vue";
-import Antd from 'ant-design-vue';
+import Antd from 'ant-design-vue/es';
 import 'ant-design-vue/dist/antd.css';
 
 const abc = [

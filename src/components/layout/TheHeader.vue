@@ -133,7 +133,7 @@
         <li v-if="role === 'role1'" @click="updateProfileDoctor">
           Update thông tin
         </li> -->
-        <a-dropdown>
+        <a-dropdown v-if="isAuthenticated">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="updateProfileDoctor">
@@ -157,7 +157,7 @@
         </a-dropdown>
       </ul>
       <router-link
-        v-if="!isAuthenticated"
+        v-else
         class="nav navbar-menu order-1 order-lg-2"
         to="/auth"
         ><a-button type="primary">Đăng nhập</a-button></router-link
@@ -195,7 +195,8 @@ export default {
 
   methods: {
     LogOut() {
-      localStorage.removeItem('lastname');
+      localStorage.removeItem('usernameTele');
+      localStorage.removeItem('passwordTele');
       this.$router.push('/') 
       this.$store.dispatch("logout");
     },

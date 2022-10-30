@@ -266,7 +266,8 @@
                       <a-menu @click="detailDoctor(doctor)">
                         <a-menu-item key="1">
                           <UserOutlined />
-                          Chi tiết
+                        Thông tin chi tiết
+                          
                         </a-menu-item>
                         <a-menu-item key="2" @click="seeResults(patient.id)">
                           <UserOutlined />

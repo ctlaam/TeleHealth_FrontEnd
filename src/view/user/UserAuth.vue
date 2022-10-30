@@ -90,8 +90,6 @@ export default {
   },
   methods: {
     async login() {
-      localStorage.setItem("lastname", "Smith");
-      console.log(localStorage.getItem("lastname"));
       const me = this;
       const accountLoggin = {
         email: me.email,
@@ -105,6 +103,8 @@ export default {
           me.$store.dispatch("login", user);
           console.log(result.data.success);
           if (result.data.success) {
+            localStorage.setItem("usernameTele", me.email);
+            localStorage.setItem("passwordTele", me.password);
             this.$router.replace("/content/maincontent/dashboard");
           }
         })
