@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12" style="height: 620px; overflow: hidden;overflow-y:auto;">
+              <div class="col-sm-12" style="height: 600px; overflow: hidden;overflow-y:auto;">
                 <table
                   id="datatable"
                   class="table table-theme table-row v-middle dataTable no-footer"
@@ -63,7 +63,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label=""
-                        style="width: 18.7344px"
+                        style="width:  150px"
                       ></th>
                       <th
                         class="sorting_disabled"
@@ -73,7 +73,7 @@
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="ID: activate to sort column descending"
-                        style="width: 29.625px"
+                        style="width: 150px;text-align: center;"
                       >
                         <span class="text-muted">Phone Code</span>
                       </th>
@@ -82,7 +82,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label="Tasks"
-                        style="width: 70px;text-align: center;"
+                        style="width: 150px;text-align: center;"
                       >
                         <span class="text-muted d-none d-sm-block">Mã code</span>
                       </th>
@@ -93,7 +93,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label="Project: activate to sort column ascending"
-                        style="width: 250px"
+                        style="width: 300px"
                       >
                         <span class="text-muted">Division Type</span>
                       </th>
@@ -115,7 +115,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label="Owner: activate to sort column ascending"
-                        style="width:120px;text-align: center;"
+                        style="width:150px;text-align: center;"
                         
                       >
                         <span class="text-muted">Avatar</span>
@@ -128,13 +128,13 @@
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="ID: activate to sort column descending"
-                        style="width: 50px;text-align: center;"
+                        style="width: 40px;text-align: center;"
                       >
                         <span class="text-muted">STT</span>
                       </th>
                     </tr>
                   </thead>
-                  <tbody v-for="(city,index) in cities" :key="index">
+                  <tbody v-for="(city,index) in listRendered" :key="index">
                     <tr class="odd" data-id="1" role="row" >
                       <td>
                       <a-dropdown-button style="min-width:120px">
@@ -202,9 +202,11 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="cities.length"
               :show-less-items="true"
               :pageSizeOptions = "['7','10', '20', '30', '40']"
+              @change="changePage"
+
               
             />
           </div>
@@ -231,6 +233,7 @@ export default {
       current: 1,
         showLocations:false,
         cities:[],
+        listRendered:[]
       }
     },
   methods: {
@@ -241,6 +244,12 @@ export default {
       let a = name.split("");
       return a[0].toUpperCase();
     },
+    changePage(value) {
+      this.listRendered = this.cities.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize 
+      );
+    },
   },
   async created(){
     const me = this
@@ -248,13 +257,16 @@ export default {
     .get('https://provinces.open-api.vn/api/p')
     .then(res =>{
       me.cities = res.data
-      me.cities = me.cities.slice(0,7)
+      me.listRendered = me.cities.slice(0,7)
     })
   }
 };
 </script>
 
 <style scoped>
+div#page-hero {
+    height: 60px;
+}
 .pagination {
   direction: ltr;
   margin: 30px auto 0px;

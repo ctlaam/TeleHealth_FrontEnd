@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12" style="height: 570px; overflow: hidden;overflow-y:auto;">
+              <div class="col-sm-12" style="height: 600px; overflow: hidden;overflow-y:auto;">
                 <table
                   id="datatable"
                   class="table table-theme table-row v-middle dataTable no-footer"
@@ -75,13 +75,35 @@
                         <span class="text-muted d-none d-sm-block">Mã code</span>
                       </th>
                       <th
-                        class="sorting"
+                        class="sorting_disabled"
                         tabindex="0"
                         aria-controls="datatable"
                         rowspan="1"
                         colspan="1"
                         aria-label="Project: activate to sort column ascending"
-                        style="width: 700px"
+                        style="width: 220px"
+                      >
+                        <span class="text-muted">Tên xã phường</span>
+                      </th>
+                      <th
+                        class="sorting_disabled"
+                        tabindex="0"
+                        aria-controls="datatable"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="Project: activate to sort column ascending"
+                        style="width: 220px"
+                      >
+                        <span class="text-muted">Tên xã phường</span>
+                      </th>
+                      <th
+                        class="sorting_disabled"
+                        tabindex="0"
+                        aria-controls="datatable"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="Project: activate to sort column ascending"
+                        style="width: 220px"
                       >
                         <span class="text-muted">Tên xã phường</span>
                       </th>
@@ -98,21 +120,21 @@
                         <span class="text-muted">Avatar</span>
                       </th>
                       <th
-                        class="sorting_asc"
+                        class="sorting_disabled"
                         tabindex="0"
                         aria-controls="datatable"
                         rowspan="1"
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="ID: activate to sort column descending"
-                        style="width: 29.625px"
+                        style="width: 40px;text-align: center;"
                       >
                         <span class="text-muted">STT</span>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="odd" data-id="1" role="row" v-for="(ward,index) in wards" :key="index">
+                    <tr class="odd" data-id="1" role="row" v-for="(ward,index) in listRendered" :key="index">
                       <td>
                         <a-dropdown-button style="min-width:120px">
                           <template #overlay>
@@ -142,11 +164,18 @@
                       </td>
                       <td class="flex">
                         <a href="#" class="item-title text-color"
+                          >{{ward.division_type}}</a
+                        >
+                      </td>
+                      <td class="flex">
+                        <a href="#" class="item-title text-color"
+                          >{{ward.codename}}</a
+                        >
+                      </td>
+                      <td class="flex">
+                        <a href="#" class="item-title text-color"
                           >{{ward.name}}</a
                         >
-                        <div class="item-except text-muted text-sm h-1x">
-                          {{ward.unsignedName}}
-                        </div>
                       </td>
                       <td class="letter">
                         <a href="app.message.html" data-pjax-state="">
@@ -168,8 +197,10 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="wards.length"
               show-less-items
+              @change="changePage"
+
             />
           </div>
             </div>
@@ -194,7 +225,8 @@ export default {
       pageSize:7,
       current: 1,
       showLocations:false,
-      wards:[]
+      wards:[],
+      listRendered:[]
     }
   },
   methods: {
@@ -205,20 +237,30 @@ export default {
       let a = name.split("");
       return a[0].toUpperCase();
     },
+    changePage(value) {
+      this.listRendered = this.wards.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize
+      );
+    },
   } ,
   created(){
     const me = this
     axios
-    .get('http://127.0.0.1:8000/address/ward/')
+    .get('https://provinces.open-api.vn/api/w/')
     .then(res =>{
-      this.wards = res.data
-      console.log(me.districts)
+      me.wards = res.data
+    me.listRendered = me.wards.slice(0,7)
+
     })
   }
 };
 </script>
 
 <style scoped>
+div#page-hero {
+    height: 60px;
+}
 .pagination {
   direction: ltr;
   margin: 30px auto 0px;

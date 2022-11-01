@@ -61,7 +61,7 @@ Table
   tbody td{
     background-color: #fff;
     border-width: 0;
-    box-shadow: 0 1px 0 $border-color-lt, 0 -1px 0 $border-color-lt;
+    // box-shadow: 0 1px 0 $border-color-lt, 0 -1px 0 $border-color-lt;
     &:first-child{
       border-radius: .25rem 0 0 .25rem;
     }

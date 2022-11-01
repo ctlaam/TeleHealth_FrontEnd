@@ -144,9 +144,7 @@
                         <a href="#" class="item-title text-color"
                           >{{ethinic.name}}</a
                         >
-                        <div class="item-except text-muted text-sm h-1x">
-                          {{ethinic.unsignedName}}
-                        </div>
+                        
                       </td>
                       <td class="letter">
                         <a href="app.message.html" data-pjax-state="">
@@ -172,6 +170,7 @@
               show-less-items
               :pageSizeOptions = "['7','10', '20', '30', '40']"
               @change="changePage"
+              
             />
           </div>
             </div>

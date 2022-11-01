@@ -1067,7 +1067,10 @@ Table
   .table-theme tbody td {
     background-color: #fff;
     border-width: 0;
-    box-shadow: 0 1px 0 rgba(160, 175, 185, 0.05), 0 -1px 0 rgba(160, 175, 185, 0.05); }
+    border-bottom: 1px solid #fff;
+    /* box-shadow: 0 1px 0 rgba(160, 175, 185, 0.05), 0 -1px 0 rgba(160, 175, 185, 0.05);  */
+    box-shadow: none !important;
+  }
     .table-theme tbody td:first-child {
       /* border-radius: .25rem 0 0 .25rem; */
      }
@@ -4714,3 +4717,17 @@ textarea.md-input {
 .grey {
   background-color: #9e9e9e;
   color: #fff; }
+
+.ant-pagination-item-container {
+    position: relative;
+    top: -8px;
+    left: -4px;
+}
+.pagination a {
+  padding: 0.5rem 0.75rem;
+  border:none
+}
+span.anticon.anticon-right,span.anticon.anticon-left {
+  position: relative;
+  top: -3px;
+}
