@@ -1069,10 +1069,15 @@ Table
     border-width: 0;
     box-shadow: 0 1px 0 rgba(160, 175, 185, 0.05), 0 -1px 0 rgba(160, 175, 185, 0.05); }
     .table-theme tbody td:first-child {
-      border-radius: .25rem 0 0 .25rem; }
+      /* border-radius: .25rem 0 0 .25rem; */
+     }
     .table-theme tbody td:last-child {
-      border-radius: 0 .25rem .25rem 0; }
-
+      /* border-radius: 0 .25rem .25rem 0; */
+     }
+     .table-theme tbody td {
+      border-top: 1px solid #ccc !important;
+      border-radius: 0 !important;
+  }
 .table-row {
   border-collapse: separate !important;
   border-spacing: 0 10px !important; }

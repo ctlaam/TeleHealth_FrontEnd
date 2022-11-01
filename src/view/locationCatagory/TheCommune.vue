@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12" style="height: 570px; overflow: hidden;">
+              <div class="col-sm-12" style="height: 570px; overflow: hidden;overflow-y:auto;">
                 <table
                   id="datatable"
                   class="table table-theme table-row v-middle dataTable no-footer"

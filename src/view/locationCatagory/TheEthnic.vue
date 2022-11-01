@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12" style="height: 570px; overflow: hidden;">
+              <div class="col-sm-12" style="height: 600px; overflow: hidden;overflow-y:auto;overflow-y:auto">
                 <table
                   id="datatable"
                   class="table table-theme table-row v-middle dataTable no-footer"
@@ -112,7 +112,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="odd" data-id="1" role="row" v-for="(ethinic,index) in ethinics" :key="index">
+                    <tr class="odd" data-id="1" role="row" v-for="(ethinic,index) in listRendered" :key="index">
                       <td>
                         <a-dropdown-button style="min-width:120px">
                           <template #overlay>
@@ -168,9 +168,10 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="ethinics.length"
               show-less-items
               :pageSizeOptions = "['7','10', '20', '30', '40']"
+              @change="changePage"
             />
           </div>
             </div>
@@ -198,6 +199,7 @@ export default {
       current: 1,
       showLocations:false,
       ethinics:[],
+      listRendered:[]
     }
   },
   methods: {
@@ -208,19 +210,30 @@ export default {
       let a = name.split("");
       return a[0].toUpperCase();
     },
+    changePage(value) {
+      this.listRendered = this.ethinics.slice(
+        (value - 1) * this.pageSize + 1,
+        value * this.pageSize + 1
+      );
+    },
   },
   created(){
     const me = this
     axios
-    .get('http://127.0.0.1:8000/address/ethnic/')
+    .get('http://api.nosomovo.xyz/ethnic/getalllist')
     .then(res =>{
       me.ethinics = res.data
+      this.listRendered = this.ethinics.slice(1, this.pageSize+1);
+      console.log(this.listRendered)
     })
   }
 };
 </script>
 
 <style scoped>
+div#page-hero {
+    height: 60px;
+}
 .pagination {
   direction: ltr;
   margin: 30px auto 0px;
