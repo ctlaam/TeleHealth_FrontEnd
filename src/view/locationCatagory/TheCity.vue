@@ -3,7 +3,9 @@
     <div class="page-hero page-container" id="page-hero">
       <div class="padding d-flex">
         <div class="page-title">
-          <h2 class="text-md text-highlight" style="color:#1890ff">Danh sách tỉnh/thành phố</h2>
+          <h2 class="text-md text-highlight" style="color: #1890ff">
+            Danh sách tỉnh/thành phố
+          </h2>
           <small class="text-muted"></small>
         </div>
         <div class="flex"></div>
@@ -49,7 +51,10 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12" style="height: 600px; overflow: hidden;overflow-y:auto;">
+              <div
+                class="col-sm-12"
+                style="height: 600px; overflow: hidden; overflow-y: auto"
+              >
                 <table
                   id="datatable"
                   class="table table-theme table-row v-middle dataTable no-footer"
@@ -63,8 +68,10 @@
                         rowspan="1"
                         colspan="1"
                         aria-label=""
-                        style="width:  150px"
-                      ></th>
+                        style="width: 150px; text-align: center"
+                      >
+                        <span class="text-muted">Tùy chọn</span>
+                      </th>
                       <th
                         class="sorting_disabled"
                         tabindex="0"
@@ -73,7 +80,7 @@
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="ID: activate to sort column descending"
-                        style="width: 150px;text-align: center;"
+                        style="width: 150px; text-align: center"
                       >
                         <span class="text-muted">Phone Code</span>
                       </th>
@@ -82,9 +89,11 @@
                         rowspan="1"
                         colspan="1"
                         aria-label="Tasks"
-                        style="width: 150px;text-align: center;"
+                        style="width: 150px; text-align: center"
                       >
-                        <span class="text-muted d-none d-sm-block">Mã code</span>
+                        <span class="text-muted d-none d-sm-block"
+                          >Mã code</span
+                        >
                       </th>
                       <th
                         class="sorting_disabled"
@@ -115,8 +124,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label="Owner: activate to sort column ascending"
-                        style="width:150px;text-align: center;"
-                        
+                        style="width: 150px; text-align: center"
                       >
                         <span class="text-muted">Avatar</span>
                       </th>
@@ -128,117 +136,167 @@
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="ID: activate to sort column descending"
-                        style="width: 40px;text-align: center;"
+                        style="width: 40px; text-align: center"
                       >
                         <span class="text-muted">STT</span>
                       </th>
                     </tr>
                   </thead>
-                  <tbody v-for="(city,index) in listRendered" :key="index">
-                    <tr class="odd" data-id="1" role="row" >
-                      <td>
-                      <a-dropdown-button style="min-width:120px">
-                          <template #overlay>
-                            <a-menu @click="detailDoctor(doctor)">
-                              <a-menu-item key="1"  >
-                                <UserOutlined />
-                                Thông tin chi tiết
-
-                              </a-menu-item>
-                              <a-menu-item key="2" @click="seeResults(patient.id)">
-                                <UserOutlined />
-                                Xóa
-                              </a-menu-item>
-                              <!-- <a-menu-item key="3"  @click="clickInput(patient.id)">
+                  <template v-if="false">
+                    <tbody v-for="(city, index) in listRendered" :key="index">
+                      <tr class="odd" data-id="1" role="row">
+                        <td>
+                          <a-dropdown-button style="min-width: 120px">
+                            <template #overlay>
+                              <a-menu @click="detailDoctor(doctor)">
+                                <a-menu-item key="1">
+                                  <UserOutlined />
+                                  Thông tin chi tiết
+                                </a-menu-item>
+                                <a-menu-item
+                                  key="2"
+                                  @click="seeResults(patient.id)"
+                                >
+                                  <UserOutlined />
+                                  Xóa
+                                </a-menu-item>
+                                <!-- <a-menu-item key="3"  @click="clickInput(patient.id)">
                                 <UserOutlined />
                                 Tính thể tích phổi
                               </a-menu-item> -->
-                            </a-menu>
-                          </template>
-                      </a-dropdown-button>
-                      </td>
-
-                      <td style="text-align:center">
-                        <span class="item-amount d-none d-sm-block text-sm">
-                          {{city.phone_code}}
-                        </span>
-                      </td>
-                      <td
-                        style="min-width: 30px; text-align: center"
-                        class="sorting_1"
-                      >
-                        <small class="text-muted">{{city.code}}</small>
-                      </td>
-                      <td class="flex">
-                        <a href="#" class="item-title text-color"
-                          >{{city.division_type}}</a
+                              </a-menu>
+                            </template>
+                          </a-dropdown-button>
+                        </td>
+                        <td style="text-align: center">
+                          <span class="item-amount d-none d-sm-block text-sm">
+                            {{ city.phone_code }}
+                          </span>
+                        </td>
+                        <td
+                          style="min-width: 30px; text-align: center"
+                          class="sorting_1"
                         >
-                      </td>
-                      <td class="flex">
-                        <a href="#" class="item-title text-color"
-                          >{{city.name}}</a
+                          <small class="text-muted">{{ city.code }}</small>
+                        </td>
+                        <td class="flex">
+                          <a href="#" class="item-title text-color">{{
+                            city.division_type
+                          }}</a>
+                        </td>
+                        <td class="flex">
+                          <a href="#" class="item-title text-color">{{
+                            city.name
+                          }}</a>
+                          <div class="item-except text-muted text-sm h-1x">
+                            {{ city.codename }}
+                          </div>
+                        </td>
+                        <td class="letter">
+                          <a href="app.message.html" data-pjax-state="">
+                            <span class="w-40 avatar gd-success">{{
+                              getFirstLetter(city.name)
+                            }}</span>
+                          </a>
+                        </td>
+                        <td
+                          style="min-width: 30px; text-align: center"
+                          class="sorting_1"
                         >
-                        <div class="item-except text-muted text-sm h-1x">
-                          {{city.codename}}
-                        </div>
-                      </td>
-                      <td class="letter">
-                        <a href="app.message.html" data-pjax-state="">
-                          <span class="w-40 avatar gd-success">{{getFirstLetter(city.name)}}</span>
-                        </a>
-                      </td>
-                      <td
-                        style="min-width: 30px; text-align: center"
-                        class="sorting_1"
-                      >
-                        <small class="text-muted">{{index +1}}</small>
-                      </td>
-                    </tr>   
-                                        
-                  </tbody>
+                          <small class="text-muted">{{ index + 1 }}</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                  <template v-if="true">
+                    <tbody v-for="(city, index) in 4" :key="index">
+                      <tr class="odd" data-id="1" role="row">
+                        <td>
+                          <a-skeleton
+                            class="flex-skeleton"
+                            active
+                            :paragraph="{ rows: 0 }"
+                          />
+                        </td>
+                        <td style="text-align: center">
+                          <span class="item-amount d-none d-sm-block text-sm">
+                            <a-skeleton
+                              class="flex-skeleton"
+                              active
+                              :paragraph="{ rows: 0 }"
+                            />
+                          </span>
+                        </td>
+                        <td
+                          style="min-width: 30px; text-align: center"
+                          class="sorting_1"
+                        >
+                          <small class="text-muted"
+                            ><a-skeleton
+                              active
+                              class="flex-skeleton"
+                              :paragraph="{ rows: 0 }"
+                          /></small>
+                        </td>
+                        <td class="flex">
+                          <a-skeleton active :paragraph="{ rows: 0 }" />
+                        </td>
+                        <td class="flex">
+                          <a-skeleton active :paragraph="{ rows: 1 }" />
+                        </td>
+                        <td class="letter">
+                          <a-skeleton active avatar :paragraph="{ rows: 0 }" />
+                        </td>
+                        <td
+                          style="min-width: 30px; text-align: center"
+                          class="sorting_1"
+                        >
+                          <small class="text-muted">{{ index + 1 }}</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
                 </table>
               </div>
               <div class="pagination">
-            <a-pagination
-              v-model:pageSize="pageSize"
-              v-model:current="current"
-              :total="cities.length"
-              :show-less-items="true"
-              :pageSizeOptions = "['7','10', '20', '30', '40']"
-              @change="changePage"
-
-              
-            />
-          </div>
+                <a-pagination
+                  v-model:pageSize="pageSize"
+                  v-model:current="current"
+                  :total="cities.length"
+                  :show-less-items="true"
+                  :pageSizeOptions="['7', '10', '20', '30', '40']"
+                  @change="changePage"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <TheCityDetail 
-    :showLocations="showLocations"
-    @showOrHideDetailLocation="showOrHideDetailLocation"
+    <TheCityDetail
+      :showLocations="showLocations"
+      @showOrHideDetailLocation="showOrHideDetailLocation"
     ></TheCityDetail>
   </section>
 </template>
 
 <script>
-import axios from 'axios';
-import TheCityDetail from '../locationDetail/TheCityDetail.vue';
-export default { 
+import axios from "axios";
+import TheCityDetail from "../locationDetail/TheCityDetail.vue";
+export default {
   components: { TheCityDetail },
-  data(){
-      return {
-        pageSize:7,
+  data() {
+    return {
+      pageSize: 7,
       current: 1,
-        showLocations:false,
-        cities:[],
-        listRendered:[]
-      }
-    },
+      showLocations: false,
+      cities: [],
+      listRendered: [],
+    };
+  },
   methods: {
-    showOrHideDetailLocation(show){
-    this.showLocations  = show
+    showOrHideDetailLocation(show) {
+      this.showLocations = show;
     },
     getFirstLetter(name) {
       let a = name.split("");
@@ -247,25 +305,23 @@ export default {
     changePage(value) {
       this.listRendered = this.cities.slice(
         (value - 1) * this.pageSize,
-        value * this.pageSize 
+        value * this.pageSize
       );
     },
   },
-  async created(){
-    const me = this
-    await axios
-    .get('https://provinces.open-api.vn/api/p')
-    .then(res =>{
-      me.cities = res.data
-      me.listRendered = me.cities.slice(0,7)
-    })
-  }
+  async created() {
+    const me = this;
+    await axios.get("https://provinces.open-api.vn/api/p").then((res) => {
+      me.cities = res.data;
+      me.listRendered = me.cities.slice(0, 7);
+    });
+  },
 };
 </script>
 
 <style scoped>
 div#page-hero {
-    height: 60px;
+  height: 60px;
 }
 .pagination {
   direction: ltr;
@@ -278,16 +334,15 @@ div#datatable_wrapper {
   overflow: hidden;
 }
 #location .row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-    justify-content: end;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  justify-content: end;
 }
 td.letter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 </style>

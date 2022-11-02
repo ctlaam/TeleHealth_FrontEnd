@@ -4731,3 +4731,14 @@ span.anticon.anticon-right,span.anticon.anticon-left {
   position: relative;
   top: -3px;
 }
+.ant-skeleton.ant-skeleton-active {
+  direction: ltr;
+}
+.ant-skeleton {
+  direction: ltr;
+}
+.flex-skeleton .ant-skeleton-content{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
