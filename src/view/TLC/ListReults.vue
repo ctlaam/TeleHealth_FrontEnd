@@ -26,7 +26,9 @@
               </button>
             </li>
           </ul>
-          <p v-else>Bệnh nhân chưa đã tính</p>
+          <template v-else>
+            <a-empty description="Không có dữ liệu" />
+          </template>
         </div>
       </div>
     </div>

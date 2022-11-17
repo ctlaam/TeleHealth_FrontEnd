@@ -79,7 +79,7 @@
                 <div>
                   Bạn đã có tài khoản
                   <a
-                    href="signin.html"
+                    @click="formLogin"
                     class="text-primary _600"
                     data-pjax-state=""
                     >Đăng nhập</a
@@ -106,6 +106,9 @@ export default {
     };
   },
   methods: {
+    formLogin() {
+      this.$router.push("/auth");
+    },
     signUpDoctor() {
       const accountDoctor = {
         email: this.emailDoctor,
@@ -117,9 +120,11 @@ export default {
         .post("http://127.0.0.1:8000/auth/doctor_register/", accountDoctor)
         .then((result) => {
           console.log(result);
+          this.$message.success("Tạo tài khoản thành công");
           this.$router.replace("/auth");
         })
         .catch((err) => {
+          this.$message.error("Có lỗi xảy ra!");
           console.log(err);
         });
     },

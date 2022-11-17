@@ -25,7 +25,6 @@ export default {
         .then((result) => {
           user = result.data.data;
           me.$store.dispatch("login", user);
-          console.log(result.data.success);
         })
         .catch((err) => {
           console.log(err);

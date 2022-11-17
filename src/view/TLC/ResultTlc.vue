@@ -17,6 +17,7 @@
         </div>
         <div class="modal-footer flex">
           <button class="btn btn-primary" @click="closeResult">OK</button>
+          <button class="btn btn-primary" @click="showLung3D" style="min-width:120px;margin-left: 15px;">Dựng phổi 3d</button>
         </div>
       </div>
     </div>
@@ -27,6 +28,9 @@
 export default {
   props: ["resultLeft", "resultRight", "total"],
   methods: {
+    showLung3D(){
+      this.$emit('showLung3D')
+    },
     closeResult() {
       const a = document.getElementById("resultTlc");
       a.setAttribute("hidden", true);
@@ -58,7 +62,7 @@ div#contentTlc {
 }
 .modal-footer.flex {
   display: flex;
-  justify-content: center;
+  justify-content:center;
 }
 button.btn.btn-primary {
   width: 75px;

@@ -26,6 +26,7 @@ import TheContent from "./components/layout/TheContent.vue";
 import SignUp from "./view/user/SignUp.vue";
 import ResultTlc from "./view/TLC/ResultTlc.vue"
 import ListResults from "./view/TLC/ListReults.vue"
+import LungVolumn3d from "./view/TLC/LungVolumn3d.vue"
 import { DatePicker } from "ant-design-vue";
 import Antd from 'ant-design-vue/es';
 import 'ant-design-vue/dist/antd.css';
@@ -85,7 +86,6 @@ const router = createRouter({
 });
 router.beforeEach(function (to, from, next) {
   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-    console.log(1234);
     next("/auth");
   } else {
     next();
@@ -98,6 +98,7 @@ app.use(DatePicker);
 app.use(Antd);
 app.component('ResultTlc',ResultTlc)
 app.component('ListResults',ListResults)
+app.component('LungVolumn3d',LungVolumn3d)
 app.config.globalProperties.TeleHealthEnum = TeleHealthEnum;
 app.use(router);
 app.use(store);

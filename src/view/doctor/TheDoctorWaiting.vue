@@ -110,7 +110,7 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row">
+            <div class="list list-row" v-if="doctorsWait.length > 0">
               <div
                 v-for="doctor in doctorsWait"
                 :key="doctor.id"
@@ -229,8 +229,11 @@
                 </div>
               </div>
             </div>
-        </div>
-        <div class="pagination">
+            <template v-else>
+              <a-empty style="margin-top: 200" description="Không có dữ liệu" />
+            </template>
+          </div>
+          <div class="pagination" v-if="doctorsWait.length > 0">
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
@@ -238,15 +241,15 @@
               show-less-items
             />
           </div>
+        </div>
       </div>
+      <FormDoctor
+        :isShow="isShowDialog"
+        @closeOnClick="showOrHideDialog"
+        :formMode="formMode"
+        :doctorSelected="doctorSelected"
+      ></FormDoctor>
     </div>
-    <FormDoctor
-      :isShow="isShowDialog"
-      @closeOnClick="showOrHideDialog"
-      :formMode="formMode"
-      :doctorSelected="doctorSelected"
-    ></FormDoctor>
-  </div>
   </div>
 </template>
 
@@ -262,7 +265,6 @@ export default {
   },
   data() {
     return {
-      
       current: 1,
       pageSize: 10,
       isShowDialog: false,
@@ -403,7 +405,11 @@ export default {
   },
 };
 </script>
-
+<style>
+.ant-empty {
+  margin-top: 200px;
+}
+</style>
 <style scoped>
 .pagination {
   direction: ltr;

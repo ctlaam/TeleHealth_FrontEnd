@@ -168,7 +168,7 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row">
+            <div class="list list-row" v-if="doctors.length > 0">
               <div
                 v-for="doctor in doctors"
                 :key="doctor.id"
@@ -283,8 +283,11 @@
                 </div>
               </div>
             </div>
+            <template v-else>
+              <a-empty style="margin-top: 200" description="Không có dữ liệu" />
+            </template>
           </div>
-          <div class="pagination">
+          <div class="pagination" v-if="doctors.length > 0">
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"

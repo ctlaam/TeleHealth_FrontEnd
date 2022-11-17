@@ -1,15 +1,22 @@
 <template>
-    <p>TheDashBoard</p>
+    <iframe
+      class="iframe"
+      src="http://localhost:3000/"
+      title="W3Schools Free Online Web Tutorials"
+    ></iframe>
 </template>
 
 <script>
-export default {
-    
-}
+export default {};
 </script>
 
 <style scoped>
-p {
-    margin-top: 50px;
+.iframe {
+  margin-top: 20px;
+  margin-left:-5px;
+  width: 100%;
+  height: 800px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 </style>

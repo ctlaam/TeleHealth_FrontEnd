@@ -281,7 +281,6 @@
                         <a-menu-item key="1">
                           <UserOutlined />
                           Thông tin chi tiết
-
                         </a-menu-item>
                         <a-menu-item key="2" @click="seeResults(patient.id)">
                           <UserOutlined />
@@ -317,8 +316,10 @@
       :resultLeft="resultLeft"
       :resultRight="resultRight"
       :total="totalLung"
+      @showLung3D="showLung3D"
     />
-    <ListResults :listResults="listResults" @assignResult="assignResult" />
+    <ListResults :listResults="listResults" @assignResult="assignResult"  />
+    <LungVolumn3d :link="link" />
   </div>
 </template>
 
@@ -334,6 +335,7 @@ export default {
   },
   data() {
     return {
+      link: "",
       current: 1,
       pageSize: 10,
       resultRight: "",
@@ -355,8 +357,8 @@ export default {
   },
   methods: {
     assignResult(result) {
-      console.log(result);
       if (result) {
+        this.link = `http://127.0.0.1:8000/tlc_result/result/${result.id}/`;
         this.resultRight = result.right_lung;
         this.resultLeft = result.left_lung;
         this.totalLung = result.lung_volume;
@@ -382,6 +384,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    showLung3D() {
+      const a = document.getElementById("lungVolumn");
+      a.removeAttribute("hidden", true);
     },
     showResult() {
       const a = document.getElementById("resultTlc");
