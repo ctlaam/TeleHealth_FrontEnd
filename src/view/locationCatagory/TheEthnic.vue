@@ -26,7 +26,7 @@
                     type="text"
                     class="form-control no-bg no-border no-shadow search"
                     placeholder="Search"
-                    required=""
+                    v-model="searchValue"
                   />
                   <span class="input-group-append">
                     <button class="btn no-bg no-shadow" type="button">
@@ -126,7 +126,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="false">
+                  <template v-if="true">
                     <tbody>
                       <tr
                         class="odd"
@@ -185,7 +185,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="true">
+                  <template v-if="false">
                     <tbody>
                       <tr
                         class="odd"
@@ -262,6 +262,7 @@ export default {
   },
   data() {
     return {
+      searchValue: "",
       pageSize: 7,
       current: 1,
       showLocations: false,
@@ -270,6 +271,15 @@ export default {
     };
   },
   methods: {
+    searchAction(newValue){
+      const me = this;
+      let url = newValue
+    axios.get(url).then((res) => {
+      me.ethinics = res.data;
+      this.listRendered = this.ethinics.slice(0, this.pageSize + 1);
+      console.log(this.listRendered);
+    });
+    },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
     },
@@ -283,6 +293,11 @@ export default {
         value * this.pageSize + 1
       );
     },
+  },
+  watch:{
+    searchValue(newValue){
+      this.searchAction(newValue)
+    }
   },
   created() {
     const me = this;

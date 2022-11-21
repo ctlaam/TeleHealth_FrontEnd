@@ -27,6 +27,7 @@
                     class="form-control no-bg no-border no-shadow search"
                     placeholder="Search"
                     required=""
+                    v-model="searchValue"
                   />
                   <span class="input-group-append">
                     <button class="btn no-bg no-shadow" type="button">
@@ -142,7 +143,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="false">
+                  <template v-if="true">
                     <tbody>
                       <tr
                         class="odd"
@@ -211,7 +212,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="true">
+                  <template v-if="false">
                     <tbody>
                       <tr
                         class="odd"
@@ -280,6 +281,7 @@ export default {
   components: { TheCommuneDetail },
   data() {
     return {
+      searchValue:"",
       pageSize: 7,
       current: 1,
       showLocations: false,
@@ -288,6 +290,17 @@ export default {
     };
   },
   methods: {
+    searchAction(newValue){
+      const me = this;
+      let url = "https://provinces.open-api.vn/api/w"
+      if(newValue.trim()){
+        url = `https://provinces.open-api.vn/api/w/search/?q=${newValue}`
+      }
+    axios.get(url).then((res) => {
+      me.wards = res.data;
+      this.listRendered = this.wards.slice(0, this.pageSize + 1);
+    });
+    },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
     },
@@ -301,6 +314,11 @@ export default {
         value * this.pageSize
       );
     },
+  },
+  watch:{
+    searchValue(newValue){
+      this.searchAction(newValue)
+    }
   },
   created() {
     const me = this;

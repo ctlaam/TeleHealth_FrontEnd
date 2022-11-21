@@ -27,6 +27,7 @@
                     class="form-control no-bg no-border no-shadow search"
                     placeholder="Search"
                     required=""
+                    v-model="searchValue"
                   />
                   <span class="input-group-append">
                     <button class="btn no-bg no-shadow" type="button">
@@ -142,7 +143,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="false">
+                  <template v-if="true">
                     <tbody v-for="(city, index) in listRendered" :key="index">
                       <tr class="odd" data-id="1" role="row">
                         <td>
@@ -208,7 +209,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="true">
+                  <template v-if="false">
                     <tbody v-for="(city, index) in 4" :key="index">
                       <tr class="odd" data-id="1" role="row">
                         <td>
@@ -287,6 +288,8 @@ export default {
   components: { TheCityDetail },
   data() {
     return {
+      
+      searchValue: "",
       pageSize: 7,
       current: 1,
       showLocations: false,
@@ -294,7 +297,19 @@ export default {
       listRendered: [],
     };
   },
+
   methods: {
+    searchAction(newValue){
+      const me = this;
+      let url = "https://provinces.open-api.vn/api/p"
+      if(newValue.trim()){
+        url = `https://provinces.open-api.vn/api/p/search/?q=${newValue}`
+      }
+    axios.get(url).then((res) => {
+      me.cities = res.data;
+      this.listRendered = this.cities.slice(0, this.pageSize + 1);
+    });
+    },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
     },
@@ -308,6 +323,11 @@ export default {
         value * this.pageSize
       );
     },
+  },
+  watch:{
+    searchValue(newValue){
+      this.searchAction(newValue)
+    }
   },
   async created() {
     const me = this;
