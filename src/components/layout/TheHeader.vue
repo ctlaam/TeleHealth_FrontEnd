@@ -135,9 +135,9 @@
         </li> -->
         <a-dropdown v-if="isAuthenticated">
           <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="updateProfileDoctor">
-                <UserOutlined />
+            <a-menu style="min-width:140px">
+              <a-menu-item key="1" @click="updateProfileDoctor" v-if="(role == 'role1')">
+                <UserOutlined  />
                 Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
               </a-menu-item>
               <a-menu-item key="2">
@@ -163,21 +163,21 @@
         ><a-button type="primary">Đăng nhập</a-button></router-link
       >
     </div>
-    <FormDoctor
+    <FormPersonalDoctor
       :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
       :formMode="formMode"
-    ></FormDoctor>
+    ></FormPersonalDoctor>
   </div>
   <!-- End Header -->
 </template>
 
 <script>
-import FormDoctor from "../../view/doctor/DoctorFormDetail.vue";
+import FormPersonalDoctor from "../../view/doctor/ThePersonalDoctor.vue";
 export default {
   name: "the-header",
   components: {
-    FormDoctor,
+    FormPersonalDoctor,
   },
   data() {
     return {
@@ -204,7 +204,6 @@ export default {
       this.isShowDialog = isShow;
     },
     updateProfileDoctor() {
-      console.log(123);
       this.formMode = this.TeleHealthEnum.FormMode.Add;
       this.showOrHideDialog(true);
     },

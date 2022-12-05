@@ -126,7 +126,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="true">
+                  <template v-if="!isLoading && listRendered.length > 0">
                     <tbody>
                       <tr
                         class="odd"
@@ -185,7 +185,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="false">
+                  <template v-if="isLoading">
                     <tbody>
                       <tr
                         class="odd"
@@ -268,17 +268,24 @@ export default {
       showLocations: false,
       ethinics: [],
       listRendered: [],
+      isLoading:false,
     };
   },
   methods: {
     searchAction(newValue){
-      const me = this;
-      let url = newValue
-    axios.get(url).then((res) => {
-      me.ethinics = res.data;
-      this.listRendered = this.ethinics.slice(0, this.pageSize + 1);
-      console.log(this.listRendered);
-    });
+      this.isLoading = true;
+      let searchResult
+      if(newValue.trim()){
+        searchResult = this.ethinics.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
+        this.listRendered = searchResult.slice(0, this.pageSize + 1);
+      } else {
+        searchResult = this.ethinics
+        this.listRendered = searchResult.slice(1, this.pageSize + 1);
+      }
+      setTimeout(() =>{
+        this.isLoading = false;
+      },500)
+      
     },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
@@ -299,12 +306,13 @@ export default {
       this.searchAction(newValue)
     }
   },
-  created() {
+  async created() {
     const me = this;
-    axios.get("http://api.nosomovo.xyz/ethnic/getalllist").then((res) => {
+    this.isLoading = true;
+    await axios.get("http://api.nosomovo.xyz/ethnic/getalllist").then((res) => {
       me.ethinics = res.data;
       this.listRendered = this.ethinics.slice(1, this.pageSize + 1);
-      console.log(this.listRendered);
+      this.isLoading = false;
     });
   },
 };

@@ -6,28 +6,6 @@
         <div class="d-flex flex-column flex" id="user-list">
           <div class="p-3">
             <div class="toolbar">
-              <button
-                @click="btnAddOnClick"
-                id="addPatient"
-                class="btn btn-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-plus"
-                >
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                <span class="mx-1">Thêm</span>
-              </button>
               <div class="btn-group">
                 <button
                   class="btn btn-sm btn-icon btn-white"
@@ -204,14 +182,39 @@
                   </a>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">{{
-                    doctor.name
-                  }}</a>
+                  <a class="item-author text-color" data-pjax-state="">Tên bác sĩ</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.name }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Giới tính</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.gender }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Địa chỉ</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.detail_address }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Tên không dấu</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.unsignedName }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Email</a>
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
                     {{ doctor.email }}
                   </div>
-                  <div class="item-tag tag hide">
-                    Clients,Team,Personal,Company,Work,Friends,Suppliers,Partners
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Số điện thoại</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.phone }}
                   </div>
                 </div>
                 <div>
@@ -266,8 +269,7 @@
                       <a-menu @click="detailDoctor(doctor)">
                         <a-menu-item key="1">
                           <UserOutlined />
-                        Thông tin chi tiết
-                          
+                          Thông tin chi tiết
                         </a-menu-item>
                         <a-menu-item key="2" @click="seeResults(patient.id)">
                           <UserOutlined />
@@ -322,42 +324,17 @@ export default {
       current: 1,
       pageSize: 10,
       isShowDialog: false,
-      doctors: [
-        {
-          name: "Hoàng Quang Huy",
-          email: "huy.hoangquang@hust.edu.vn",
-        },
-        {
-          name: "Trần Anh Vũ",
-          email: "vu.trananh@hust.edu.vn",
-        },
-        {
-          name: "Nguyễn Việt Dũng",
-          email: "dung.nguyenviet1@hust.edu.vn",
-        },
-        {
-          name: "Trịnh Quang Đức",
-          email: "duc.trinhquang@hust.edu.vn",
-        },
-        {
-          name: "Nguyễn Thái Hà",
-          email: "ha.nguyenthai@hust.edu.vn",
-        },
-        {
-          name: "Dương Trọng Lượng",
-          email: "luong.duongtrong@hust.edu.vn",
-        },
-        {
-          name: "Phạm Phúc Ngọc",
-          email: "ngoc.phamphuc@hust.edu.vn",
-        },
-      ],
+      doctors: [],
       doctorSelected: {},
       // formMode để biết là form dùng để thêm mới hoặc là sửa
       formMode: this.TeleHealthEnum.FormMode.Add,
     };
   },
-  computed: {},
+  computed: {
+    accessToken() {
+      return this.$store.getters.accessToken;
+    },
+  },
   methods: {
     getFirstLetter(name) {
       let a = name.split("");
@@ -395,15 +372,18 @@ export default {
     detailDoctor(doctor) {
       this.formMode = this.TeleHealthEnum.FormMode.Update;
       this.doctorSelected = doctor;
+      this.doctorSelected.country = 'Anh'
       this.showOrHideDialog(true);
     },
   },
   async mounted() {
     const me = this;
     await axios
-      .get("http://127.0.0.1:8000/doctor/doctor/")
+      .get("http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null", {
+        headers: { Authorization: `Bearer ${me.accessToken}` },
+      })
       .then(function (res) {
-        console.log(res.data);
+        console.log("aaaa",res.data);
         me.doctors = res.data;
       })
       .catch(function (err) {

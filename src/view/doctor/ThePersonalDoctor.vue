@@ -5,7 +5,7 @@
   >
     <div id="cardDoctor" class="card">
       <div class="card-header">
-        <strong>Thông tin chi tiết</strong>
+        <strong>Thông tin cá nhân</strong>
         <div
           @click="closeOnClick"
           id="closeFormDoctor"
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-form-label">Địa chỉ</label>
+          <label class="col-form-label">Hộ khẩu</label>
           <div class="col-sm-8">
             <div class="mt-2 mb-2">
               <div class="form-check form-check-inline row-address">
@@ -110,10 +110,9 @@
                 >
                 <select name="country" id="" v-model="doctorProfile.country">
                   <option
-                    :value="country"
+                    :value="country.id"
                     v-for="country in address.countries"
-                    :key="country"
-                    :selected="(doctorProfile.country == country)"
+                    :key="country.id"
                   >
                     {{ country }}
                   </option>
@@ -129,7 +128,7 @@
                     v-for="city in address.cities"
                     :key="city.id"
                   >
-                    {{ city }}
+                    {{ city.name }}
                   </option>
                 </select>
               </div>
@@ -143,7 +142,7 @@
                     v-for="district in address.districts"
                     :key="district.id"
                   >
-                    {{ district }}
+                    {{ district.name }}
                   </option>
                 </select>
               </div>
@@ -157,7 +156,7 @@
                     v-for="ward in address.wards"
                     :key="ward.id"
                   >
-                    {{ ward }}
+                    {{ ward.name }}
                   </option>
                 </select>
               </div>
@@ -167,7 +166,7 @@
 
         <div class="form-group row">
           <label class="col-form-label" for="formGroupInputSmall"
-            >Địa chỉ</label
+            >Nơi thường trú</label
           >
           <div class="col-sm-8">
             <input
@@ -179,7 +178,7 @@
           </div>
         </div>
 
-        <!-- <div class="form-group row">
+        <div class="form-group row">
           <div class="flex-save-cancle">
             <button @click="closeOnClick">Hủy</button>
             <button
@@ -190,7 +189,7 @@
               Lưu
             </button>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -203,12 +202,12 @@ export default {
   props: ["isShow", "formMode", "doctorSelected"],
   watch: {
     doctorSelected: function (newValue) {
-      this.doctorProfile = newValue;
-      console.log(this.doctorProfile);
+      this.doctor = newValue;
     },
   },
   data() {
     return {
+      doctor: {},
       address: {},
       doctorProfile: {
         name:"",
@@ -257,7 +256,7 @@ export default {
     me.address.cities = ['Hà Nội']
     me.address.wards = ['Bạch Mai']
     me.address.districts = ['Giải Phóng']
-    me.address.countries = ['Việt Nam',"Anh"]
+    me.address.countries = ['Việt Nam']
     me.ethnics = ['Kinh']
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
@@ -294,7 +293,7 @@ export default {
 }
 #cardDoctor {
   width: 720px;
-  height: 420px;
+  height: 480px;
   direction: ltr;
 }
 #cardDoctor button {

@@ -143,7 +143,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="true">
+                  <template v-if="!isLoading && listRendered.length > 0">
                     <tbody>
                       <tr
                         class="odd"
@@ -212,7 +212,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="false">
+                  <template v-if="isLoading && listRendered.length == 0">
                     <tbody>
                       <tr
                         class="odd"
@@ -287,18 +287,22 @@ export default {
       showLocations: false,
       wards: [],
       listRendered: [],
+      isLoading:false,
     };
   },
   methods: {
-    searchAction(newValue){
+    async searchAction(newValue){
+      this.isLoading = true;
+      this.listRendered = []
       const me = this;
       let url = "https://provinces.open-api.vn/api/w"
       if(newValue.trim()){
         url = `https://provinces.open-api.vn/api/w/search/?q=${newValue}`
       }
-    axios.get(url).then((res) => {
+    await axios.get(url).then((res) => {
       me.wards = res.data;
       this.listRendered = this.wards.slice(0, this.pageSize + 1);
+      this.isLoading = false;
     });
     },
     showOrHideDetailLocation(show) {
@@ -316,15 +320,17 @@ export default {
     },
   },
   watch:{
-    searchValue(newValue){
-      this.searchAction(newValue)
+    async searchValue(newValue){
+      await this.searchAction(newValue)
     }
   },
-  created() {
+  async created() {
+    this.isLoading = true;
     const me = this;
-    axios.get("https://provinces.open-api.vn/api/w/").then((res) => {
+    await axios.get("https://provinces.open-api.vn/api/w/").then((res) => {
       me.wards = res.data;
       me.listRendered = me.wards.slice(0, 7);
+      this.isLoading = false;
     });
   },
 };

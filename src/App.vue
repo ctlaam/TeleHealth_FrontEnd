@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default {
   async created() {
-    const me = this
+    const me = this;
     if (
       localStorage.getItem("usernameTele") &&
       localStorage.getItem("passwordTele")

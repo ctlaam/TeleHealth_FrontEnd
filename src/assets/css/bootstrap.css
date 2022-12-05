@@ -1384,7 +1384,8 @@ textarea.form-control {
   height: auto; }
 
 .form-group {
-  margin-bottom: 1rem; }
+  margin-bottom: 13px !important; 
+}
 
 .form-text {
   display: block;

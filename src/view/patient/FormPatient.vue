@@ -37,23 +37,23 @@
             <input class="form-control" type="email" v-model="patient.email" />
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-form-label">Mật khẩu </label>
-          <div class="col-sm-8">
-            <input
-              type="text"
-              class="form-control"
-              v-model="patient.password"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
+        <div class="form-group row" v-if="formMode=='add'">
           <label class="col-form-label">User name</label>
           <div class="col-sm-8">
             <input
               type="text"
               class="form-control"
               v-model="patient.username"
+            />
+          </div>
+        </div>
+        <div class="form-group row" v-if="formMode=='add'">
+          <label class="col-form-label">Mật khẩu </label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              v-model="patient.password"
             />
           </div>
         </div>
@@ -118,11 +118,11 @@
                 >
                 <select name="city" id="" v-model="patient.ethnic">
                   <option
-                    :value="ethnic.id"
+                    :value="ethnic"
                     v-for="ethnic in ethnics"
                     :key="ethnic.id"
                   >
-                    {{ ethnic.name }}
+                    {{ ethnic }}
                   </option>
                 </select>
               </div>
@@ -163,7 +163,7 @@
         </div>
         <div class="form-group row">
           <label class="col-form-label" for="formGroupInputSmall"
-            >Số chứng minh thư</label
+            >CMT/CCCD</label
           >
           <div class="col-sm-8">
             <input
@@ -172,6 +172,20 @@
               id="formGroupInputSmall"
               placeholder="Small input"
               v-model="patient.identification"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-form-label" for="formGroupInputSmall"
+            >Địa chỉ thường trú</label
+          >
+          <div class="col-sm-8">
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="formGroupInputSmall"
+              placeholder="Small input"
+              v-model="patient.detail_address"
             />
           </div>
         </div>
@@ -190,7 +204,7 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-form-label">Địa chỉ</label>
+          <label class="col-form-label">Hộ khẩu</label>
           <div class="col-sm-8">
             <div class="mt-2 mb-2">
               <div class="form-check form-check-inline">
@@ -199,11 +213,11 @@
                 >
                 <select name="country" id="" v-model="patient.country">
                   <option
-                    :value="country.id"
+                    :value="country"
                     v-for="country in address.countries"
-                    :key="country.id"
+                    :key="country"
                   >
-                    {{ country.name }}
+                    {{ country }}
                   </option>
                 </select>
               </div>
@@ -213,11 +227,11 @@
                 >
                 <select name="city" id="" v-model="patient.province">
                   <option
-                    :value="city.id"
+                    :value="city"
                     v-for="city in address.cities"
                     :key="city.id"
                   >
-                    {{ city.name }}
+                    {{ city }}
                   </option>
                 </select>
               </div>
@@ -227,11 +241,11 @@
                 >
                 <select name="city" id="" v-model="patient.district">
                   <option
-                    :value="district.id"
+                    :value="district"
                     v-for="district in address.districts"
-                    :key="district.id"
+                    :key="district"
                   >
-                    {{ district.name }}
+                    {{ district }}
                   </option>
                 </select>
               </div>
@@ -241,39 +255,17 @@
                 >
                 <select name="city" id="" v-model="patient.ward">
                   <option
-                    :value="ward.id"
+                    :value="ward"
                     v-for="ward in address.wards"
                     :key="ward.id"
                   >
-                    {{ ward.name }}
+                    {{ ward }}
                   </option>
                 </select>
               </div>
             </div>
           </div>
         </div>
-        <!-- <div class="form-group row">
-          <div class="page-content page-container" id="page-content">
-            <div class="padding">
-              <p class="text-muted">
-                DropzoneJS is an open source library that provides drag’n’drop
-                file uploads with image previews.
-              </p>
-              <form
-                action="api/dropzone"
-                class="dropzone white b-a b-3x b-dashed b-primary p-a rounded p-5 text-center dz-clickable"
-              >
-                <div class="dz-message">
-                  <h4 class="my-4">Hồ sơ bệnh nhân</h4>
-                  <span class="text-muted d-block mb-4"
-                    >(This is just a demo dropzone. Selected files are
-                    <strong>not</strong> actually uploaded.)</span
-                  >
-                </div>
-              </form>
-            </div>
-          </div>
-        </div> -->
         <div class="form-group row">
           <div class="flex-save-cancle">
             <button
@@ -296,11 +288,34 @@ import axios from "axios";
 
 export default {
   name: "the-patient-detail",
-  props: ["isShow"],
+  props: ["isShow","patientSelected",'formMode'],
+  watch: {
+    patientSelected(newValue){
+      this.patient = newValue
+    }
+  },
   data() {
     return {
       address: {},
-      patient: {},
+      patient: {
+        email: "",
+        password: "",
+        username: "",
+        name: "",
+        unsignedName:"",
+        gender: "",
+        ethnic: "",
+        phone: "",
+        dateOfBirth: "",
+        insuranceCode: "",
+        identification: "",
+        contact: "",
+        country: "",
+        province: "",
+        district: "",
+        ward:"",
+        detail_address: "",
+      },
       ethnics: [],
     };
   },
@@ -338,39 +353,60 @@ export default {
     },
     btnSaveOnClick() {
       const me = this;
-      console.log(me.patient);
-      axios
+      if(this.formMode =='add'){
+        axios
         .post("http://127.0.0.1:8000/medical_unit/add_patient/", me.patient, {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then((response) => {
           console.log(response);
           me.closeOnClick();
+          me.$emit('getListPatients')
         })
         .catch((err) => {
           console.log(err);
         });
+      } else if(this.formMode == 'edit'){
+        axios
+        .post(`http://127.0.0.1:8000/medical_unit/update_patient_by_medical_unit?pk=${me.patient.id}`, me.patient, {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        })
+        .then((response) => {
+          console.log(response);
+          me.closeOnClick();
+          me.$emit('getListPatients')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
     },
   },
   created() {
     const me = this;
-    axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
-      me.address.cities = res.data;
-    });
-    axios.get("http://127.0.0.1:8000/address/ward/").then((res) => {
-      me.address.wards = res.data;
-    });
-    axios.get("http://127.0.0.1:8000/address/country/").then((result) => {
-      me.address.countries = result.data;
-    });
-    axios.get("http://127.0.0.1:8000/address/district/").then((res) => {
-      me.address.districts = res.data;
-      console.log(me.address);
-    });
-    axios.get("http://127.0.0.1:8000/address/ethnic/").then((res) => {
-      me.ethnics = res.data;
-      console.log(me.ethnics);
-    });
+    me.address.cities = ['Hà Nội']
+    me.address.wards = ['Bạch Mai']
+    me.address.districts = ['Giải Phóng']
+    me.address.countries = ['Việt Nam']
+    me.ethnics = ['Kinh']
+    console.log(me.address);
+    // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
+    //   me.address.cities = res.data;
+    // });
+    // axios.get("http://127.0.0.1:8000/address/ward/").then((res) => {
+    //   me.address.wards = res.data;
+    // });
+    // axios.get("http://127.0.0.1:8000/address/country/").then((result) => {
+    //   me.address.countries = result.data;
+    // });
+    // axios.get("http://127.0.0.1:8000/address/district/").then((res) => {
+    //   me.address.districts = res.data;
+    //   console.log(me.address);
+    // });
+    // axios.get("http://127.0.0.1:8000/address/ethnic/").then((res) => {
+    //   me.ethnics = res.data;
+    //   console.log(me.ethnics);
+    // });
   },
 };
 </script>
@@ -445,7 +481,7 @@ div#closeFormPatient:hover {
   direction: ltr;
 }
 label.col-form-label {
-  width: 100px;
+  width: 130px;
   margin-left: 20px;
 }
 .mt-2.mb-2 {

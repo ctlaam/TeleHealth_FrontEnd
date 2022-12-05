@@ -142,7 +142,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <template v-if="true">
+                  <template v-if="!isLoading && listRendered.length > 0">
                     <tbody>
                       <tr
                         class="odd"
@@ -214,7 +214,7 @@
                       </tr>
                     </tbody>
                   </template>
-                  <template v-if="false">
+                  <template v-if="isLoading && listRendered.length == 0">
                     <tbody>
                       <tr
                         class="odd"
@@ -289,18 +289,22 @@ export default {
       pageSize: 7,
       current: 1,
       listRendered: [],
+      isLoading: false,
     };
   },
   methods: {
-    searchAction(newValue){
+    async searchAction(newValue){
+      this.isLoading = true;
+      this.listRendered = []
       const me = this;
       let url = "http://api.nosomovo.xyz/ethnic/getalllist"
       if(newValue.trim()){
         url = `https://provinces.open-api.vn/api/d/search/?q=${newValue}`
       }
-    axios.get(url).then((res) => {
+    await axios.get(url).then((res) => {
       me.districts = res.data;
       this.listRendered = this.districts.slice(0, this.pageSize + 1);
+      this.isLoading = false;
     });
     },
     showOrHideDetailLocation(show) {

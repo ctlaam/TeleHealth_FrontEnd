@@ -3,7 +3,9 @@ export default {
     return state.userId;
   },
   accessToken(state) {
-    return state.tokens.access;
+    if(state.tokens){
+      return state.tokens.access;
+    }
   },
   isAuthenticated(state) {
     return !!state.username;

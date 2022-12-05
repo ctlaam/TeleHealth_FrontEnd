@@ -221,74 +221,48 @@
                   </div>
                 </div>
                 <div>
-                  <!-- <div @click="showChoiceAction" class="item-action dropdown">
-                    <p
-                      href="#"
-                      data-toggle="dropdown"
-                      class="text-muted"
-                      data-pjax-state=""
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="feather feather-more-vertical"
-                      >
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                      </svg>
-                    </p>
-                    <div
-                      class="dropdown-menu dropdown-menu-right bg-black"
-                      role="menu"
-                    >
-                      <a class="dropdown-item" href="#" data-pjax-state="">
-                        See detail
-                      </a>
-                      <a
-                        class="dropdown-item download"
-                        data-pjax-state=""
-                        @click="seeResults(patient.id)"
-                      >
-                        Xem các kết quả trước
-                      </a>
-                      <a class="dropdown-item edit" data-pjax-state="">
-                        Edit
-                      </a>
-                      <a
-                        class="dropdown-item lungvolum"
-                        data-pjax-state=""
-                        @click="clickInput(patient.id)"
-                      >
-                        Tính thể tích phổi
-                      </a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item trash" data-pjax-state="">
-                        Delete item
-                      </a>
-                    </div>
-                  </div> -->
                   <a-dropdown-button>
                     <template #overlay>
                       <a-menu @click="handleMenuClick">
-                        <a-menu-item key="1">
+                        <a-menu-item
+                          key="1"
+                          v-if="role == 'role3' || role == 'role2'"
+                          @click="selecPatient(patient)"
+                        >
                           <UserOutlined />
                           Thông tin chi tiết
                         </a-menu-item>
-                        <a-menu-item key="2" @click="seeResults(patient.id)">
+                        <a-menu-item
+                          key="2"
+                          @click="seeResults(patient.id)"
+                          v-if="role == 'role3' || role == 'role2'"
+                        >
                           <UserOutlined />
                           Xem các kết quả trước
                         </a-menu-item>
-                        <a-menu-item key="3" @click="clickInput(patient.id)">
+                        <a-menu-item
+                          key="3"
+                          @click="clickInput(patient.id)"
+                          v-if="role == 'role3' || role == 'role2'"
+                        >
                           <UserOutlined />
                           Tính thể tích phổi
+                        </a-menu-item>
+                        <a-menu-item
+                          key="4"
+                          @click="clickInput(patient.id)"
+                          v-if="role == 'role3' || role == 'role2'"
+                        >
+                          <UserOutlined />
+                          Bác sĩ quản lý
+                        </a-menu-item>
+                        <a-menu-item
+                          key="5"
+                          @click="clickInput(patient.id)"
+                          v-if="role == 'role3'"
+                        >
+                          <UserOutlined />
+                          Xóa
                         </a-menu-item>
                       </a-menu>
                     </template>
@@ -311,6 +285,9 @@
     <FormPatient
       :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
+      :patientSelected="patientSelected"
+      :formMode="formMode"
+      @getListPatients="getListPatients"
     ></FormPatient>
     <ResultTlc
       :resultLeft="resultLeft"
@@ -318,7 +295,7 @@
       :total="totalLung"
       @showLung3D="showLung3D"
     />
-    <ListResults :listResults="listResults" @assignResult="assignResult"  />
+    <ListResults :listResults="listResults" @assignResult="assignResult" />
     <LungVolumn3d :link="link" />
   </div>
 </template>
@@ -345,6 +322,8 @@ export default {
       idPatient: "",
       patients: "",
       listResults: [],
+      patientSelected: "",
+      formMode: "",
     };
   },
   computed: {
@@ -354,8 +333,35 @@ export default {
     email() {
       return this.$store.getters.email;
     },
+    role() {
+      return this.$store.getters["role"];
+    },
   },
   methods: {
+    async getListPatients() {
+      console.log(123);
+      const me = this;
+      await axios
+        .get(
+          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          console.log("bệnh nhân");
+          me.patients = res.data;
+          console.log(me.patients);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    },
+    selecPatient(patient) {
+      this.formMode = "edit";
+      this.patientSelected = patient;
+      this.showOrHideDialog(true);
+    },
     assignResult(result) {
       if (result) {
         this.link = `http://127.0.0.1:8000/tlc_result/result/${result.id}/`;
@@ -396,7 +402,6 @@ export default {
     clickInput(idPatient) {
       this.idPatient = "";
       const input = document.getElementById("dicomFiles");
-      console.log(input);
       input.click();
       this.idPatient = idPatient;
     },
@@ -433,6 +438,7 @@ export default {
       return "";
     },
     btnAddOnClick() {
+      this.formMode = "add";
       this.showOrHideDialog(true);
     },
     /**
@@ -473,7 +479,7 @@ export default {
       } catch (error) {}
     },
   },
-  async mounted() {
+  async created() {
     const me = this;
     console.log(me.accessToken);
     await axios

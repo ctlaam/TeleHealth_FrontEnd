@@ -109,6 +109,8 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(123);
+          this.$message.error('Tên đăng nhập hoặc tài khoản không đúng')
           console.log(err);
         });
       // axios({

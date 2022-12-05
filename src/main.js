@@ -4,6 +4,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 // Dashboard
 import Dasboard from "./view/Dashboard/TheDashBoard.vue";
+import Dicom from "./view/Dashboard/TheViewDicom.vue";
 // Patient
 import Patient from "./view/patient/ThePatient.vue";
 //Department
@@ -43,6 +44,7 @@ const abc = [
         component: TheContent,
         children: [
           { path: "dashboard", name: "Dasboard", component: Dasboard },
+          { path: "viewdicom", name: "Dicom", component: Dicom },
           {
             path: "patient",
             name: "Patient",
@@ -84,13 +86,14 @@ const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes: abc,
 });
-router.beforeEach(function (to, from, next) {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-    next("/auth");
-  } else {
-    next();
-  }
-});
+// router.beforeEach(function (to, from, next) {
+//   // to.meta.requiresAuth && !store.getters.isAuthenticated
+//   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+//     next("/auth");
+//   } else {
+//     next();
+//   }
+// });
 
 let app = createApp(App);
 app.config.productionTip = false;
