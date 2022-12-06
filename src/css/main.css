@@ -21,3 +21,11 @@
 a.router-link-active.router-link-exact-active {
   color: #448bff;
 }
+
+.red-border {
+  border-color: #f00 !important;
+}
+
+.red-text {
+  color: #f00 !important;
+}
