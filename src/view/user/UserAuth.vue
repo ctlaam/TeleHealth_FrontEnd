@@ -18,7 +18,7 @@
       </div>
       <div class="col-md-6">
         <div id="content-body">
-          <div class="p-3 p-md-5">
+          <div class="p-3 p-md-5" style="width: 500px">
             <h5>Đăng nhập</h5>
             <form
               class=""
@@ -31,6 +31,7 @@
                 <input
                   type="email"
                   class="form-control"
+                  :class="{ 'red-border': emailError }"
                   placeholder="Enter email"
                   v-model="email"
                 />
@@ -40,6 +41,7 @@
                 <input
                   type="password"
                   class="form-control"
+                  :class="{ 'red-border': pwdError }"
                   placeholder="Password"
                   v-model="password"
                 />
@@ -59,12 +61,18 @@
                 </label>
               </div>
               <button type="submit" class="btn btn-primary mb-4">
-                Sign in
+                Đăng nhập
               </button>
               <div>
                 Bạn chưa có tài khoản?
                 <router-link to="signup">
-                  <a href="" class="text-primary" data-pjax-state="">Đăng kí</a>
+                  <a
+                    href=""
+                    class="text-primary"
+                    data-pjax-state=""
+                    @click="resetForm"
+                    >Đăng kí</a
+                  >
                 </router-link>
               </div>
             </form>
@@ -81,6 +89,8 @@ export default {
   data() {
     return {
       email: "",
+      emailError: false,
+      pwdError: false,
       password: "",
       password2: "",
       status: "login",
@@ -89,12 +99,46 @@ export default {
     };
   },
   methods: {
+    resetForm() {
+      setTimeout(() => {
+        this.email = "";
+        this.password = "";
+        this.emailError = false;
+        this.pwdError = false;
+      }, 300);
+    },
+    validateForm() {
+      let isValid = true;
+
+      if (!this.email) {
+        this.$message.warning("Vui lòng nhập email");
+        this.emailError = true;
+        isValid = false;
+      } else {
+        this.emailError = false;
+      }
+
+      if (!this.password) {
+        this.$message.warning("Vui lòng nhập mật khẩu");
+        this.pwdError = true;
+        isValid = false;
+      } else {
+        this.pwdError = false;
+      }
+
+      return isValid;
+    },
     async login() {
       const me = this;
+      if (!me.validateForm()) {
+        return;
+      }
+
       const accountLoggin = {
         email: me.email,
         password: me.password,
       };
+
       let user = null;
       axios
         .post("http://127.0.0.1:8000/auth/login/", accountLoggin)
@@ -110,7 +154,7 @@ export default {
         })
         .catch((err) => {
           console.log(123);
-          this.$message.error('Tên đăng nhập hoặc tài khoản không đúng')
+          this.$message.error("Tên đăng nhập hoặc tài khoản không đúng");
           console.log(err);
         });
       // axios({
@@ -169,5 +213,11 @@ export default {
   height: 100%;
   height: 100vh;
   direction: ltr;
+}
+#content-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 </style>

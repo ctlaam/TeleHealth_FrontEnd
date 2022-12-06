@@ -31,8 +31,8 @@
                             <li class="nav-header hidden-folded" v-if="(role!='role2' && role)">
                                 <span class="text-muted">Quản lý</span>
                             </li>
-
-                            <router-link  to="/content/maincontent/patient"  v-if="(role!='role2' && role)">
+                            <!-- v-if="(role!='role2' && role)" -->
+                            <router-link  to="/content/maincontent/patient"  >
                             <li class="">
                                 <a href="app.user.html" data-pjax-state="load">
                                     <span class="nav-icon text-success"> <img src="../../assets/img/icons_patient-64.png" style="width:24px;height:24px" alt=""></span>

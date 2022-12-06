@@ -18,7 +18,7 @@
       </div>
       <div class="col-md-6">
         <div id="content-body">
-          <div class="p-3 p-md-5">
+          <div class="p-3 p-md-5" style="width: 500px">
             <h5>Xin chào</h5>
             <p>
               <small class="text-muted">Đăng kí tài khoản của bạn</small>
@@ -35,8 +35,8 @@
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'red-border': usernameError }"
                     placeholder="Username"
-                    required=""
                     v-model="userNameDoctor"
                   />
                 </div>
@@ -44,8 +44,8 @@
                   <input
                     type="email"
                     class="form-control"
+                    :class="{ 'red-border': emailError }"
                     placeholder="Email"
-                    required=""
                     v-model="emailDoctor"
                   />
                 </div>
@@ -53,8 +53,8 @@
                   <input
                     type="password"
                     class="form-control"
+                    :class="{ 'red-border': pwdError }"
                     placeholder="Password"
-                    required=""
                     v-model="password"
                   />
                 </div>
@@ -62,8 +62,8 @@
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'red-border': phoneNoError }"
                     placeholder="Số điện thoại"
-                    required=""
                     v-model="phone"
                   />
                 </div>
@@ -103,13 +103,73 @@ export default {
       emailDoctor: "",
       password: "",
       phone: "",
+      usernameError: false,
+      emailError: false,
+      pwdError: false,
+      phoneNoError: false,
     };
   },
   methods: {
     formLogin() {
       this.$router.push("/auth");
+      this.resetForm();
     },
+
+    resetForm() {
+      setTimeout(() => {
+        this.userNathis.meDoctor = "";
+        this.emailDoctor = "";
+        this.password = "";
+        this.phone = "";
+        this.usernameError = false;
+        this.emailError = false;
+        this.pwdError = false;
+        this.phoneNoError = false;
+      }, 300);
+    },
+
+    validateForm() {
+      let isValid = true;
+
+      if (!this.userNameDoctor) {
+        this.$message.warning("Vui lòng nhập Username");
+        this.usernameError = true;
+        isValid = false;
+      } else {
+        this.usernameError = false;
+      }
+
+      if (!this.emailDoctor) {
+        this.$message.warning("Vui lòng nhập Email");
+        this.emailError = true;
+        isValid = false;
+      } else {
+        this.emailError = false;
+      }
+
+      if (!this.password) {
+        this.$message.warning("Vui lòng nhập mật khẩu");
+        this.pwdError = true;
+        isValid = false;
+      } else {
+        this.pwdError = false;
+      }
+
+      if (!this.phone) {
+        this.$message.warning("Vui lòng nhập số điện thoại");
+        this.phoneNoError = true;
+        isValid = false;
+      } else {
+        this.phoneNoError = false;
+      }
+
+      return isValid;
+    },
+
     signUpDoctor() {
+      if (!this.validateForm()) {
+        return;
+      }
       const accountDoctor = {
         email: this.emailDoctor,
         username: this.userNameDoctor,
@@ -137,5 +197,12 @@ export default {
   height: 100%;
   height: 100vh;
   direction: ltr;
+}
+
+#content-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 </style>
