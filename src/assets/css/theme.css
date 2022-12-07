@@ -2646,7 +2646,7 @@ Layout
 
 .page-header {
   overflow: hidden;
-  z-index: 4 !important;
+  z-index: 1035 !important;
   transition: background-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .page-header.sticky ~ * .page-sidenav.sticky,
@@ -2662,7 +2662,7 @@ Layout
 
 .page-sidenav {
   position: relative;
-  z-index: 4 !important;
+  z-index: 1030 !important;
   min-width: 13.5rem;
   opacity: 1 !important;
 }

@@ -35,13 +35,7 @@
             >Email <span class="red-text">*</span></label
           >
           <div class="col-sm-8">
-            <input
-              class="form-control"
-              :class="{ 'red-border': error.email }"
-              type="email"
-              v-model="patient.email"
-              placeholder="Ex: useremail@gmail.com"
-            />
+            <input class="form-control" type="email" v-model="patient.email" />
           </div>
         </div>
         <div class="form-group row" v-if="formMode == 'add'">
@@ -52,9 +46,7 @@
             <input
               type="text"
               class="form-control"
-              :class="{ 'red-border': error.username }"
               v-model="patient.username"
-              placeholder="Ex: nguyenvana123"
             />
           </div>
         </div>
@@ -64,9 +56,8 @@
           >
           <div class="col-sm-8">
             <input
-              type="password"
+              type="text"
               class="form-control"
-              :class="{ 'red-border': error.password }"
               v-model="patient.password"
             />
           </div>
@@ -76,13 +67,7 @@
             >Họ và tên <span class="red-text">*</span></label
           >
           <div class="col-sm-8">
-            <input
-              type="text"
-              class="form-control"
-              :class="{ 'red-border': error.name }"
-              v-model="patient.name"
-              placeholder="Ex: Nguyễn Văn A"
-            />
+            <input type="text" class="form-control" v-model="patient.name" />
           </div>
         </div>
         <div class="form-group row">
@@ -152,7 +137,6 @@
                   name="city"
                   v-model="patient.ethnic"
                   class="form-control"
-                  :class="{ 'red-border': error.ethnic }"
                   style="width: 97%"
                 >
                   <option
@@ -181,7 +165,6 @@
             <input
               type="date"
               class="form-control"
-              :class="{ 'red-border': error.dateOfBirth }"
               :value="bindingDate(patient.dateOfBirth)"
               dateOfBirth
               @change="onChangeFormatDate"
@@ -197,6 +180,7 @@
               class="form-control form-control-sm"
               type="text"
               id="formGroupInputSmall"
+              placeholder="mã bảo hiểm"
               v-model="patient.insuranceCode"
             />
           </div>
@@ -210,6 +194,7 @@
               class="form-control form-control-sm"
               type="text"
               id="formGroupInputSmall"
+              placeholder="Small input"
               v-model="patient.identification"
             />
           </div>
@@ -223,6 +208,7 @@
               class="form-control form-control-sm"
               type="text"
               id="formGroupInputSmall"
+              placeholder="Small input"
               v-model="patient.detail_address"
             />
           </div>
@@ -236,6 +222,7 @@
               class="form-control form-control-sm"
               type="text"
               id="formGroupInputSmall"
+              placeholder="Small input"
               v-model="patient.contact"
             />
           </div>
@@ -348,9 +335,7 @@
             >
               Lưu
             </button>
-            <button @click="closeOnClick" class="btn" style="margin-left: 8px">
-              Hủy
-            </button>
+            <button @click="closeOnClick" class="btn" style="margin-left: 8px">Hủy</button>
           </div>
         </div>
       </div>
@@ -391,15 +376,6 @@ export default {
         ward: "",
         detail_address: "",
       },
-      error: {
-        email: false,
-        password: false,
-        username: false,
-        name: false,
-        gender: false,
-        dateOfBirth: false,
-        ethnic: false,
-      },
       ethnics: [],
     };
   },
@@ -435,95 +411,8 @@ export default {
         this.patient.dateOfBirth = e.target.value;
       }
     },
-
-    validateEmail(email) {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    },
-
-    validateUsername(username) {
-      const re = /^[a-z0-9]+$/;
-      return re.test(username);
-    },
-
-    validateForm() {
-      let isValid = true;
-
-      if (!this.patient.email) {
-        this.$message.warning("Vui lòng nhập Email");
-        this.error.email = true;
-        isValid = false;
-      } else {
-        this.error.email = false;
-        if (!this.validateEmail(this.patient.email)) {
-          this.$message.warning("Vui lòng nhập Email đúng định dạng");
-          this.error.email = true;
-          isValid = false;
-        }
-      }
-
-      if (!this.patient.username) {
-        this.$message.warning("Vui lòng nhập Username");
-        this.error.username = true;
-        isValid = false;
-      } else {
-        this.error.username = false;
-        if (!this.validateUsername(this.patient.username)) {
-          this.$message.warning("Vui lòng nhập Username đúng định dạng");
-          this.error.username = true;
-          isValid = false;
-        }
-      }
-
-      if (!this.patient.password) {
-        this.$message.warning("Vui lòng nhập mật khẩu");
-        this.error.password = true;
-        isValid = false;
-      } else {
-        this.error.password = false;
-      }
-
-      if (!this.patient.name) {
-        this.$message.warning("Vui lòng nhập họ và tên");
-        this.error.name = true;
-        isValid = false;
-      } else {
-        this.error.name = false;
-      }
-
-      if (!this.patient.gender) {
-        this.$message.warning("Vui lòng chọn giới tính");
-        this.error.gender = true;
-        isValid = false;
-      } else {
-        this.error.gender = false;
-      }
-
-      if (!this.patient.dateOfBirth) {
-        this.$message.warning("Vui lòng nhập ngày sinh");
-        this.error.dateOfBirth = true;
-        isValid = false;
-      } else {
-        this.error.dateOfBirth = false;
-      }
-
-      if (!this.patient.ethnic) {
-        this.$message.warning("Vui lòng chọn dân tộc");
-        this.error.ethnic = true;
-        isValid = false;
-      } else {
-        this.error.ethnic = false;
-      }
-
-      return isValid;
-    },
-
     btnSaveOnClick() {
       const me = this;
-      if (!this.validateForm()) {
-        return;
-      }
       if (this.formMode == "add") {
         axios
           .post("http://127.0.0.1:8000/medical_unit/add_patient/", me.patient, {
@@ -598,7 +487,7 @@ button.btn.btn-primary.mt-1 {
   right: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5;
+  z-index: 10000;
   display: none;
   align-items: center;
   justify-content: center;
