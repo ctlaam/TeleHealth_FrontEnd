@@ -29,3 +29,6 @@ a.router-link-active.router-link-exact-active {
 .red-text {
   color: #f00 !important;
 }
+.form-control[readonly] {
+  cursor: default !important;
+} 

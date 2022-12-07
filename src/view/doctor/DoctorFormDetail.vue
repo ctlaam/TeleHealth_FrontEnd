@@ -4,7 +4,7 @@
     :class="{ 'show-doctor-detail': isShow }"
   >
     <div id="cardDoctor" class="card">
-      <div class="card-header">
+      <div class="card-header" style="font-size: 16px">
         <strong>Thông tin chi tiết</strong>
         <div
           @click="closeOnClick"
@@ -35,6 +35,7 @@
           <div class="col-sm-8">
             <input
               type="text"
+              readonly
               class="form-control"
               v-model="doctorProfile.name"
             />
@@ -48,6 +49,7 @@
                 <input
                   class="form-check-input"
                   type="radio"
+                  disabled
                   name="inlineRadioOptions"
                   id="inlineRadio1"
                   value="man"
@@ -59,6 +61,7 @@
                 <input
                   class="form-check-input"
                   type="radio"
+                  disabled
                   name="inlineRadioOptions"
                   id="inlineRadio2"
                   value="woman"
@@ -70,6 +73,7 @@
                 <input
                   class="form-check-input"
                   type="radio"
+                  disabled
                   name="inlineRadioOptions"
                   id="inlineRadio3"
                   value="orther"
@@ -85,6 +89,7 @@
           <div class="col-sm-8">
             <input
               type="text"
+              readonly
               class="form-control"
               v-model="doctorProfile.unsignedName"
             />
@@ -95,71 +100,110 @@
           <div class="col-sm-8">
             <input
               type="text"
+              readonly
               class="form-control"
               v-model="doctorProfile.phone"
             />
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-form-label">Địa chỉ</label>
-          <div class="col-sm-8">
-            <div class="mt-2 mb-2">
-              <div class="form-check form-check-inline row-address">
-                <label class="form-check-label" for="inlineRadio1"
-                  >Đất nước</label
-                >
-                <select name="country" id="" v-model="doctorProfile.country">
-                  <option
-                    :value="country"
-                    v-for="country in address.countries"
-                    :key="country"
-                    :selected="(doctorProfile.country == country)"
+        <div class="form-group row d-flex" style="margin-right: -13px">
+          <label class="col-form-label">Hộ khẩu</label>
+          <div class="col">
+            <div class="row row-cols-2">
+              <div class="col-6">
+                <div class="form-group row">
+                  <label class="col-form-label" for="inlineRadio1"
+                    >Đất nước</label
                   >
-                    {{ country }}
-                  </option>
-                </select>
+                  <div class="col-sm-6">
+                    <select
+                      name="country"
+                      id=""
+                      v-model="doctorProfile.country"
+                      class="form-control"
+                      disabled
+                    >
+                      <option
+                        :value="country"
+                        v-for="country in address.countries"
+                        :key="country"
+                      >
+                        {{ country }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" for="inlineRadio2"
-                  >Thành phố</label
-                >
-                <select name="city" id="" v-model="doctorProfile.province">
-                  <option
-                    :value="city.id"
-                    v-for="city in address.cities"
-                    :key="city.id"
+              <div class="col-6">
+                <div class="form-group row">
+                  <label class="col-form-label" for="inlineRadio2"
+                    >Thành phố</label
                   >
-                    {{ city }}
-                  </option>
-                </select>
+                  <div class="col-sm-6">
+                    <select
+                      name="city"
+                      id=""
+                      v-model="doctorProfile.province"
+                      class="form-control"
+                      disabled
+                    >
+                      <option
+                        :value="city"
+                        v-for="city in address.cities"
+                        :key="city.id"
+                      >
+                        {{ city }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" for="inlineRadio3"
-                  >Quận/huyện</label
-                >
-                <select name="city" id="" v-model="doctorProfile.district">
-                  <option
-                    :value="district.id"
-                    v-for="district in address.districts"
-                    :key="district.id"
+              <div class="col-6">
+                <div class="form-group row">
+                  <label class="col-form-label" for="inlineRadio3"
+                    >Quận/huyện</label
                   >
-                    {{ district }}
-                  </option>
-                </select>
+                  <div class="col-sm-6">
+                    <select
+                      name="city"
+                      id=""
+                      v-model="doctorProfile.district"
+                      class="form-control"
+                      disabled
+                    >
+                      <option
+                        :value="district"
+                        v-for="district in address.districts"
+                        :key="district"
+                      >
+                        {{ district }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" for="inlineRadio3"
-                  >Xã Phường</label
-                >
-                <select name="city" id="" v-model="doctorProfile.ward">
-                  <option
-                    :value="ward.id"
-                    v-for="ward in address.wards"
-                    :key="ward.id"
+              <div class="col-6">
+                <div class="form-group row">
+                  <label class="col-form-label" for="inlineRadio3"
+                    >Xã Phường</label
                   >
-                    {{ ward }}
-                  </option>
-                </select>
+                  <div class="col-sm-6">
+                    <select
+                      name="city"
+                      id=""
+                      v-model="doctorProfile.ward"
+                      class="form-control"
+                    >
+                      <option
+                        :value="ward"
+                        v-for="ward in address.wards"
+                        :key="ward.id"
+                      >
+                        {{ ward }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -167,12 +211,13 @@
 
         <div class="form-group row">
           <label class="col-form-label" for="formGroupInputSmall"
-            >Địa chỉ</label
+            >Địa chỉ thường trú</label
           >
           <div class="col-sm-8">
             <input
               class="form-control form-control-sm"
               type="text"
+              readonly
               id="formGroupInputSmall"
               v-model="doctorProfile.detail_address"
             />
@@ -211,15 +256,15 @@ export default {
     return {
       address: {},
       doctorProfile: {
-        name:"",
-        gender:"",
-        unsignedName:"",
-        phone:"",
-        country:"",
-        ward:"",
-        district:"",
-        province:"",
-        detail_address:""
+        name: "",
+        gender: "",
+        unsignedName: "",
+        phone: "",
+        country: "",
+        ward: "",
+        district: "",
+        province: "",
+        detail_address: "",
       },
     };
   },
@@ -245,7 +290,7 @@ export default {
         )
         .then((result) => {
           console.log(result);
-          me.closeOnClick()
+          me.closeOnClick();
         })
         .catch((err) => {
           console.log(err);
@@ -254,11 +299,11 @@ export default {
   },
   created() {
     const me = this;
-    me.address.cities = ['Hà Nội']
-    me.address.wards = ['Bạch Mai']
-    me.address.districts = ['Giải Phóng']
-    me.address.countries = ['Việt Nam',"Anh"]
-    me.ethnics = ['Kinh']
+    me.address.cities = ["Hà Nội"];
+    me.address.wards = ["Bạch Mai"];
+    me.address.districts = ["Giải Phóng"];
+    me.address.countries = ["Việt Nam", "Anh"];
+    me.ethnics = ["Kinh"];
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
@@ -294,7 +339,7 @@ export default {
 }
 #cardDoctor {
   width: 720px;
-  height: 420px;
+  height: 430px;
   direction: ltr;
 }
 #cardDoctor button {

@@ -40,8 +40,8 @@
                                 </a>
                             </li>
                             </router-link>
-
-                            <router-link to="/content/maincontent/doctor" v-if="role=='role3'">
+                            <!-- v-if="role=='role3'" -->
+                            <router-link to="/content/maincontent/doctor" >
                               
                               <li class="" >
                                 <a href="app.user.html" data-pjax-state="load">
