@@ -490,9 +490,7 @@ export default {
         }
       )
       .then(function (res) {
-        console.log("bệnh nhân");
         me.patients = res.data;
-        console.log(me.patients);
       })
       .catch(function (err) {
         console.log(err);

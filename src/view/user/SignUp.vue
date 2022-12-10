@@ -180,11 +180,11 @@ export default {
         .post("http://127.0.0.1:8000/auth/doctor_register/", accountDoctor)
         .then((result) => {
           console.log(result);
-          this.$message.success("Tạo tài khoản thành công");
+          this.$message.success("Tạo tài khoản thành công !");
           this.$router.replace("/auth");
         })
         .catch((err) => {
-          this.$message.error("Có lỗi xảy ra!");
+          this.$message.error("Email hoặc Username đã tồn tại !");
           console.log(err);
         });
     },
