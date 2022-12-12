@@ -1,11 +1,10 @@
 import axios from "axios";
 export default {
-  login(context, payload) {
-    context.commit("login", payload);
+  async login(context, payload) {
+    await context.commit("login", payload);
   },
-  logout(context) {
-    context.commit("logout");
-    console.log(1234);
+  async logout(context) {
+    await context.commit("logout");
   },
   async refreshAccessToken(context) {
     const refreshToken = context.state.refresh;

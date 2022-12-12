@@ -6,8 +6,8 @@
           <i class="fa-solid fa-user-doctor"></i>
         </div>
         <div class="header-item__right">
-          <span>400</span>
-          <div class="header-item__title">Doctors</div>
+          <span>{{numberDoctor}}</span>
+          <div class="header-item__title">Bác sĩ</div>
         </div>
       </div>
       <div class="header-item patients">
@@ -15,8 +15,8 @@
           <i class="fa-regular fa-user"></i>
         </div>
         <div class="header-item__right">
-          <span>430</span>
-          <div class="header-item__title">Patients</div>
+          <span>{{numberPatient}}</span>
+          <div class="header-item__title">Bệnh nhân</div>
         </div>
       </div>
       <div class="header-item hospital">
@@ -24,8 +24,8 @@
           <i class="fa-regular fa-hospital"></i>
         </div>
         <div class="header-item__right">
-          <span>448</span>
-          <div class="header-item__title">Hospital</div>
+          <span>{{numberDepartment}}</span>
+          <div class="header-item__title">Bệnh viện</div>
         </div>
       </div>
     </div>
@@ -55,8 +55,22 @@ import ApexCharts from "vue3-apexcharts";
 export default {
   name: "TheDashboard",
   components: { ApexCharts },
+  computed: {
+    numberDoctor() {
+      return this.doctors.length ? this.doctors.length : 0;
+    },
+    numberPatient() {
+      return this.patients.length ? this.patients.length : 0;
+    },
+    numberDepartment() {
+      return this.departments.length ? this.departments.length : 0;
+    },
+  },
   data() {
     return {
+      doctors: "",
+      patients: "",
+      departments: "",
       barChartOptions: {
         xaxis: {
           categories: ["Bác sĩ", "Bệnh nhân", "Bệnh viện"],
@@ -122,6 +136,7 @@ export default {
       pieChartSeries: [400, 430, 448],
     };
   },
+  async created() {},
 };
 </script>
 

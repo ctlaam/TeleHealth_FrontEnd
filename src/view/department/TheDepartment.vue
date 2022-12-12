@@ -167,7 +167,7 @@
                     </span>
                   </a>
                 </div>
-                <div class="flex">
+                <!-- <div class="flex">
                   <a
                     href="app.user.detail.html#2"
                     class="item-author text-color"
@@ -178,59 +178,59 @@
                     {{ department.description }}
                   </div>
                   <div class="item-tag tag hide">
-                    Clients,Team,Personal,Company,Work,Friends,Suppliers,Partners
+                  </div>
+                </div> -->
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Tên bệnh viện</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ department.name }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Tên không dấu</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ department.unsignedName }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Mô tả</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ department.description }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Địa chỉ</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block" style="width:300px">
+                    {{ department.detail_address }}
                   </div>
                 </div>
                 <div>
-                  <!-- <div @click="showChoiceAction" class="item-action dropdown">
-                    <p
-                      href="#"
-                      data-toggle="dropdown"
-                      class="text-muted"
-                      data-pjax-state=""
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="feather feather-more-vertical"
-                      >
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                      </svg>
-                    </p>
-                    <div
-                      class="dropdown-menu dropdown-menu-right bg-black"
-                      role="menu"
-                    >
-                      <a class="dropdown-item" href="#" data-pjax-state="">
-                        See detail
-                      </a>
-                      <a class="dropdown-item download" data-pjax-state="">
-                        Download
-                      </a>
-                      <a class="dropdown-item edit" data-pjax-state="">
-                        Edit
-                      </a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item trash" data-pjax-state="">
-                        Delete item
-                      </a>
-                    </div>
-                  </div> -->
-                  <a-dropdown-button >
+                  <a-dropdown-button>
                     <template #overlay>
                       <a-menu @click="detailDoctor(doctor)">
-                        <a-menu-item key="1"  >
+                        <a-menu-item key="1">
                           <UserOutlined />
-                        Thông tin chi tiết
+                          Thông tin chi tiết
                         </a-menu-item>
                         <a-menu-item key="2" @click="seeResults(patient.id)">
                           <UserOutlined />
@@ -246,8 +246,8 @@
                 </div>
               </div>
             </div>
-        </div>
-        <div class="pagination">
+          </div>
+          <div class="pagination">
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
@@ -255,13 +255,13 @@
               show-less-items
             />
           </div>
+        </div>
       </div>
+      <DepartmentForm
+        :isShow="isShowDialog"
+        @closeOnClick="showOrHideDialog"
+      ></DepartmentForm>
     </div>
-    <DepartmentForm
-      :isShow="isShowDialog"
-      @closeOnClick="showOrHideDialog"
-    ></DepartmentForm>
-  </div>
   </div>
 </template>
 

@@ -32,3 +32,7 @@ a.router-link-active.router-link-exact-active {
 .form-control[readonly] {
   cursor: default !important;
 } 
+
+.item-mail.text-muted.h-1x.d-none.d-sm-block {
+  width: 180px;
+}

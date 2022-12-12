@@ -152,7 +152,7 @@
           </template>
           <a-avatar
             size="large"
-            src="https://joeschmoe.io/api/v1/random"
+            src="https://random.imagecdn.app/500/150"
           />
         </a-dropdown>
       </ul>

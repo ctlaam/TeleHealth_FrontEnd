@@ -80,34 +80,6 @@
                 >
                   A-Z
                 </button>
-                <div class="dropdown-menu p-3" id="filter">
-                  <span class="badge pointer">A</span>
-                  <span class="badge pointer">B</span>
-                  <span class="badge pointer">C</span>
-                  <span class="badge pointer">D</span>
-                  <span class="badge pointer">E</span>
-                  <span class="badge pointer">F</span>
-                  <span class="badge pointer">G</span>
-                  <span class="badge pointer">H</span>
-                  <span class="badge pointer">I</span>
-                  <span class="badge pointer">J</span>
-                  <span class="badge pointer">K</span>
-                  <span class="badge pointer">L</span>
-                  <span class="badge pointer">M</span>
-                  <span class="badge pointer">N</span>
-                  <span class="badge pointer">O</span>
-                  <span class="badge pointer">P</span>
-                  <span class="badge pointer">Q</span>
-                  <span class="badge pointer">R</span>
-                  <span class="badge pointer">S</span>
-                  <span class="badge pointer">T</span>
-                  <span class="badge pointer">U</span>
-                  <span class="badge pointer">V</span>
-                  <span class="badge pointer">W</span>
-                  <span class="badge pointer">X</span>
-                  <span class="badge pointer">Y</span>
-                  <span class="badge pointer">Z</span>
-                </div>
               </div>
               <form class="flex">
                 <div class="input-group">
@@ -183,7 +155,6 @@
                 data-id="2"
                 data-sr-id="164"
                 style="
-                  visibility: visible;
                   transform: none;
                   opacity: 1;
                   transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
@@ -206,18 +177,69 @@
                     </span>
                   </a>
                 </div>
+                <div class="flex" style="width: 180px">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Tên bệnh nhân</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ patient.name }}
+                  </div>
+                </div>
+                <div class="flex"  style="width: 100px">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Giới tính</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ patient.gender }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Địa chỉ</a
+                  >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 250px"
+                  >
+                    {{ patient.detail_address }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Ngày sinh</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ patient.dateOfBirth }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >CMT/CCCD</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ patient.identification }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Số điện thoại</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ patient.phone }}
+                  </div>
+                </div>
                 <div class="flex">
                   <a
                     href="app.user.detail.html#2"
                     class="item-author text-color"
                     data-pjax-state=""
-                    >{{ patient.name }}</a
+                    >Email</a
                   >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ patient.unsignedName }}
-                  </div>
-                  <div class="item-tag tag hide">
-                    Clients,Team,Personal,Company,Work,Friends,Suppliers,Partners
+                    {{ patient.email }}
                   </div>
                 </div>
                 <div>
