@@ -36,3 +36,6 @@ a.router-link-active.router-link-exact-active {
 .item-mail.text-muted.h-1x.d-none.d-sm-block {
   width: 180px;
 }
+button.ant-btn {
+  margin-left: 10px;
+}

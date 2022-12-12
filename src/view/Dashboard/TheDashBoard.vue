@@ -6,8 +6,8 @@
           <i class="fa-solid fa-user-doctor"></i>
         </div>
         <div class="header-item__right">
-          <span>{{numberDoctor}}</span>
-          <div class="header-item__title">Bác sĩ</div>
+          <span>{{ numberDoctor }}</span>
+          <div class="header-item__title" @click="test">Bác sĩ</div>
         </div>
       </div>
       <div class="header-item patients">
@@ -15,7 +15,7 @@
           <i class="fa-regular fa-user"></i>
         </div>
         <div class="header-item__right">
-          <span>{{numberPatient}}</span>
+          <span>{{ numberPatient }}</span>
           <div class="header-item__title">Bệnh nhân</div>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <i class="fa-regular fa-hospital"></i>
         </div>
         <div class="header-item__right">
-          <span>{{numberDepartment}}</span>
+          <span>{{ numberDepartment }}</span>
           <div class="header-item__title">Bệnh viện</div>
         </div>
       </div>
@@ -52,6 +52,8 @@
 
 <script>
 import ApexCharts from "vue3-apexcharts";
+import axios from "axios";
+
 export default {
   name: "TheDashboard",
   components: { ApexCharts },
@@ -64,6 +66,21 @@ export default {
     },
     numberDepartment() {
       return this.departments.length ? this.departments.length : 0;
+    },
+    accessToken() {
+      return this.$store.getters.accessToken;
+    },
+    email() {
+      return this.$store.getters.email;
+    },
+    role() {
+      return this.$store.getters["role"];
+    },
+  },
+  methods: {
+    test() {
+      console.log(10);
+      this.series.data = [0, 10, 20];
     },
   },
   data() {
@@ -127,16 +144,71 @@ export default {
       },
       series: [
         {
-          data: [400, 430, 448],
+          data: [10, 15, 20],
         },
       ],
       pieChartOptions: {
         labels: ["Bác sĩ", "Bệnh nhân", "Bệnh viện"],
       },
-      pieChartSeries: [400, 430, 448],
+      pieChartSeries: [10, 15, 20],
     };
   },
-  async created() {},
+  async created() {
+    const me = this;
+    // bac si
+    await axios
+      .get(
+        "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        }
+      )
+      .then(function (res) {
+        me.doctors = res.data;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    // beenhj nhan
+    await axios
+      .get(
+        `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+        {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        }
+      )
+      .then(function (res) {
+        me.patients = res.data;
+        console.log(me.patients);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    // benh vienn
+    await axios
+      .get("http://localhost:8000/medical_unit/", {
+        headers: { Authorization: `Bearer ${me.accessToken}` },
+      })
+      .then((res) => {
+        console.log(res);
+        me.departments = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    this.series = [
+      {
+        data: [me.doctors.length, me.patients.length, me.departments.length],
+      },
+    ];
+
+    this.pieChartSeries = [
+      me.doctors.length,
+      me.patients.length,
+      me.departments.length,
+    ];
+  },
 };
 </script>
 

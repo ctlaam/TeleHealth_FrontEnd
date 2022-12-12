@@ -188,7 +188,7 @@
                     {{ patient.name }}
                   </div>
                 </div>
-                <div class="flex"  style="width: 100px">
+                <div class="flex" style="width: 100px">
                   <a class="item-author text-color" data-pjax-state=""
                     >Giới tính</a
                   >
@@ -272,7 +272,7 @@
                         </a-menu-item>
                         <a-menu-item
                           key="4"
-                          @click="clickInput(patient.id)"
+                          @click="showModalDoctor(patient.id)"
                           v-if="role == 'role3' || role == 'role2'"
                         >
                           <UserOutlined />
@@ -293,6 +293,25 @@
               </div>
             </div>
           </div>
+          <a-modal
+            style="height: 200px"
+            v-model:visible="visible"
+            title="Chọn bác sĩ quản lý"
+            :confirm-loading="confirmLoading"
+            @ok="assignPatient"
+          >
+            <!-- :filter-option="filterOption"
+              @focus="handleFocus"
+              @blur="handleBlur" -->
+            <a-select
+              v-model:value="valueDoctor"
+              show-search
+              placeholder="Chọn một bác sĩ"
+              style="width: 100%"
+              :options="optionDoctor"
+              @change="handleChangeDoctorForPatient"
+            ></a-select>
+          </a-modal>
           <div class="pagination">
             <a-pagination
               v-model:pageSize="pageSize"
@@ -334,6 +353,10 @@ export default {
   },
   data() {
     return {
+      valueDoctor: "",
+      idDoctorForPatient: "",
+      optionDoctor: [],
+      visible: false,
       link: "",
       current: 1,
       pageSize: 10,
@@ -360,6 +383,37 @@ export default {
     },
   },
   methods: {
+    async assignPatient() {
+      const me = this;
+      await axios
+        .post(
+          `http://127.0.0.1:8000/patient_management/`,
+          {
+            doctor: this.idDoctorForPatient,
+            patient: this.idPatient,
+          },
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          this.$message.success("Thêm bệnh nhân cho bác sĩ thành công");
+          (this.valueDoctor = ""), (this.idDoctorForPatient = "");
+          this.idPatient = "";
+          this.visible = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    handleChangeDoctorForPatient(value, object) {
+      this.idDoctorForPatient = object.id;
+    },
+    showModalDoctor(idPatient) {
+      this.visible = true;
+      this.idPatient = idPatient;
+    },
     async getListPatients() {
       console.log(123);
       const me = this;
@@ -503,7 +557,6 @@ export default {
   },
   async created() {
     const me = this;
-    console.log(me.accessToken);
     await axios
       .get(
         `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
@@ -513,6 +566,28 @@ export default {
       )
       .then(function (res) {
         me.patients = res.data;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+
+    // Danh sách bác sĩ
+    await axios
+      .get(
+        "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        }
+      )
+      .then(function (res) {
+        console.log(res.data);
+        res.data.forEach((item) => {
+          me.optionDoctor.push({
+            value: `${item.name}  --  email: ${item.email}`,
+            id: item.id,
+          });
+        });
+        console.log(me.optionDoctor);
       })
       .catch(function (err) {
         console.log(err);
