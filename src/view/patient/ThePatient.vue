@@ -85,7 +85,10 @@
                 <div class="input-group">
                   <input
                     type="text"
-                    class="form-control form-control-theme form-control-sm search"
+                    class="
+                      form-control form-control-theme form-control-sm
+                      search
+                    "
                     placeholder="Search"
                     required=""
                   />
@@ -526,6 +529,9 @@ export default {
      */
     showOrHideDialog(isShow) {
       this.isShowDialog = isShow;
+      if (!isShow) {
+        this.formMode = null;
+      }
     },
     /**
      * Mô tả : Mô tả code

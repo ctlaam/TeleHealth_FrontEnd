@@ -39,10 +39,10 @@
             <li class="nav-header hidden-folded" v-if="role != 'role2' && role">
               <span class="text-muted">Quản lý</span>
             </li>
-
+            
+            <!-- v-if="role != 'role2' && role" -->
             <router-link
               to="/content/maincontent/patient"
-              v-if="role != 'role2' && role"
             >
               <li class="">
                 <a href="app.user.html" data-pjax-state="load">

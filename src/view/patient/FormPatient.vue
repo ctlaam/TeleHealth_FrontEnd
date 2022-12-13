@@ -246,22 +246,24 @@
             <div class="row row-cols-2">
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio1"
+                  <label class="col-form-label" style="width: 80px"
                     >Đất nước</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="country"
                       id=""
-                      v-model="patient.country"
+                      v-model="selectedAddress.country"
                       class="form-control"
+                      @change="handleCountryChange"
                     >
                       <option
-                        :value="country"
-                        v-for="country in address.countries"
-                        :key="country"
+                        :value="country.code"
+                        v-for="(country, index) in address.countries"
+                        :key="index"
                       >
-                        {{ country }}
+                        <!-- :selected="selectedAddress.country == address.countries"  -->
+                        {{ country.name }}
                       </option>
                     </select>
                   </div>
@@ -269,22 +271,23 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio2"
+                  <label class="col-form-label" style="width: 80px"
                     >Thành phố</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
-                      v-model="patient.province"
+                      v-model="selectedAddress.city"
                       class="form-control"
+                      @change="handleCityChange"
                     >
                       <option
-                        :value="city"
-                        v-for="city in address.cities"
-                        :key="city.id"
+                        :value="city.code"
+                        v-for="(city, index) in address.cities"
+                        :key="index"
                       >
-                        {{ city }}
+                        {{ city.name }}
                       </option>
                     </select>
                   </div>
@@ -292,22 +295,23 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label class="col-form-label" style="width: 80px"
                     >Quận/huyện</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
-                      v-model="patient.district"
+                      v-model="selectedAddress.district"
                       class="form-control"
+                      @change="handleDistricChange"
                     >
                       <option
-                        :value="district"
-                        v-for="district in address.districts"
-                        :key="district"
+                        :value="district.code"
+                        v-for="(district, index) in address.districts"
+                        :key="index"
                       >
-                        {{ district }}
+                        {{ district.name }}
                       </option>
                     </select>
                   </div>
@@ -315,22 +319,23 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label class="col-form-label" style="width: 80px"
                     >Xã Phường</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
-                      v-model="patient.ward"
+                      v-model="selectedAddress.ward"
                       class="form-control"
+                      @change="handleWardChange"
                     >
                       <option
-                        :value="ward"
-                        v-for="ward in address.wards"
-                        :key="ward.id"
+                        :value="ward.code"
+                        v-for="(ward, index) in address.wards"
+                        :key="index"
                       >
-                        {{ ward }}
+                        {{ ward.name }}
                       </option>
                     </select>
                   </div>
@@ -368,10 +373,27 @@ export default {
     patientSelected(newValue) {
       this.patient = newValue;
     },
+    formMode(value) {
+      if (value == "edit") {
+        this.setSelectedAddress();
+      }
+    },
   },
   data() {
     return {
-      address: {},
+      fullAddress: [],
+      selectedAddress: {
+        country: null,
+        city: null,
+        district: null,
+        ward: null,
+      },
+      address: {
+        countries: [{ name: "Việt Nam", code: 1 }],
+        cities: [],
+        districts: [],
+        wards: [],
+      },
       patient: {
         email: "",
         password: "",
@@ -409,6 +431,130 @@ export default {
     },
   },
   methods: {
+    setSelectedAddress() {
+      if (this.patient.country) {
+        this.address.countries.find((item) => {
+          if (item.name == this.patient.country) {
+            this.selectedAddress.country = item.code;
+          }
+        });
+        this.handleCountryChange();
+
+        if (this.patient.province) {
+          this.address.cities.find((item) => {
+            if (item.name == this.patient.province) {
+              this.selectedAddress.city = item.code;
+            }
+          });
+          this.handleCityChange();
+
+          if (this.patient.district) {
+            this.address.districts.find((item) => {
+              if (item.name == this.patient.district) {
+                this.selectedAddress.district = item.code;
+              }
+            });
+            this.handleDistricChange();
+
+            if (this.patient.ward) {
+              this.address.wards.find((item) => {
+                if (item.name == this.patient.ward) {
+                  this.selectedAddress.ward = item.code;
+                }
+              });
+              this.handleWardChange();
+            }
+          }
+        }
+      }
+    },
+
+    // Hàm lọc đất nước
+    handleCountryChange() {
+      if (this.fullAddress.length > 0) {
+        this.address.cities = this.fullAddress.map((item) => {
+          return {
+            name: item.name,
+            code: item.code,
+          };
+        });
+      }
+
+      if (this.selectedAddress.country) {
+        this.address.countries.find((item) => {
+          if (item.code == this.selectedAddress.country) {
+            this.patient.country = item.name;
+          }
+        });
+      }
+    },
+
+    // hàm lọc thành phố
+    handleCityChange() {
+      let arr_tmp = this.fullAddress.find(
+        (item) => item.code == this.selectedAddress.city
+      );
+      this.patient.province = arr_tmp.name;
+      this.address.districts = arr_tmp.districts.map((item) => {
+        return {
+          name: item.name,
+          code: item.code,
+        };
+      });
+    },
+
+    // hàm lọc quận huyện
+    handleDistricChange() {
+      let city_tmp = this.fullAddress.find(
+        (item) => item.code == this.selectedAddress.city
+      );
+
+      let distric_tmp = city_tmp.districts.find(
+        (item) => item.code == this.selectedAddress.district
+      );
+
+      this.patient.district = distric_tmp.name;
+
+      this.address.wards = distric_tmp.wards.map((item) => {
+        return {
+          name: item.name,
+          code: item.code,
+        };
+      });
+    },
+
+    // hàm lọc xã phường
+    handleWardChange() {
+      this.address.wards.find((item) => {
+        if (item.code == this.selectedAddress.ward) {
+          this.patient.ward = item.name;
+        }
+      });
+    },
+    getLocation() {
+      const url = "https://provinces.open-api.vn/api/";
+      axios
+        .get(
+          url,
+          {
+            params: {
+              depth: 3,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          this.fullAddress = res.data;
+          this.setSelectedAddress();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     closeOnClick() {
       this.$emit("closeOnClick", false);
     },
@@ -521,6 +667,7 @@ export default {
 
     btnSaveOnClick() {
       const me = this;
+      console.log(this.patient);
       if (!this.validateForm()) {
         return;
       }
@@ -558,13 +705,20 @@ export default {
     },
   },
   created() {
+    this.getLocation();
     const me = this;
-    me.address.cities = ["Hà Nội"];
-    me.address.wards = ["Bạch Mai"];
-    me.address.districts = ["Giải Phóng"];
-    me.address.countries = ["Việt Nam"];
     me.ethnics = ["Kinh"];
-    console.log(me.address);
+    // if (this.formMode == "add") {
+      // this.patient.country = "Việt Nam";
+      // this.patient.province = "Thành phố Hà Nội";
+      // this.patient.district = "Quận Ba Đình";
+      // this.patient.ward = "Phường Đội Cấn";
+    // }
+
+    // me.address.cities = ["Hà Nội"];
+    // me.address.wards = ["Bạch Mai"];
+    // me.address.districts = ["Giải Phóng"];
+    // me.address.countries = ["Việt Nam"];
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
