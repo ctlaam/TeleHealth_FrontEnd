@@ -3,8 +3,8 @@
     class="dialog-form doctor-form-detail"
     :class="{ 'show-doctor-detail': isShow }"
   >
-    <div id="cardDoctor" class="card" >
-      <div class="card-header" style="font-size:16px">
+    <div id="cardDoctor" class="card">
+      <div class="card-header" style="font-size: 16px">
         <strong>Thông tin cá nhân</strong>
         <div
           @click="closeOnClick"
@@ -106,15 +106,19 @@
             <div class="row row-cols-2">
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio1"
+                  <label
+                    style="min-width: 80px"
+                    class="col-form-label"
+                    for="inlineRadio1"
                     >Đất nước</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="country"
                       id=""
                       v-model="doctorProfile.country"
                       class="form-control"
+                      @change="handleCountryChange"
                     >
                       <option
                         :value="country"
@@ -129,15 +133,19 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio2"
+                  <label
+                    style="min-width: 80px"
+                    class="col-form-label"
+                    for="inlineRadio2"
                     >Thành phố</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
-                      id=""
+                      id="city"
                       v-model="doctorProfile.province"
                       class="form-control"
+                      @change="handleCityChange"
                     >
                       <option
                         :value="city"
@@ -152,15 +160,19 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label
+                    style="min-width: 80px"
+                    class="col-form-label"
+                    for="inlineRadio3"
                     >Quận/huyện</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
                       v-model="doctorProfile.district"
                       class="form-control"
+                      @change="handleDistrictChange"
                     >
                       <option
                         :value="district"
@@ -175,15 +187,19 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label
+                    style="min-width: 80px"
+                    class="col-form-label"
+                    for="inlineRadio3"
                     >Xã Phường</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
                       v-model="doctorProfile.ward"
                       class="form-control"
+                      @change="handleWardChange"
                     >
                       <option
                         :value="ward"
@@ -234,16 +250,21 @@
 import axios from "axios";
 export default {
   name: "the-doctor-detail",
-  props: ["isShow", "formMode", "doctorSelected"],
+  props: ["isShow", "formMode", "inforDoctor"],
   watch: {
-    doctorSelected: function (newValue) {
-      this.doctor = newValue;
+    inforDoctor: function (newValue) {
+      this.doctorProfile = newValue;
     },
   },
   data() {
     return {
-      doctor: {},
-      address: {},
+      fullAddress: [],
+      address: {
+        countries: ["Việt Nam"],
+        cities: [],
+        districts: [],
+        wards: [],
+      },
       doctorProfile: {
         name: "",
         gender: "",
@@ -263,6 +284,68 @@ export default {
     },
   },
   methods: {
+    // Hàm lọc đất nước
+    handleCountryChange() {
+      if (this.fullAddress.length > 0) {
+        this.address.cities = this.fullAddress.map((item) => {
+          return item.name;
+        });
+      }
+    },
+
+    // hàm lọc thành phố
+    handleCityChange() {
+      let arr_tmp = this.fullAddress.find(
+        (item) => item.name == this.doctorProfile.province
+      );
+      this.address.districts = arr_tmp.districts.map((item) => {
+        return item.name;
+      });
+    },
+
+    // hàm lọc quận huyện
+    handleDistrictChange() {
+      let city_tmp = this.fullAddress.find(
+        (item) => item.name == this.doctorProfile.province
+      );
+
+      let distric_tmp = city_tmp.districts.find(
+        (item) => item.name == this.doctorProfile.district
+      );
+
+      this.address.wards = distric_tmp.wards.map((item) => {
+        return item.name;
+      });
+    },
+
+    // hàm lọc xã phường
+    handleWardChange() {
+      console.log(this.doctorProfile);
+    },
+    getLocation() {
+      const url = "https://provinces.open-api.vn/api/";
+      axios
+        .get(
+          url,
+          {
+            params: {
+              depth: 3,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          this.fullAddress = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     closeOnClick() {
       this.$emit("closeOnClick", false);
     },
@@ -287,12 +370,7 @@ export default {
     },
   },
   created() {
-    const me = this;
-    me.address.cities = ["Hà Nội"];
-    me.address.wards = ["Bạch Mai"];
-    me.address.districts = ["Giải Phóng"];
-    me.address.countries = ["Việt Nam"];
-    me.ethnics = ["Kinh"];
+    this.getLocation();
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });

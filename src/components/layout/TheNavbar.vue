@@ -57,9 +57,9 @@
               </li>
             </router-link>
 
+              <!-- v-if="role == 'role3'" -->
             <router-link
               to="/content/maincontent/doctor"
-              v-if="role == 'role3'"
             >
               <li class="">
                 <a href="app.user.html" data-pjax-state="load">

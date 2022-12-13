@@ -114,30 +114,12 @@
           ></span>
         </form>
       </div>
-      <ul v-if="isAuthenticated" class="nav navbar-menu order-1 order-lg-2">
-        <!-- User dropdown menu -->
-        <!-- <li class="nav-item dropdown" @click="LogOut">
-          <a
-            href="#"
-            data-toggle="dropdown"
-            class="nav-link d-flex align-items-center px-2 text-color"
-            data-pjax-state=""
-          >
-            <span
-              class="avatar w-36"
-              style="margin: -2px,position: relative;top:-5px"
-              ><img src="../../assets/img/avatar.jpg" alt="..."
-            /></span>
-          </a>
-        </li>
-        <li v-if="role === 'role1'" @click="updateProfileDoctor">
-          Update thông tin
-        </li> -->
-        <a-dropdown v-if="isAuthenticated">
+      <ul v-if="true" class="nav navbar-menu order-1 order-lg-2">
+        <a-dropdown v-if="true">
           <template #overlay>
-            <a-menu style="min-width:140px">
-              <a-menu-item key="1" @click="updateProfileDoctor" v-if="(role == 'role1')">
-                <UserOutlined  />
+            <a-menu style="min-width: 140px">
+              <a-menu-item key="1" @click="updateProfileDoctor">
+                <UserOutlined />
                 Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
               </a-menu-item>
               <a-menu-item key="2">
@@ -150,14 +132,11 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-avatar
-            size="large"
-            src="https://random.imagecdn.app/500/150"
-          />
+          <a-avatar size="large" src="https://random.imagecdn.app/500/150" />
         </a-dropdown>
       </ul>
       <router-link
-        v-else
+        v-if="false"
         class="nav navbar-menu order-1 order-lg-2"
         to="/auth"
         ><a-button type="primary">Đăng nhập</a-button></router-link
@@ -167,6 +146,7 @@
       :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
       :formMode="formMode"
+      :inforDoctor="{}"
     ></FormPersonalDoctor>
   </div>
   <!-- End Header -->
@@ -181,6 +161,7 @@ export default {
   },
   data() {
     return {
+      inforDoctor: {},
       isShowDialog: false,
     };
   },
@@ -195,9 +176,9 @@ export default {
 
   methods: {
     LogOut() {
-      localStorage.removeItem('usernameTele');
-      localStorage.removeItem('passwordTele');
-      this.$router.push('/') 
+      localStorage.removeItem("usernameTele");
+      localStorage.removeItem("passwordTele");
+      this.$router.push("/");
       this.$store.dispatch("logout");
     },
     showOrHideDialog(isShow) {
