@@ -9,7 +9,29 @@
           <small class="text-muted"></small>
         </div>
         <div class="flex"></div>
-<button @click="showOrHideDetailLocation(true)" id="addPatient" class="btn btn-white" data-v-75b7bec2=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus" data-v-75b7bec2=""><line x1="12" y1="5" x2="12" y2="19" data-v-75b7bec2=""></line><line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg><span class="mx-1" data-v-75b7bec2="">Thêm</span></button>
+        <button
+          @click="showOrHideDetailLocation(true)"
+          id="addPatient"
+          class="btn btn-white"
+          data-v-75b7bec2=""
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-plus"
+            data-v-75b7bec2=""
+          >
+            <line x1="12" y1="5" x2="12" y2="19" data-v-75b7bec2=""></line>
+            <line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg
+          ><span class="mx-1" data-v-75b7bec2="">Thêm</span>
+        </button>
       </div>
     </div>
     <div class="page-content page-container" id="page-content location">
@@ -69,11 +91,12 @@
                         rowspan="1"
                         colspan="1"
                         aria-label=""
-                        style="width: 100px"
+                        style="width: 150px; text-align: center"
                       >
-                      <span class="text-muted d-none d-sm-block"
+                        <span class="text-muted d-none d-sm-block"
                           >Tùy chọn</span
-                        ></th>
+                        >
+                      </th>
                       <th
                         class="sorting_disabled"
                         rowspan="1"
@@ -153,7 +176,9 @@
                         :key="index"
                       >
                         <td>
-                          <a-dropdown-button style="min-width: 120px">
+                          <a-dropdown-button
+                            style="width: 150px; text-align: center"
+                          >
                             <template #overlay>
                               <a-menu @click="detailDoctor(doctor)">
                                 <a-menu-item key="1">
@@ -281,29 +306,29 @@ export default {
   components: { TheCommuneDetail },
   data() {
     return {
-      searchValue:"",
+      searchValue: "",
       pageSize: 7,
       current: 1,
       showLocations: false,
       wards: [],
       listRendered: [],
-      isLoading:false,
+      isLoading: false,
     };
   },
   methods: {
-    async searchAction(newValue){
+    async searchAction(newValue) {
       this.isLoading = true;
-      this.listRendered = []
+      this.listRendered = [];
       const me = this;
-      let url = "https://provinces.open-api.vn/api/w"
-      if(newValue.trim()){
-        url = `https://provinces.open-api.vn/api/w/search/?q=${newValue}`
+      let url = "https://provinces.open-api.vn/api/w";
+      if (newValue.trim()) {
+        url = `https://provinces.open-api.vn/api/w/search/?q=${newValue}`;
       }
-    await axios.get(url).then((res) => {
-      me.wards = res.data;
-      this.listRendered = this.wards.slice(0, this.pageSize + 1);
-      this.isLoading = false;
-    });
+      await axios.get(url).then((res) => {
+        me.wards = res.data;
+        this.listRendered = this.wards.slice(0, this.pageSize + 1);
+        this.isLoading = false;
+      });
     },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
@@ -319,10 +344,10 @@ export default {
       );
     },
   },
-  watch:{
-    async searchValue(newValue){
-      await this.searchAction(newValue)
-    }
+  watch: {
+    async searchValue(newValue) {
+      await this.searchAction(newValue);
+    },
   },
   async created() {
     this.isLoading = true;

@@ -161,10 +161,6 @@
                                   <UserOutlined />
                                   Xóa
                                 </a-menu-item>
-                                <!-- <a-menu-item key="3"  @click="clickInput(patient.id)">
-                                <UserOutlined />
-                                Tính thể tích phổi
-                              </a-menu-item> -->
                               </a-menu>
                             </template>
                           </a-dropdown-button>

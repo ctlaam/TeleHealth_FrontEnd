@@ -69,7 +69,7 @@
                         rowspan="1"
                         colspan="1"
                         aria-label=""
-                        style="width: 100px"
+                        style="width: 20px; text-align: lef"
                       >
                         <span class="text-muted d-none d-sm-block"
                           >Tùy chọn</span
@@ -152,7 +152,7 @@
                         :key="index"
                       >
                         <td>
-                          <a-dropdown-button style="min-width: 120px">
+                          <a-dropdown-button style="width: 60px; text-align: center">
                             <template #overlay>
                               <a-menu @click="detailDoctor(doctor)">
                                 <a-menu-item key="1">

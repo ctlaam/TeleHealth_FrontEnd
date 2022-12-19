@@ -315,7 +315,7 @@
               @change="handleChangeDoctorForPatient"
             ></a-select>
           </a-modal>
-          <div class="pagination">
+          <div class="pagination" v-if="patients.length > 0">
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
