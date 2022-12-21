@@ -2,7 +2,8 @@
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
     <div class="card card-locations" >
       <div class="card-header">
-        <strong>Thêm dân tộc</strong>
+        <strong v-if="isEdit">Chi tiết xã/phường</strong>
+        <strong v-else>Thêm xã/phường</strong>
         <div
           @click="closeLocations"
           id="closeFormLocation"
@@ -81,8 +82,8 @@
               </div>
             </div>
           </div>
-                  <div class="form-group row">
-          <div class="flex-save-cancle">
+          <div class="form-group row" v-if="false">
+            <div class="flex-save-cancle">
             <button
               @click="btnSaveOnClick"
               type="submit"
@@ -101,9 +102,24 @@
 
 <script>
 export default {
-  props: ["showLocations"],
+  props: ["showLocations", "isEdit", "dataLocation"],
+  watch: {
+    dataLocation: {
+      handler(value) {
+        this.ethnic = value;
+      },
+      deep: true,
+    },
+    isEdit(value) {
+      if (!value) {
+        this.ethnic = {};
+      }
+    },
+  },
   data() {
-    return {};
+    return {
+      ethnic: {},
+    };
   },
   methods: {
     closeLocations() {

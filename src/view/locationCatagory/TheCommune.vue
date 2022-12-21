@@ -10,6 +10,7 @@
         </div>
         <div class="flex"></div>
         <button
+        v-if="false"
           @click="showOrHideDetailLocation(true)"
           id="addPatient"
           class="btn btn-white"
@@ -180,7 +181,7 @@
                             style="width: 150px; text-align: center"
                           >
                             <template #overlay>
-                              <a-menu @click="detailDoctor(doctor)">
+                              <a-menu @click="handleDetail(ward)">
                                 <a-menu-item key="1">
                                   <UserOutlined />
                                   Thông tin chi tiết
@@ -294,6 +295,8 @@
     </div>
     <TheCommuneDetail
       :showLocations="showLocations"
+      :is-edit="isEdit"
+      :data-location="dataLocation"
       @showOrHideDetailLocation="showOrHideDetailLocation"
     ></TheCommuneDetail>
   </section>
@@ -313,9 +316,16 @@ export default {
       wards: [],
       listRendered: [],
       isLoading: false,
+      isEdit: false,
+      dataLocation: {},
     };
   },
   methods: {
+    handleDetail(payload){
+      this.isEdit = true;
+      this.dataLocation = payload;
+      this.showLocations = true;
+    },
     async searchAction(newValue) {
       this.isLoading = true;
       this.listRendered = [];
@@ -332,6 +342,7 @@ export default {
     },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
+      this.isEdit = false;
     },
     getFirstLetter(name) {
       let a = name.split("");

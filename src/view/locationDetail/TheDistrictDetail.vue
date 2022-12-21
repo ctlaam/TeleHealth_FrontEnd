@@ -2,7 +2,8 @@
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
     <div class="card card-locations" >
       <div class="card-header">
-        <strong>Thêm quận/huyện</strong>
+        <strong v-if="isEdit">Chi tiết quận/huyện</strong>
+        <strong v-else>Thêm quận/huyện</strong>
         <div
           @click="closeLocations"
           id="closeFormLocation"
@@ -35,12 +36,13 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="001"
+                v-model="district.code"
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên dân tộc</label
+              >Tên quận/huyện</label
             >
             <div class="col-sm-9">
               <input
@@ -48,10 +50,39 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Kinh"
+                v-model="district.name"
               />
             </div>
           </div>
           <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Tên không dấu</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Kinh"
+                v-model="district.codename"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Loại</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Kinh"
+                v-model="district.division_type"
+              />
+            </div>
+          </div>
+          <!-- <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Đất nước</label
             >
@@ -80,8 +111,8 @@
                 </div>
               </div>
             </div>
-          </div>
-                  <div class="form-group row">
+          </div> -->
+                  <div class="form-group row" v-if="false">
           <div class="flex-save-cancle">
             <button
               @click="btnSaveOnClick"
@@ -101,9 +132,24 @@
 
 <script>
 export default {
-  props: ["showLocations"],
+  props: ["showLocations", "isEdit", "dataLocation"],
+  watch: {
+    dataLocation: {
+      handler(value) {
+        this.district = value;
+      },
+      deep: true,
+    },
+    isEdit(value) {
+      if (!value) {
+        this.district = {};
+      }
+    },
+  },
   data() {
-    return {};
+    return {
+      district: {},
+    };
   },
   methods: {
     closeLocations() {

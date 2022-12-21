@@ -9,7 +9,7 @@
           <small class="text-muted"></small>
         </div>
         <div class="flex"></div>
-<button @click="showOrHideDetailLocation(true)" id="addPatient" class="btn btn-white" data-v-75b7bec2=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus" data-v-75b7bec2=""><line x1="12" y1="5" x2="12" y2="19" data-v-75b7bec2=""></line><line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg><span class="mx-1" data-v-75b7bec2="">Thêm</span></button>
+<button @click="showOrHideDetailLocation(true)" v-if="false" id="addPatient" class="btn btn-white" data-v-75b7bec2=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus" data-v-75b7bec2=""><line x1="12" y1="5" x2="12" y2="19" data-v-75b7bec2=""></line><line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg><span class="mx-1" data-v-75b7bec2="">Thêm</span></button>
       </div>
     </div>
     <div class="page-content page-container" id="page-content location">
@@ -149,7 +149,7 @@
                         <td>
                           <a-dropdown-button style="min-width: 120px">
                             <template #overlay>
-                              <a-menu @click="detailDoctor(doctor)">
+                              <a-menu @click="handleDetail(city)">
                                 <a-menu-item key="1">
                                   <UserOutlined />
                                   Thông tin chi tiết
@@ -272,6 +272,8 @@
     </div>
     <TheCityDetail
       :showLocations="showLocations"
+      :isEdit="isEdit"
+      :dataLocation="dataLocation"
       @showOrHideDetailLocation="showOrHideDetailLocation"
     ></TheCityDetail>
   </section>
@@ -284,17 +286,24 @@ export default {
   components: { TheCityDetail },
   data() {
     return {
-      
       searchValue: "",
       pageSize: 7,
       current: 1,
       showLocations: false,
       cities: [],
       listRendered: [],
+      dataLocation: {},
+      isEdit: false,
     };
   },
 
   methods: {
+    handleDetail(payload){
+      this.showLocations = true;
+      this.isEdit = true;
+      this.dataLocation = payload;
+      console.log(payload);
+    },
     searchAction(newValue){
       const me = this;
       let url = "https://provinces.open-api.vn/api/p"
@@ -308,6 +317,7 @@ export default {
     },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
+      this.isEdit = false;
     },
     getFirstLetter(name) {
       let a = name.split("");
@@ -331,6 +341,8 @@ export default {
       me.cities = res.data;
       me.listRendered = me.cities.slice(0, 7);
     });
+    console.log(this.listRendered);
+
   },
 };
 </script>

@@ -1,8 +1,9 @@
 <template>
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
-    <div class="card card-locations" >
+    <div class="card card-locations">
       <div class="card-header">
-        <strong>Thêm xã phường</strong>
+        <strong v-if="isEdit">Chi tiết xã phường</strong>
+        <strong v-else>Thêm xã phường</strong>
         <div
           @click="closeLocations"
           id="closeFormLocation"
@@ -31,27 +32,57 @@
             <label for="inputEmail3" class="col-sm-3 col-form-label">Mã</label>
             <div class="col-sm-9">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="inputEmail3"
                 placeholder="001"
+                v-model="ward.code"
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên dân tộc</label
+              >Tên xã phường</label
             >
             <div class="col-sm-9">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Kinh"
+                v-model="ward.name"
               />
             </div>
           </div>
           <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Tên không dấu</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Kinh"
+                v-model="ward.codename"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Loại</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Kinh"
+                v-model="ward.division_type"
+              />
+            </div>
+          </div>
+          <!-- <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Đất nước</label
             >
@@ -69,7 +100,7 @@
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                   Xem
+                  Xem
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">Action</a>
@@ -80,19 +111,19 @@
                 </div>
               </div>
             </div>
+          </div> -->
+          <div class="form-group row" v-if="false">
+            <div class="flex-save-cancle">
+              <button
+                @click="btnSaveOnClick"
+                type="submit"
+                class="btn btn-primary mt-1"
+              >
+                Lưu
+              </button>
+              <button @click="closeLocations">Hủy</button>
+            </div>
           </div>
-                  <div class="form-group row">
-          <div class="flex-save-cancle">
-            <button
-              @click="btnSaveOnClick"
-              type="submit"
-              class="btn btn-primary mt-1"
-            >
-              Lưu
-            </button>
-            <button @click="closeLocations">Hủy</button>
-          </div>
-        </div>
         </form>
       </div>
     </div>
@@ -101,13 +132,28 @@
 
 <script>
 export default {
-  props: ["showLocations"],
+  props: ["showLocations", "isEdit", "dataLocation"],
+  watch: {
+    dataLocation: {
+      handler(value) {
+        this.ward = value;
+      },
+      deep: true,
+    },
+    isEdit(value) {
+      if (!value) {
+        this.ward = {};
+      }
+    },
+  },
   data() {
-    return {};
+    return {
+      ward: {},
+    };
   },
   methods: {
     closeLocations() {
-      this.$emit("showOrHideDetailLocation",false);
+      this.$emit("showOrHideDetailLocation", false);
     },
   },
 };

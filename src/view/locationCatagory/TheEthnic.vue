@@ -138,7 +138,7 @@
                         <td>
                           <a-dropdown-button style="min-width: 120px">
                             <template #overlay>
-                              <a-menu @click="detailDoctor(doctor)">
+                              <a-menu @click="handleDetail(ethinic)">
                                 <a-menu-item key="1">
                                   <UserOutlined />
                                   Thông tin chi tiết
@@ -248,6 +248,8 @@
     </div>
     <TheEthnicDetail
       :showLocations="showLocations"
+      :is-edit="isEdit"
+      :data-location="dataLocation"
       @showOrHideDetailLocation="showOrHideDetailLocation"
     ></TheEthnicDetail>
   </section>
@@ -269,9 +271,16 @@ export default {
       ethinics: [],
       listRendered: [],
       isLoading:false,
+      isEdit: false,
+      dataLocation: {},
     };
   },
   methods: {
+    handleDetail(payload){
+      this.isEdit = true;
+      this.dataLocation = payload;
+      this.showLocations = true;
+    },
     searchAction(newValue){
       this.isLoading = true;
       let searchResult
@@ -289,6 +298,7 @@ export default {
     },
     showOrHideDetailLocation(show) {
       this.showLocations = show;
+      this.isEdit = false;
     },
     getFirstLetter(name) {
       let a = name.split("");
