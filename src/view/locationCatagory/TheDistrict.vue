@@ -30,8 +30,7 @@
             data-v-75b7bec2=""
           >
             <line x1="12" y1="5" x2="12" y2="19" data-v-75b7bec2=""></line>
-            <line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg
-          ><span class="mx-1" data-v-75b7bec2="">Thêm</span>
+            <line x1="5" y1="12" x2="19" y2="12" data-v-75b7bec2=""></line></svg><span class="mx-1" data-v-75b7bec2="">Thêm</span>
         </button>
       </div>
     </div>
@@ -304,6 +303,7 @@
 <script>
 import axios from "axios";
 import TheDistrictDetail from "../locationDetail/TheDistrictDetail.vue";
+import _ from "lodash";
 export default {
   components: { TheDistrictDetail },
   data() {
@@ -329,17 +329,16 @@ export default {
     async searchAction(newValue) {
       this.isLoading = true;
       this.listRendered = [];
-      const me = this;
-      let url = "https://provinces.open-api.vn/api/d/";
-      if (newValue.trim()) {
-        url = `https://provinces.open-api.vn/api/d/search/?q=${newValue}`;
+      if(newValue.trim()){
+        this.districts = this.districts.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
+      } else {
+        this.districts = this.cloneFull
       }
-      await axios.get(url).then((res) => {
-        me.districts = res.data;
-        this.listRendered = this.districts.slice(0, this.pageSize + 1);
+      setTimeout(() =>{
+        this.listRendered = this.districts.slice(0, this.pageSize );
         this.isLoading = false;
-      });
-    },
+      },500)
+    },500),
     showOrHideDetailLocation(show) {
       this.showLocations = show;
       this.isEdit = false;
@@ -365,6 +364,7 @@ export default {
     this.isLoading = true;
     await axios.get("https://provinces.open-api.vn/api/d/").then((res) => {
       this.districts = res.data;
+      me.cloneFull = res.data
       me.listRendered = me.districts.slice(0, 7);
       this.isLoading = false;
     });

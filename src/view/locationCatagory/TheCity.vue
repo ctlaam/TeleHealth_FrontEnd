@@ -282,6 +282,8 @@
 <script>
 import axios from "axios";
 import TheCityDetail from "../locationDetail/TheCityDetail.vue";
+import _ from "lodash";
+
 export default {
   components: { TheCityDetail },
   data() {
@@ -308,13 +310,15 @@ export default {
       const me = this;
       let url = "https://provinces.open-api.vn/api/p"
       if(newValue.trim()){
-        url = `https://provinces.open-api.vn/api/p/search/?q=${newValue}`
+        this.cities = this.cities.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
+      } else {
+        this.cities = this.cloneFull
       }
-    axios.get(url).then((res) => {
-      me.cities = res.data;
-      this.listRendered = this.cities.slice(0, this.pageSize + 1);
-    });
-    },
+      setTimeout(() =>{
+        this.listRendered = this.cities.slice(0, this.pageSize );
+        this.isLoading = false;
+      },500)
+    },500),
     showOrHideDetailLocation(show) {
       this.showLocations = show;
       this.isEdit = false;
@@ -339,6 +343,7 @@ export default {
     const me = this;
     await axios.get("https://provinces.open-api.vn/api/p").then((res) => {
       me.cities = res.data;
+      me.cloneFull = res.data
       me.listRendered = me.cities.slice(0, 7);
     });
     console.log(this.listRendered);

@@ -258,6 +258,7 @@
 <script>
 import axios from "axios";
 import TheEthnicDetail from "../locationDetail/TheEthnicDetail.vue";
+import _ from "lodash";
 export default {
   components: {
     TheEthnicDetail,
@@ -283,19 +284,19 @@ export default {
     },
     searchAction(newValue){
       this.isLoading = true;
-      let searchResult
+      this.listRendered = [];
+      
       if(newValue.trim()){
-        searchResult = this.ethinics.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
-        this.listRendered = searchResult.slice(0, this.pageSize + 1);
+        this.ethinics = this.ethinics.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
       } else {
-        searchResult = this.ethinics
-        this.listRendered = searchResult.slice(1, this.pageSize + 1);
+        this.ethinics = this.cloneFull
+        this.ethinics.shift()
       }
       setTimeout(() =>{
+        this.listRendered = this.ethinics.slice(0, this.pageSize );
         this.isLoading = false;
       },500)
-      
-    },
+    },500),
     showOrHideDetailLocation(show) {
       this.showLocations = show;
       this.isEdit = false;
@@ -321,6 +322,7 @@ export default {
     this.isLoading = true;
     await axios.get("http://api.nosomovo.xyz/ethnic/getalllist").then((res) => {
       me.ethinics = res.data;
+      me.cloneFull = res.data
       this.listRendered = this.ethinics.slice(1, this.pageSize + 1);
       this.isLoading = false;
     });

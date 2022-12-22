@@ -190,7 +190,7 @@
                 <div class="flex">
                   <a class="item-author text-color" data-pjax-state="">Giới tính</a>
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ doctor.gender }}
+                    {{ doctor.gender == 'woman' ? 'Nữ' : 'Nam' }}
                   </div>
                 </div>
                 <div class="flex">
@@ -376,7 +376,8 @@ export default {
       this.showOrHideDialog(true);
     },
   },
-  async mounted() {
+  async created() {
+    console.log(this.accessToken);
     const me = this;
     await axios
       .get("http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null", {

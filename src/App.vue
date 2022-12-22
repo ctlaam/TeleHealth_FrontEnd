@@ -10,6 +10,7 @@ import axios from "axios";
 
 export default {
   async created() {
+    console.log(123);
     const me = this;
     if (
       localStorage.getItem("usernameTele") &&
@@ -22,9 +23,10 @@ export default {
       let user = null;
       await axios
         .post("http://127.0.0.1:8000/auth/login/", accountLoggin)
-        .then((result) => {
+        .then(async (result) => {
           user = result.data.data;
-          me.$store.dispatch("login", user);
+          await me.$store.dispatch("login", user);
+          console.log(123);
         })
         .catch((err) => {
           console.log(err);

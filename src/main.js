@@ -31,7 +31,6 @@ import LungVolumn3d from "./view/TLC/LungVolumn3d.vue"
 import { DatePicker } from "ant-design-vue";
 import Antd from 'ant-design-vue/es';
 import 'ant-design-vue/dist/antd.css';
-
 const abc = [
   { path: "/", redirect: "/content/maincontent/dashboard" },
   {
@@ -106,3 +105,4 @@ app.config.globalProperties.TeleHealthEnum = TeleHealthEnum;
 app.use(router);
 app.use(store);
 app.mount("#app");
+window._ = require('lodash');
