@@ -119,7 +119,7 @@
                     <select
                       name="country"
                       id=""
-                      v-model="doctorProfile.country"
+                      v-model="doctorProfile.address.country"
                       class="form-control"
                       disabled
                     >
@@ -143,7 +143,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.province"
+                      v-model="doctorProfile.address.province"
                       class="form-control"
                       disabled
                     >
@@ -167,7 +167,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.district"
+                      v-model="doctorProfile.address.district"
                       class="form-control"
                       disabled
                     >
@@ -191,7 +191,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.ward"
+                      v-model="doctorProfile.address.ward"
                       class="form-control"
                     >
                       <option
@@ -260,10 +260,12 @@ export default {
         gender: "",
         unsignedName: "",
         phone: "",
-        country: "",
-        ward: "",
-        district: "",
-        province: "",
+        address: {
+          country: "",
+          ward: "",
+          district: "",
+          province: "",
+        },
         detail_address: "",
       },
     };
@@ -300,8 +302,8 @@ export default {
   created() {
     const me = this;
     me.address.cities = ["Hà Nội"];
-    me.address.wards = ["Bạch Mai"];
-    me.address.districts = ["Giải Phóng"];
+    me.address.wards = ["Bạch Mai","abc"];
+    me.address.districts = ["Giải Phóng","Thanh Xuân"];
     me.address.countries = ["Việt Nam", "Anh"];
     me.ethnics = ["Kinh"];
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {

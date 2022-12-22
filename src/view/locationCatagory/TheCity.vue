@@ -294,6 +294,7 @@ export default {
       showLocations: false,
       cities: [],
       listRendered: [],
+      cloneFull:[],
       dataLocation: {},
       isEdit: false,
     };
@@ -306,13 +307,14 @@ export default {
       this.dataLocation = payload;
       console.log(payload);
     },
-    searchAction(newValue){
+    searchAction:_.debounce(async function (newValue) {
       const me = this;
-      let url = "https://provinces.open-api.vn/api/p"
+      this.isLoading = true;
+      this.listRendered = [];
       if(newValue.trim()){
         this.cities = this.cities.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
       } else {
-        this.cities = this.cloneFull
+        me.cities = me.cloneFull
       }
       setTimeout(() =>{
         this.listRendered = this.cities.slice(0, this.pageSize );

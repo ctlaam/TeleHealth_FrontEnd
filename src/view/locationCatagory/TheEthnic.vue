@@ -274,6 +274,7 @@ export default {
       isLoading:false,
       isEdit: false,
       dataLocation: {},
+      cloneFull:[],
     };
   },
   methods: {
@@ -282,15 +283,15 @@ export default {
       this.dataLocation = payload;
       this.showLocations = true;
     },
-    searchAction(newValue){
+    searchAction:_.debounce(async function (newValue) {
+      const me = this;
       this.isLoading = true;
       this.listRendered = [];
-      
       if(newValue.trim()){
         this.ethinics = this.ethinics.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
       } else {
-        this.ethinics = this.cloneFull
-        this.ethinics.shift()
+        me.ethinics = me.cloneFull
+        me.ethinics.shift()
       }
       setTimeout(() =>{
         this.listRendered = this.ethinics.slice(0, this.pageSize );

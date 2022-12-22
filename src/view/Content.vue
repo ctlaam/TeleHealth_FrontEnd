@@ -30,7 +30,7 @@ export default {
     const me = this;
     setTimeout(() => {
       me.isLoading = false;
-    }, 5000);
+    }, 500);
   },
 };
 </script>

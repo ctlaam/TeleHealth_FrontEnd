@@ -2,6 +2,7 @@
   <div
     class="dialog-form doctor-form-detail"
     :class="{ 'show-doctor-detail': isShow }"
+    style="z-index:100"
   >
     <div id="cardDoctor" class="card">
       <div class="card-header" style="font-size: 16px">
@@ -116,7 +117,7 @@
                     <select
                       name="country"
                       id=""
-                      v-model="doctorProfile.country"
+                      v-model="doctorProfile.address.country"
                       class="form-control"
                       @change="handleCountryChange"
                     >
@@ -143,7 +144,7 @@
                     <select
                       name="city"
                       id="city"
-                      v-model="doctorProfile.province"
+                      v-model="doctorProfile.address.province"
                       class="form-control"
                       @change="handleCityChange"
                     >
@@ -170,7 +171,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.district"
+                      v-model="doctorProfile.address.district"
                       class="form-control"
                       @change="handleDistrictChange"
                     >
@@ -197,7 +198,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.ward"
+                      v-model="doctorProfile.address.ward"
                       class="form-control"
                       @change="handleWardChange"
                     >
@@ -270,10 +271,12 @@ export default {
         gender: "",
         unsignedName: "",
         phone: "",
-        country: "",
-        ward: "",
-        district: "",
-        province: "",
+        address: {
+          country: "",
+          ward: "",
+          district: "",
+          province: "",
+        },
         detail_address: "",
       },
     };
@@ -408,6 +411,7 @@ export default {
   width: 720px;
   height: 490px;
   direction: ltr;
+  
 }
 #cardDoctor button {
   border: none;

@@ -114,11 +114,11 @@
           ></span>
         </form>
       </div>
-      <ul v-if="true" class="nav navbar-menu order-1 order-lg-2">
+      <ul v-if="isAuthenticated" class="nav navbar-menu order-1 order-lg-2">
         <a-dropdown v-if="true">
           <template #overlay>
             <a-menu style="min-width: 140px">
-              <a-menu-item key="1" @click="updateProfileDoctor">
+              <a-menu-item key="1" @click="updateProfileDoctor" v-if="role == 'role1'">
                 <UserOutlined />
                 Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
               </a-menu-item>
@@ -136,7 +136,7 @@
         </a-dropdown>
       </ul>
       <router-link
-        v-if="false"
+        v-if="!isAuthenticated"
         class="nav navbar-menu order-1 order-lg-2"
         to="/auth"
         ><a-button type="primary">Đăng nhập</a-button></router-link
@@ -146,7 +146,7 @@
       :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
       :formMode="formMode"
-      :inforDoctor="{}"
+      :inforDoctor="inforDoctor"
     ></FormPersonalDoctor>
   </div>
   <!-- End Header -->
@@ -161,7 +161,19 @@ export default {
   },
   data() {
     return {
-      inforDoctor: {},
+      inforDoctor: {
+        name: "",
+        gender: "",
+        unsignedName: "",
+        phone: "",
+        address: {
+          country: "",
+          ward: "",
+          district: "",
+          province: "",
+        },
+        detail_address: "",
+      },
       isShowDialog: false,
     };
   },

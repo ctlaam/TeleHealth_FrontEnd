@@ -196,7 +196,7 @@
                     >Giới tính</a
                   >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ patient.gender }}
+                    {{ patient.gender === 'man' ? 'Nam' : 'Nữ' }}
                   </div>
                 </div>
                 <div class="flex">
@@ -370,7 +370,27 @@ export default {
       idPatient: "",
       patients: "",
       listResults: [],
-      patientSelected: "",
+      patientSelected: {
+        email: "",
+        password: "",
+        username: "",
+        name: "",
+        unsignedName: "",
+        gender: "",
+        ethnic: "",
+        phone: "",
+        dateOfBirth: "",
+        insuranceCode: "",
+        identification: "",
+        address: {
+          country: "",
+          province: "",
+          district: "",
+          ward: "",
+        },
+        contact: "",
+        detail_address: "",
+      },
       formMode: "",
     };
   },

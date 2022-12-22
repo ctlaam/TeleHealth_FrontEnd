@@ -39,3 +39,14 @@ a.router-link-active.router-link-exact-active {
 button.ant-btn {
   margin-left: 10px;
 }
+.apexcharts-toolbar {
+  position: absolute;
+  z-index: 1 !important;
+  max-width: 176px;
+  text-align: right;
+  border-radius: 3px;
+  padding: 0 6px 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

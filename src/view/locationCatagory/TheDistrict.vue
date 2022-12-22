@@ -317,6 +317,7 @@ export default {
       isLoading: false,
       isEdit: false,
       dataLocation: {},
+      cloneFull:[],
     };
   },
   methods: {
@@ -326,13 +327,14 @@ export default {
       this.showLocations = true;
     },
 
-    async searchAction(newValue) {
+    searchAction:_.debounce(async function (newValue) {
+      const me = this;
       this.isLoading = true;
       this.listRendered = [];
       if(newValue.trim()){
         this.districts = this.districts.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
       } else {
-        this.districts = this.cloneFull
+        me.districts = me.cloneFull
       }
       setTimeout(() =>{
         this.listRendered = this.districts.slice(0, this.pageSize );

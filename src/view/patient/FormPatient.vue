@@ -110,7 +110,7 @@
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio1"
-                value="nu"
+                value="woman"
                 v-model="patient.gender"
               />
             </div>
@@ -122,7 +122,7 @@
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio2"
-                value="nam"
+                value="man"
                 v-model="patient.gender"
               />
             </div>
@@ -133,7 +133,7 @@
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio3"
-                value="khac"
+                value="orther"
                 v-model="patient.gender"
               />
             </div>
@@ -709,10 +709,10 @@ export default {
     const me = this;
     me.ethnics = ["Kinh"];
     // if (this.formMode == "add") {
-      // this.patient.country = "Việt Nam";
-      // this.patient.province = "Thành phố Hà Nội";
-      // this.patient.district = "Quận Ba Đình";
-      // this.patient.ward = "Phường Đội Cấn";
+    // this.patient.country = "Việt Nam";
+    // this.patient.province = "Thành phố Hà Nội";
+    // this.patient.district = "Quận Ba Đình";
+    // this.patient.ward = "Phường Đội Cấn";
     // }
 
     // me.address.cities = ["Hà Nội"];

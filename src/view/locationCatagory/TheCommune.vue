@@ -318,6 +318,7 @@ export default {
       isLoading: false,
       isEdit: false,
       dataLocation: {},
+      cloneFull:[]
     };
   },
   methods: {
@@ -326,13 +327,14 @@ export default {
       this.dataLocation = payload;
       this.showLocations = true;
     },
-    async searchAction(newValue) {
+    searchAction:_.debounce(async function (newValue) {
+      const me = this;
       this.isLoading = true;
       this.listRendered = [];
       if(newValue.trim()){
         this.wards = this.wards.filter(item => item.name.toLowerCase().search(newValue.toLowerCase()) != -1)
       } else {
-        this.wards = this.cloneFull
+        me.wards = me.cloneFull
       }
       setTimeout(() =>{
         this.listRendered = this.wards.slice(0, this.pageSize );
