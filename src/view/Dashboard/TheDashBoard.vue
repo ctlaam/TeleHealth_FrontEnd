@@ -155,59 +155,73 @@ export default {
   },
   async created() {
     const me = this;
+    let urlRole = {};
     // bac si
-    await axios
-      .get(
-        "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
-        {
+    if (this.role == "role3") {
+      urlRole = {
+        urlDoctor:
+          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        urlPatient:
+          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
+        urlDepartment: "http://localhost:8000/medical_unit/",
+      };
+    } else if (this.role == "role1") {
+      urlRole = {
+        urlDoctor:
+          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        urlPatient:
+          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
+        urlDepartment: "http://localhost:8000/medical_unit/",
+      };
+    }
+    if (this.role != "role2" && this.role) {
+      await axios
+        .get(urlRole.urlDoctor, {
           headers: { Authorization: `Bearer ${me.accessToken}` },
-        }
-      )
-      .then(function (res) {
-        me.doctors = res.data;
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // beenhj nhan
-    await axios
-      .get(
-        `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
-        {
+        })
+        .then(function (res) {
+          me.doctors = res.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      // beenhj nhan
+      await axios
+        .get(urlRole.urlPatient, {
           headers: { Authorization: `Bearer ${me.accessToken}` },
-        }
-      )
-      .then(function (res) {
-        me.patients = res.data;
-        console.log(me.patients);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // benh vienn
-    await axios
-      .get("http://localhost:8000/medical_unit/", {
-        headers: { Authorization: `Bearer ${me.accessToken}` },
-      })
-      .then((res) => {
-        console.log(res);
-        me.departments = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .then(function (res) {
+          me.patients = res.data;
+          console.log(me.patients);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      // benh vienn
+      await axios
+        .get(urlRole.urlDepartment, {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        })
+        .then((res) => {
+          console.log(res);
+          me.departments = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    this.series = [
-      {
-        data: [me.doctors.length, me.patients.length, me.departments.length],
-      },
-    ];
+      this.series = [
+        {
+          data: [me.doctors.length, me.patients.length, me.departments.length],
+        },
+      ];
 
-    this.pieChartSeries = [
-      me.doctors.length,
-      me.patients.length,
-      me.departments.length,
-    ];
+      this.pieChartSeries = [
+        me.doctors.length,
+        me.patients.length,
+        me.departments.length,
+      ];
+    }
   },
 };
 </script>

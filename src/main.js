@@ -4,6 +4,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 // Dashboard
 import Dasboard from "./view/Dashboard/TheDashBoard.vue";
+import Calendar from "./view/Calendar/TheCalendar.vue";
 import Dicom from "./view/Dashboard/TheViewDicom.vue";
 // Patient
 import Patient from "./view/patient/ThePatient.vue";
@@ -42,6 +43,7 @@ const abc = [
         name: "TheContent",
         component: TheContent,
         children: [
+          { path: "calendar", name: "calendar", component: Calendar },
           { path: "dashboard", name: "Dasboard", component: Dasboard },
           { path: "viewdicom", name: "Dicom", component: Dicom },
           {

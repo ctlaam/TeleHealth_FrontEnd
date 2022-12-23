@@ -86,10 +86,7 @@
                 <div class="input-group">
                   <input
                     type="text"
-                    class="
-                      form-control form-control-theme form-control-sm
-                      search
-                    "
+                    class="form-control form-control-theme form-control-sm search"
                     placeholder="Search"
                     required=""
                   />
@@ -560,6 +557,27 @@ export default {
     },
     btnAddOnClick() {
       this.formMode = "add";
+      this.patientSelected = {
+        email: "",
+        password: "",
+        username: "",
+        name: "",
+        unsignedName: "",
+        gender: "",
+        ethnic: "",
+        phone: "",
+        dateOfBirth: "",
+        insuranceCode: "",
+        identification: "",
+        address: {
+          country: "",
+          province: "",
+          district: "",
+          ward: "",
+        },
+        contact: "",
+        detail_address: "",
+      };
       this.showOrHideDialog(true);
     },
     /**
@@ -605,41 +623,79 @@ export default {
   },
   async created() {
     const me = this;
-    await axios
-      .get(
-        `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
-        {
-          headers: { Authorization: `Bearer ${me.accessToken}` },
-        }
-      )
-      .then(function (res) {
-        me.patients = res.data;
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    // Danh sách bác sĩ
-    await axios
-      .get(
-        "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
-        {
-          headers: { Authorization: `Bearer ${me.accessToken}` },
-        }
-      )
-      .then(function (res) {
-        console.log(res.data);
-        res.data.forEach((item) => {
-          me.optionDoctor.push({
-            value: `${item.name}  --  email: ${item.email}`,
-            id: item.id,
-          });
+    if (this.role == "role3") {
+      await axios
+        .get(
+          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          me.patients = res.data;
+        })
+        .catch(function (err) {
+          console.log(err);
         });
-        console.log(me.optionDoctor);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+
+      // Danh sách bác sĩ
+      await axios
+        .get(
+          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          console.log(res.data);
+          res.data.forEach((item) => {
+            me.optionDoctor.push({
+              value: `${item.name}  --  email: ${item.email}`,
+              id: item.id,
+            });
+          });
+          console.log(me.optionDoctor);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    } else if(this.role == 'role1'){
+      await axios
+        .get(
+          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          me.patients = res.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      // // Danh sách bác sĩ
+      // await axios
+      //   .get(
+      //     "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+      //     {
+      //       headers: { Authorization: `Bearer ${me.accessToken}` },
+      //     }
+      //   )
+      //   .then(function (res) {
+      //     console.log(res.data);
+      //     res.data.forEach((item) => {
+      //       me.optionDoctor.push({
+      //         value: `${item.name}  --  email: ${item.email}`,
+      //         id: item.id,
+      //       });
+      //     });
+      //     console.log(me.optionDoctor);
+      //   })
+      //   .catch(function (err) {
+      //     console.log(err);
+      //   });
+    }
   },
 };
 </script>

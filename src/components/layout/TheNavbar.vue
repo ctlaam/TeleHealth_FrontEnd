@@ -186,7 +186,11 @@
                 </a>
               </li>
             </router-link>
-            <li class="" v-if="role != 'role2' && role">
+            <router-link
+              to="/content/maincontent/calendar"
+               v-if="role != 'role2' && role"
+            >
+            <li class="" >
               <a href="app.calendar.html" data-pjax-state="load">
                 <span class="nav-icon text-info"
                   ><img
@@ -198,6 +202,7 @@
                 <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
               </a>
             </li>
+            </router-link>
             <router-link
               to="/content/maincontent/viewdicom"
               v-if="role != 'role2' && role"
