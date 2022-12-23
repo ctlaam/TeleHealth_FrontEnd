@@ -1,8 +1,8 @@
 <template>
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
-    <div class="card card-locations" >
+    <div class="card card-locations">
       <div class="card-header">
-        <strong>Thêm đất nước</strong>
+        <strong>Chi tiết đất nước</strong>
         <div
           @click="closeLocations"
           id="closeFormLocation"
@@ -28,71 +28,87 @@
       <div class="card-body">
         <form>
           <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label">Mã</label>
-            <div class="col-sm-9">
-              <input
-                type="email"
-                class="form-control"
-                id="inputEmail3"
-                placeholder="001"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên dân tộc</label
+              >Mã quốc gia</label
             >
             <div class="col-sm-9">
               <input
                 type="email"
                 class="form-control"
                 id="inputEmail3"
-                placeholder="Kinh"
+                v-model="country.alpha3Code"
+                disabled
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Đất nước</label
+              >Tên quốc gia</label
             >
-            <div class="input-group mb-3" id="dropdown-input-location">
+            <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
-                aria-label="Text input with dropdown button"
+                id="inputEmail3"
+                v-model="country.name"
+                disabled
               />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary dropdown-toggle dropdown"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                   Xem
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div role="separator" class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </div>
             </div>
           </div>
-                  <div class="form-group row">
-          <div class="flex-save-cancle">
-            <button
-              @click="btnSaveOnClick"
-              type="submit"
-              class="btn btn-primary mt-1"
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Múi giờ</label
             >
-              Lưu
-            </button>
-            <button @click="closeLocations">Hủy</button>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                v-model="country.timezones"
+                disabled
+              />
+            </div>
           </div>
-        </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Khu vực</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                v-model="country.subregion"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Thủ đô</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                v-model="country.capital"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row" v-if="false">
+            <div class="flex-save-cancle">
+              <button
+                @click="btnSaveOnClick"
+                type="submit"
+                class="btn btn-primary mt-1"
+              >
+                Lưu
+              </button>
+              <button @click="closeLocations">Hủy</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -101,13 +117,28 @@
 
 <script>
 export default {
-  props: ["showLocations"],
+  props: ["showLocations", "isEdit", "dataLocation"],
+  watch: {
+    dataLocation: {
+      handler(value) {
+        this.country = value;
+      },
+      deep: true,
+    },
+    isEdit(value) {
+      if (!value) {
+        this.country = {};
+      }
+    },
+  },
   data() {
-    return {};
+    return {
+      country: {},
+    };
   },
   methods: {
     closeLocations() {
-      this.$emit("showOrHideDetailLocation",false);
+      this.$emit("showOrHideDetailLocation", false);
     },
   },
 };

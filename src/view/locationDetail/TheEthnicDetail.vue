@@ -36,6 +36,7 @@
                 class="form-control"
                 id="inputEmail3"
                 v-model="ethnic.id"
+                disabled
               />
             </div>
           </div>
@@ -50,6 +51,7 @@
                 id="inputEmail3"
                 placeholder="Kinh"
                 v-model="ethnic.name"
+                disabled
               />
             </div>
           </div>

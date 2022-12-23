@@ -58,7 +58,12 @@
               >
                 <table
                   id="datatable"
-                  class="table table-theme table-row v-middle dataTable no-footer"
+                  class="
+                    table table-theme table-row
+                    v-middle
+                    dataTable
+                    no-footer
+                  "
                   role="grid"
                   aria-describedby="datatable_info"
                 >
@@ -167,7 +172,7 @@
                             style="width: 60px; text-align: center"
                           >
                             <template #overlay>
-                              <a-menu @click="detailDoctor(doctor)">
+                              <a-menu @click="handleDetail(country)">
                                 <a-menu-item key="1">
                                   <UserOutlined />
                                   Thông tin chi tiết
@@ -295,6 +300,8 @@
     </div>
     <TheCountryDetail
       :showLocations="showLocations"
+      :is-edit="isEdit"
+      :data-location="dataLocation"
       @showOrHideDetailLocation="showOrHideDetailLocation"
     ></TheCountryDetail>
   </section>
@@ -316,9 +323,16 @@ export default {
       current: 1,
       listRendered: [],
       isLoading: false,
+      dataLocation: {},
+      isEdit: false,
     };
   },
   methods: {
+    handleDetail(payload) {
+      this.showLocations = true;
+      this.isEdit = true;
+      this.dataLocation = payload;
+    },
     searchAction: _.debounce(async function (newValue) {
       try {
         this.isLoading = true;

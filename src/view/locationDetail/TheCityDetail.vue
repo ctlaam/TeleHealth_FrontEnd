@@ -37,6 +37,7 @@
                 id="inputEmail3"
                 placeholder="001"
                 v-model="city.code"
+                disabled
               />
             </div>
           </div>
@@ -51,6 +52,7 @@
                 id="inputEmail3"
                 placeholder="Kinh"
                 v-model="city.name"
+                disabled
               />
             </div>
           </div>
@@ -65,6 +67,7 @@
                 id="inputEmail3"
                 placeholder="Kinh"
                 v-model="city.codename"
+                disabled
               />
             </div>
           </div>
@@ -79,6 +82,7 @@
                 id="inputEmail3"
                 placeholder="Kinh"
                 v-model="city.division_type"
+                disabled
               />
             </div>
           </div>

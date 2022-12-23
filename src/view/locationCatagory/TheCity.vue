@@ -305,7 +305,6 @@ export default {
       this.showLocations = true;
       this.isEdit = true;
       this.dataLocation = payload;
-      console.log(payload);
     },
     searchAction:_.debounce(async function (newValue) {
       const me = this;
