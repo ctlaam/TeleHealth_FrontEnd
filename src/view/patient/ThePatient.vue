@@ -15,6 +15,7 @@
         <div class="d-flex flex-column flex" id="user-list">
           <div class="p-3">
             <div class="toolbar">
+              <!-- @click="selecPatient" -->
               <button
                 @click="btnAddOnClick"
                 id="addPatient"
@@ -196,7 +197,7 @@
                     >Giới tính</a
                   >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ patient.gender === 'man' ? 'Nam' : 'Nữ' }}
+                    {{ patient.gender === "man" ? "Nam" : "Nữ" }}
                   </div>
                 </div>
                 <div class="flex">
@@ -459,6 +460,27 @@ export default {
     selecPatient(patient) {
       this.formMode = "edit";
       this.patientSelected = patient;
+      // this.patientSelected = {
+      //   email: "abc@gmail.com",
+      //   password: "aaaaaa",
+      //   username: "aaaaaa",
+      //   name: "aaaaaa",
+      //   unsignedName: "aaaaaa",
+      //   gender: "woman",
+      //   ethnic: "Kinh",
+      //   phone: "",
+      //   dateOfBirth: "",
+      //   insuranceCode: "",
+      //   identification: "",
+      //   address: {
+      //     country: "Việt Nam",
+      //     province: "Thành phố Hà Nội",
+      //     district: "Quận Ba Đình",
+      //     ward: "",
+      //   },
+      //   contact: "",
+      //   detail_address: "",
+      // };
       this.showOrHideDialog(true);
     },
     assignResult(result) {
