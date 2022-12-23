@@ -2,7 +2,7 @@
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
     <div class="card card-locations" >
       <div class="card-header">
-        <strong v-if="isEdit">Chi tiết xã/phường</strong>
+        <strong v-if="isEdit">Chi tiết dân tộc</strong>
         <strong v-else>Thêm xã/phường</strong>
         <div
           @click="closeLocations"
@@ -32,10 +32,10 @@
             <label for="inputEmail3" class="col-sm-3 col-form-label">Mã</label>
             <div class="col-sm-9">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="inputEmail3"
-                placeholder="001"
+                v-model="ethnic.id"
               />
             </div>
           </div>
@@ -45,14 +45,15 @@
             >
             <div class="col-sm-9">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Kinh"
+                v-model="ethnic.name"
               />
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Đất nước</label
             >
@@ -81,7 +82,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="form-group row" v-if="false">
             <div class="flex-save-cancle">
             <button
