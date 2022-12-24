@@ -155,7 +155,7 @@ export default {
 .card-header {
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
+  /* flex-direction: row-reverse; */
   justify-content: space-between;
 }
 div#closeFormLocation {
@@ -163,7 +163,7 @@ div#closeFormLocation {
   position: relative;
   height: 10px;
   left: 115px;
-  top: -10px;
+  top: -13px;
 }
 
 .dialog-form-location {
@@ -215,13 +215,13 @@ div#dropdown-input-location {
   width: 450px;
   margin-right: 15px;
 }
-div#closeFormLocation {
+/* div#closeFormLocation {
   cursor: pointer;
   position: absolute;
   right: -130px;
   transform: scale(1.3);
   opacity: 0.7;
-}
+} */
 div#closeFormLocation:hover {
   opacity: 1;
 }

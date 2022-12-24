@@ -186,9 +186,9 @@
                 </a>
               </li>
             </router-link>
+               <!-- v-if="role != 'role2' && role" -->
             <router-link
               to="/content/maincontent/calendar"
-               v-if="role != 'role2' && role"
             >
             <li class="" >
               <a href="app.calendar.html" data-pjax-state="load">

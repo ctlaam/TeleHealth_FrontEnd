@@ -132,7 +132,7 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row">
+            <div class="list list-row" v-if="departments.length > 0">
               <div
                 class="list-item"
                 data-id="2"
@@ -220,7 +220,10 @@
                     data-pjax-state=""
                     >Địa chỉ</a
                   >
-                  <div class="item-mail text-muted h-1x d-none d-sm-block" style="width:300px">
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 300px"
+                  >
                     {{ department.detail_address }}
                   </div>
                 </div>
@@ -246,6 +249,9 @@
                 </div>
               </div>
             </div>
+            <template v-else>
+              <a-empty style="margin-top: 200" description="Không có dữ liệu" />
+            </template>
           </div>
           <div class="pagination">
             <a-pagination

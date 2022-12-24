@@ -150,7 +150,7 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row">
+            <div class="list list-row" v-if="patients.length > 0">
               <div
                 class="list-item"
                 data-id="2"
@@ -293,6 +293,9 @@
                 </div>
               </div>
             </div>
+            <template v-else>
+              <a-empty style="margin-top: 200" description="Không có dữ liệu" />
+            </template>
           </div>
           <a-modal
             style="height: 200px"
@@ -659,7 +662,7 @@ export default {
         .catch(function (err) {
           console.log(err);
         });
-    } else if(this.role == 'role1'){
+    } else if (this.role == "role1") {
       await axios
         .get(
           `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,

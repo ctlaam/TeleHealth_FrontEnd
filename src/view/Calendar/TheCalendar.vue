@@ -4,6 +4,7 @@
       <a-button
         type="primary"
         style="top: 12px; position: absolute; right: 180px"
+        @click="showOrHideForm(true)"
         >Tạo hội chẩn +</a-button
       >
       <a-calendar
@@ -44,21 +45,43 @@
           >Thoát</a-button
         >
       </a-modal>
+      <TheFormCalendar :isShow="isShow" @showOrHideForm="showOrHideForm" />
     </div>
   </div>
 </template>
 
 <script>
+import TheFormCalendar from "../Calendar/TheFormCalendar.vue";
+import axios from "axios";
+
 export default {
+  components: {
+    TheFormCalendar,
+  },
   data() {
     return {
+      isShow: false,
       valueCalendar: "",
       schedules: [],
       visibleModalSchedule: false,
       oldDate: new Date(),
     };
   },
+  computed: {
+    accessToken() {
+      return this.$store.getters.accessToken;
+    },
+    email() {
+      return this.$store.getters.email;
+    },
+    role() {
+      return this.$store.getters["role"];
+    },
+  },
   methods: {
+    showOrHideForm(bool) {
+      this.isShow = bool;
+    },
     onPanelChange(value, mode) {
       this.visibleModalSchedule = false;
     },

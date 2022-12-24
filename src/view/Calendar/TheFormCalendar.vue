@@ -1,15 +1,15 @@
 <template>
-  <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
+  <div class="dialog-form-location" v-if="isShow">
     <div class="card card-locations">
       <div class="card-header">
-        <strong v-if="isEdit">Chi tiết dân tộc</strong>
-        <strong v-else>Thêm xã/phường</strong>
+        <strong>Thêm mới hội chẩn</strong>
         <div
-          @click="closeLocations"
+          @click="closeForm"
           id="closeFormLocation"
           class="col-6 col-sm-3 py-3"
         >
           <svg
+            @click="closeForm"
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -29,72 +29,81 @@
       <div class="card-body">
         <form>
           <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label">Mã</label>
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Tên hội chuẩn</label
+            >
             <div class="col-sm-9">
               <input
-                type="text"
+                type="email"
                 class="form-control"
                 id="inputEmail3"
-                v-model="ethnic.id"
                 disabled
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên dân tộc</label
+              >Tên quốc gia</label
             >
             <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
                 id="inputEmail3"
-                placeholder="Kinh"
-                v-model="ethnic.name"
                 disabled
               />
             </div>
           </div>
-          <!-- <div class="form-group row">
+          <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Đất nước</label
+              >Múi giờ</label
             >
-            <div class="input-group mb-3" id="dropdown-input-location">
+            <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
-                aria-label="Text input with dropdown button"
+                id="inputEmail3"
+                disabled
               />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary dropdown-toggle dropdown"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                   Xem
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div role="separator" class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </div>
             </div>
-          </div> -->
-          <div class="form-group row" v-if="false">
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Khu vực</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Thủ đô</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row" >
             <div class="flex-save-cancle">
               <button
                 @click="btnSaveOnClick"
                 type="submit"
                 class="btn btn-primary mt-1"
+                style="min-width:100px"
               >
-                Lưu
+                Thêm mới
               </button>
-              <button @click="closeLocations">Hủy</button>
+              <button @click="closeForm">Hủy</button>
             </div>
           </div>
         </form>
@@ -105,28 +114,19 @@
 
 <script>
 export default {
-  props: ["showLocations", "isEdit", "dataLocation"],
-  watch: {
-    dataLocation: {
-      handler(value) {
-        this.ethnic = value;
-      },
-      deep: true,
-    },
-    isEdit(value) {
-      if (!value) {
-        this.ethnic = {};
-      }
-    },
-  },
+  props: ["showLocations", "isEdit", "dataLocation", "isShow"],
+
   data() {
     return {
-      ethnic: {},
+      
+      dataSchedule: {},
     };
   },
   methods: {
-    closeLocations() {
-      this.$emit("showOrHideDetailLocation", false);
+    btnSaveOnClick() {},
+    closeForm() {
+      this.dataSchedule = {};
+      this.$emit("showOrHideForm", false);
     },
   },
 };
@@ -143,15 +143,18 @@ export default {
 .card-header {
   display: flex;
   align-items: center;
-  /* flex-direction: row-reverse; */
   justify-content: space-between;
 }
 div#closeFormLocation {
-  /* width: 40px; */
+  cursor: pointer;
   position: relative;
   height: 10px;
   left: 115px;
   top: -13px;
+  opacity: 0.7;
+}
+div#closeFormLocation:hover {
+  opacity: 1;
 }
 
 .dialog-form-location {
@@ -165,7 +168,6 @@ div#closeFormLocation {
   align-items: center;
   justify-content: center;
   display: flex;
-  display: none;
 }
 .card-locations button {
   border: none;
@@ -205,17 +207,19 @@ div#dropdown-input-location {
 }
 /* div#closeFormLocation {
   cursor: pointer;
-  position: absolute;
-  right: -130px;
+  position: relative;
+  top: -18px;
   transform: scale(1.3);
   opacity: 0.7;
 } */
-div#closeFormLocation:hover {
+/* div#closeFormLocation:hover {
   opacity: 1;
-}
+} */
 </style>
+
 <style lang="css">
-div#closeFormLocation:hover {
-  cursor: pointer;
+.dialog-form-location {
+  direction: ltr;
 }
+
 </style>
