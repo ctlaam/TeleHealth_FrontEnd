@@ -37,69 +37,67 @@
                 type="email"
                 class="form-control"
                 id="inputEmail3"
-                disabled
+                placeholder="Ex: Hội chuẩn số 1"
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên quốc gia</label
+              >Tiêu đề</label
             >
             <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
                 id="inputEmail3"
-                disabled
+                placeholder="Ex: Hội chuẩn số 1"
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Múi giờ</label
+              >Thời gian</label
+            >
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="inputEmail3" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Người tham gia</label
+            >
+            <div class="col-sm-9">
+              <a-select
+              class="calendar-select"
+                mode="tags"
+                style="width: 100%"
+                :token-separators="[',']"
+                @change="handleChange"
+                maxTagCount=3
+              >
+              </a-select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Link đính kèm</label
             >
             <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
                 id="inputEmail3"
-                disabled
+                placeholder="Ex:https://www.abc.com.vn/"
               />
             </div>
           </div>
           <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Khu vực</label
-            >
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail3"
-                disabled
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Thủ đô</label
-            >
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail3"
-                disabled
-              />
-            </div>
-          </div>
-          <div class="form-group row" >
             <div class="flex-save-cancle">
               <button
                 @click="btnSaveOnClick"
                 type="submit"
                 class="btn btn-primary mt-1"
-                style="min-width:100px"
+                style="min-width: 100px"
               >
                 Thêm mới
               </button>
@@ -118,7 +116,6 @@ export default {
 
   data() {
     return {
-      
       dataSchedule: {},
     };
   },
@@ -221,5 +218,7 @@ div#dropdown-input-location {
 .dialog-form-location {
   direction: ltr;
 }
-
+.rc-virtual-list {
+    display: none;
+}
 </style>
