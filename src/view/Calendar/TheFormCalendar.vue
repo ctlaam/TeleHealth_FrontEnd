@@ -68,12 +68,12 @@
             >
             <div class="col-sm-9">
               <a-select
-              class="calendar-select"
+                class="calendar-select"
                 mode="tags"
                 style="width: 100%"
                 :token-separators="[',']"
                 @change="handleChange"
-                maxTagCount=3
+                :max-tag-count="3"
               >
               </a-select>
             </div>
@@ -219,6 +219,6 @@ div#dropdown-input-location {
   direction: ltr;
 }
 .rc-virtual-list {
-    display: none;
+  display: none;
 }
 </style>
