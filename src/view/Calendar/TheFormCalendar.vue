@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="card-body">
-        <form>
+        <form v-on:submit.prevent>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Tên hội chuẩn</label
@@ -38,12 +38,13 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Ex: Hội chuẩn số 1"
+                v-model="formMeeting.meeting_title"
               />
             </div>
           </div>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tiêu đề</label
+              >Nội dung</label
             >
             <div class="col-sm-9">
               <input
@@ -51,15 +52,30 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Ex: Hội chuẩn số 1"
+                v-model="formMeeting.meeting_content"
               />
             </div>
           </div>
+          <!-- <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Thời gian bắt đầu</label
+            >
+            <div class="col-sm-9">
+              <a-date-picker size="medium" :show-time="{ format: 'HH:mm' }" />
+            </div>
+          </div> -->
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Thời gian</label
             >
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="inputEmail3" />
+              <a-range-picker
+                :format="'YYYY-MM-DD HH:mm'"
+                @change="onChangeDateTime"
+                :show-time="{ format: 'HH:mm' }"
+                style="width: 100%"
+                :disabledDate="disabledDate"
+              />
             </div>
           </div>
           <div class="form-group row">
@@ -72,8 +88,10 @@
                 mode="tags"
                 style="width: 100%"
                 :token-separators="[',']"
-                @change="handleChange"
-                :max-tag-count="3"
+                @select="handleChange"
+                :max-tag-count="5"
+                :value="valueOptions"
+                @deselect="deselect"
               >
               </a-select>
             </div>
@@ -88,6 +106,7 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Ex:https://www.abc.com.vn/"
+                v-model="formMeeting.url_file"
               />
             </div>
           </div>
@@ -111,16 +130,65 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   props: ["showLocations", "isEdit", "dataLocation", "isShow"],
 
   data() {
     return {
       dataSchedule: {},
+      valueOptions: [],
+      formMeeting: {
+        meeting_title: "",
+        meeting_time_start: "",
+        meeting_time_end: "",
+        meeting_content: "",
+        meeting_guest: [],
+        url_file: "",
+      },
     };
   },
   methods: {
-    btnSaveOnClick() {},
+    onChangeDateTime(value) {
+      this.formMeeting = {
+        ...this.formMeeting,
+        meeting_time_start: value[0].toISOString(),
+        meeting_time_end: value[1].toISOString(),
+      };
+    },
+    disabledDate(current) {
+      // Can not select days before today and today
+      //   return current && current < moment(this.startDate).subtract(2, 'day');
+      return current && current < moment().subtract(1, "days").endOf("day");
+    },
+    handleChange(value) {
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+        this.valueOptions.push({
+          value: value,
+        });
+      } else {
+        this.$message.warning("Email không hợp lệ !");
+      }
+    },
+    deselect(value) {
+      console.log(value);
+      this.valueOptions.filter((item) => item.value != value);
+      console.log(this.valueOptions);
+    },
+    btnSaveOnClick() {
+      const me = this;
+      this.valueOptions.forEach((item) => {
+        this.formMeeting.meeting_guest.push({
+          email: item.value,
+          displayName: "string",
+          optional: false,
+          responseStatus: "accepted",
+          organizer: true,
+        });
+      });
+      console.log(this.formMeeting);
+      // viết api
+    },
     closeForm() {
       this.dataSchedule = {};
       this.$emit("showOrHideForm", false);
@@ -161,7 +229,7 @@ div#closeFormLocation:hover {
   right: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10000;
+  z-index: 1000;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -218,7 +286,7 @@ div#dropdown-input-location {
 .dialog-form-location {
   direction: ltr;
 }
-.rc-virtual-list {
+/* .rc-virtual-list {
   display: none;
-}
+} */
 </style>

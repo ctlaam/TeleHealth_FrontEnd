@@ -6113,7 +6113,8 @@ span.anticon.anticon-left {
   display: flex;
   align-items: center;
 }
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
   border-color: #448bff !important;
   box-shadow: 0 0 0 2px rgb(24 144 255 / 20%);
   border-right-width: 1px;
@@ -6125,4 +6126,8 @@ span.anticon.anticon-left {
   border: 1px solid rgba(135, 150, 165, 0.15) !important;
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ant-message {
+  z-index: 99999 !important;
 }

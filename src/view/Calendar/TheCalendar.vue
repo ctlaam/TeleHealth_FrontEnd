@@ -37,7 +37,7 @@
         :footer="false"
         style="width: 600px; min-height: 500px"
       >
-        <p>12323123</p>
+        <p v-for="item in dataModal" :key="item.id">{{ item.meeting_title }}</p>
         <a-button
           style="float: right; position: absolute; bottom: 10px; right: 10px"
           class="btn-schedule"
@@ -64,7 +64,64 @@ export default {
       valueCalendar: "",
       schedules: [],
       visibleModalSchedule: false,
+      dataModal: [],
       oldDate: new Date(),
+      dataTest: [
+        {
+          id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+          meeting_title: "tiêu đề 1",
+          meeting_time_start: "2022-12-30T09:25:00+07:00",
+          meeting_time_end: "2022-12-28T10:25:00+07:00",
+          meeting_content: "reprehenderit Duis labore cillum",
+          calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+          calendar_url:
+            "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+          meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+          conclusion: null,
+          url_file:
+            "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+          is_valid: true,
+          created_at: "2022-12-26T23:44:43.124207+07:00",
+          update_at: "2022-12-26T23:44:43.124207+07:00",
+          meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+        },
+        {
+          id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+          meeting_title: "tiêu đề 12",
+          meeting_time_start: "2022-12-28T09:25:00+07:00",
+          meeting_time_end: "2022-12-28T10:25:00+07:00",
+          meeting_content: "reprehenderit Duis labore cillum",
+          calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+          calendar_url:
+            "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+          meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+          conclusion: null,
+          url_file:
+            "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+          is_valid: true,
+          created_at: "2022-12-26T23:44:43.124207+07:00",
+          update_at: "2022-12-26T23:44:43.124207+07:00",
+          meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+        },
+        {
+          id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+          meeting_title: "tiêu đề 113",
+          meeting_time_start: "2022-12-29T09:25:00+07:00",
+          meeting_time_end: "2022-12-28T10:25:00+07:00",
+          meeting_content: "reprehenderit Duis labore cillum",
+          calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+          calendar_url:
+            "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+          meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+          conclusion: null,
+          url_file:
+            "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+          is_valid: true,
+          created_at: "2022-12-26T23:44:43.124207+07:00",
+          update_at: "2022-12-26T23:44:43.124207+07:00",
+          meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+        },
+      ],
     };
   },
   computed: {
@@ -90,42 +147,37 @@ export default {
         value.month() + 1 + "-" + value.date() + "-" + +value.year()
       );
       if (this.oldDate.getMonth() == dateSelected.getMonth()) {
-        this.visibleModalSchedule = true;
+        this.dataModal = [];
+        this.dataTest.forEach((item) => {
+          if (
+            value.date() == new Date(item.meeting_time_start).getDate() &&
+            value.month() == new Date(item.meeting_time_start).getMonth()
+          ) {
+            this.dataModal.push(item);
+          }
+        });
+        if (this.dataModal.length > 0) {
+          this.visibleModalSchedule = true;
+        } else {
+          this.$message.warning("Không có lịch hội chuẩn");
+        }
       } else if (this.oldDate.getMonth() != dateSelected.getMonth()) {
-        this.oldDate = date;
+        this.oldDate = dateSelected;
       }
     },
     getListData(value) {
-      let listData;
-      switch (value.date()) {
-        case 8:
-          listData = [
-            { type: "warning", content: "This is warning event." },
-            { type: "success", content: "This is usual event." },
-          ];
-          break;
-        case 10:
-          listData = [
-            { type: "warning", content: "This is warning event." },
-            { type: "success", content: "This is usual event." },
-            { type: "error", content: "This is error event." },
-          ];
-          break;
-        case 15:
-          listData = [
-            { type: "warning", content: "This is warning event" },
-            {
-              type: "success",
-              content: "This is very long usual event。。....",
-            },
-            { type: "error", content: "This is error event 1." },
-            { type: "error", content: "This is error event 2." },
-            { type: "error", content: "This is error event 3." },
-            { type: "error", content: "This is error event 4." },
-          ];
-          break;
-        default:
-      }
+      let listData = [];
+      this.dataTest.forEach((item) => {
+        if (
+          value.date() == new Date(item.meeting_time_start).getDate() &&
+          value.month() == new Date(item.meeting_time_start).getMonth()
+        ) {
+          listData.push({
+            type: "success",
+            content: item.meeting_title,
+          });
+        }
+      });
       return listData || [];
     },
     getMonthData(value) {
@@ -146,5 +198,11 @@ export default {
 <style>
 .modal-schedule .ant-modal-content {
   min-height: 300px !important;
+}
+.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+  z-index: 10000 !important;
+  max-height: 200px;
+  overflow-y: scroll;
+  direction: ltr;
 }
 </style>

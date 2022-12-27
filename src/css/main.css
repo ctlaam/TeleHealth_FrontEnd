@@ -5,7 +5,7 @@
 @import url("../assets/css/theme.css");
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
