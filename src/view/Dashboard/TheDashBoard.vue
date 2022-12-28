@@ -7,7 +7,7 @@
         </div>
         <div class="header-item__right">
           <span>{{ numberDoctor }}</span>
-          <div class="header-item__title" @click="test">Bác sĩ</div>
+          <div class="header-item__title">Bác sĩ</div>
         </div>
       </div>
       <div class="header-item patients">
@@ -76,18 +76,16 @@ export default {
     role() {
       return this.$store.getters["role"];
     },
-  },
-  methods: {
-    test() {
-      console.log(10);
-      this.series.data = [0, 10, 20];
+    idProfile() {
+      return this.$store.getters["idProfile"];
     },
   },
+  methods: {},
   data() {
     return {
-      doctors: "",
-      patients: "",
-      departments: "",
+      doctors: [],
+      patients: [],
+      departments: [],
       barChartOptions: {
         xaxis: {
           categories: ["Bác sĩ", "Bệnh nhân", "Bệnh viện"],
@@ -167,10 +165,8 @@ export default {
       };
     } else if (this.role == "role1") {
       urlRole = {
-        urlDoctor:
-          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
-        urlPatient:
-          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
+        urlDoctor: "http://localhost:8000/doctor/",
+        urlPatient: `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
         urlDepartment: "http://localhost:8000/medical_unit/",
       };
     }
@@ -191,8 +187,13 @@ export default {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then(function (res) {
-          me.patients = res.data;
-          console.log(me.patients);
+          if (me.role == "role3") {
+            me.patients = res.data;
+          } else if (me.role == "role1") {
+            res.data.forEach((item) => {
+              me.patients.push(item.patient);
+            });
+          }
         })
         .catch(function (err) {
           console.log(err);
@@ -203,7 +204,6 @@ export default {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then((res) => {
-          console.log(res);
           me.departments = res.data;
         })
         .catch((err) => {

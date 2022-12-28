@@ -1,6 +1,9 @@
 export default {
   userId(state) {
-    return state.userId;
+    return state.id;
+  },
+  idProfile(state) {
+    return state.idProfile;
   },
   accessToken(state) {
     if(state.tokens){
@@ -15,5 +18,6 @@ export default {
   },
   role(state) {
     return state.role;
-  }
+  },
+
 };

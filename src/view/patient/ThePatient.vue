@@ -161,7 +161,7 @@
                   transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
                     opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
                 "
-                v-for="patient in patients"
+                v-for="patient in listRendered"
                 :key="patient.id"
               >
                 <div>
@@ -249,7 +249,7 @@
                       <a-menu @click="handleMenuClick">
                         <a-menu-item
                           key="1"
-                          v-if="role == 'role3' || role == 'role2'"
+                          v-if="role == 'role3' || role == 'role1'"
                           @click="selecPatient(patient)"
                         >
                           <UserOutlined />
@@ -258,7 +258,7 @@
                         <a-menu-item
                           key="2"
                           @click="seeResults(patient.id)"
-                          v-if="role == 'role3' || role == 'role2'"
+                          v-if="role == 'role3' || role == 'role1'"
                         >
                           <UserOutlined />
                           Xem các kết quả trước
@@ -266,7 +266,7 @@
                         <a-menu-item
                           key="3"
                           @click="clickInput(patient.id)"
-                          v-if="role == 'role3' || role == 'role2'"
+                          v-if="role == 'role3' || role == 'role1'"
                         >
                           <UserOutlined />
                           Tính thể tích phổi
@@ -274,7 +274,7 @@
                         <a-menu-item
                           key="4"
                           @click="showModalDoctor(patient.id)"
-                          v-if="role == 'role3' || role == 'role2'"
+                          v-if="role == 'role3' || role == 'role1'"
                         >
                           <UserOutlined />
                           Bác sĩ quản lý
@@ -320,8 +320,9 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="patients.length"
               show-less-items
+              @change="changePage"
             />
           </div>
         </div>
@@ -363,13 +364,13 @@ export default {
       visible: false,
       link: "",
       current: 1,
-      pageSize: 10,
+      pageSize: 12,
       resultRight: "",
       resultLeft: "",
       totalLung: "",
       isShowDialog: false,
       idPatient: "",
-      patients: "",
+      patients: [],
       listResults: [],
       patientSelected: {
         email: "",
@@ -393,6 +394,7 @@ export default {
         detail_address: "",
       },
       formMode: "",
+      listRendered: [],
     };
   },
   computed: {
@@ -405,8 +407,17 @@ export default {
     role() {
       return this.$store.getters["role"];
     },
+    idProfile() {
+      return this.$store.getters["idProfile"];
+    },
   },
   methods: {
+    changePage(value) {
+      this.listRendered = this.patients.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize
+      );
+    },
     async assignPatient() {
       const me = this;
       await axios
@@ -439,17 +450,19 @@ export default {
       this.idPatient = idPatient;
     },
     async getListPatients() {
-      console.log(123);
+      let url = "";
+      if (this.role == "role3") {
+        url =
+          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
+      } else if (this.role == "role1") {
+        url = `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`
+      }
       const me = this;
       await axios
-        .get(
-          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
-          {
-            headers: { Authorization: `Bearer ${me.accessToken}` },
-          }
-        )
+        .get(url, {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        })
         .then(function (res) {
-          console.log("bệnh nhân");
           me.patients = res.data;
           console.log(me.patients);
         })
@@ -636,6 +649,7 @@ export default {
         )
         .then(function (res) {
           me.patients = res.data;
+          me.listRendered = me.patients.slice(0, me.pageSize);
         })
         .catch(function (err) {
           console.log(err);
@@ -650,7 +664,6 @@ export default {
           }
         )
         .then(function (res) {
-          console.log(res.data);
           res.data.forEach((item) => {
             me.optionDoctor.push({
               value: `${item.name}  --  email: ${item.email}`,
@@ -665,13 +678,16 @@ export default {
     } else if (this.role == "role1") {
       await axios
         .get(
-          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+          `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           }
         )
         .then(function (res) {
-          me.patients = res.data;
+          res.data.forEach((item) => {
+            me.patients.push(item.patient)
+          })
+          me.listRendered = me.patients.slice(0, me.pageSize);
         })
         .catch(function (err) {
           console.log(err);

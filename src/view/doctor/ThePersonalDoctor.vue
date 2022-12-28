@@ -2,7 +2,7 @@
   <div
     class="dialog-form doctor-form-detail"
     :class="{ 'show-doctor-detail': isShow }"
-    style="z-index:100"
+    style="z-index: 100"
   >
     <div id="cardDoctor" class="card">
       <div class="card-header" style="font-size: 16px">
@@ -229,6 +229,27 @@
             />
           </div>
         </div>
+        <div class="form-group row">
+          <label class="col-form-label" for="formGroupInputSmall"
+            >Nơi làm việc</label
+          >
+          <div class="col-sm-8">
+            <a-select
+              v-model:value="valueDoctor"
+              show-search
+              placeholder="Chọn một bác sĩ"
+              style="width: 100%"
+              :options="optionDepartments"
+              @change="selectDepartment"
+            ></a-select>
+            <!-- <input
+              class="form-control form-control-sm"
+              type="text"
+              id="formGroupInputSmall"
+              v-model="doctorProfile.medicalUnit"
+            /> -->
+          </div>
+        </div>
 
         <div class="form-group row">
           <div class="flex-save-cancle">
@@ -278,7 +299,9 @@ export default {
           province: "",
         },
         detail_address: "",
+        medicalUnit:""
       },
+      optionDepartments: [],
     };
   },
   computed: {
@@ -287,6 +310,10 @@ export default {
     },
   },
   methods: {
+    selectDepartment(value, object) {
+      this.doctorProfile.medicalUnit = object.id;
+      console.log(this.doctorProfile);
+    },
     // Hàm lọc đất nước
     handleCountryChange() {
       if (this.fullAddress.length > 0) {
@@ -299,7 +326,7 @@ export default {
     // hàm lọc thành phố
     handleCityChange() {
       let arr_tmp = this.fullAddress.find(
-        (item) => item.name == this.doctorProfile.province
+        (item) => item.name == this.doctorProfile.address.province
       );
       this.address.districts = arr_tmp.districts.map((item) => {
         return item.name;
@@ -309,11 +336,11 @@ export default {
     // hàm lọc quận huyện
     handleDistrictChange() {
       let city_tmp = this.fullAddress.find(
-        (item) => item.name == this.doctorProfile.province
+        (item) => item.name == this.doctorProfile.address.province
       );
 
       let distric_tmp = city_tmp.districts.find(
-        (item) => item.name == this.doctorProfile.district
+        (item) => item.name == this.doctorProfile.address.district
       );
 
       this.address.wards = distric_tmp.wards.map((item) => {
@@ -354,26 +381,49 @@ export default {
     },
     async btnSaveOnClick() {
       const me = this;
-      me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
-      await axios
-        .post(
-          `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
-          me.doctorProfile,
-          {
-            headers: { Authorization: `Bearer ${me.accessToken}` },
-          }
-        )
-        .then((result) => {
-          console.log(result);
-          me.closeOnClick();
+      console.log(me.doctorProfile);
+
+      // me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
+      // await axios
+      //   .post(
+      //     `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
+      //     me.doctorProfile,
+      //     {
+      //       headers: { Authorization: `Bearer ${me.accessToken}` },
+      //     }
+      //   )
+      //   .then((result) => {
+      //     console.log(result);
+      //     me.closeOnClick();
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    },
+  },
+  async created() {
+    const me = this;
+    await this.getLocation();
+    setTimeout(() => {
+      axios
+        .get("http://localhost:8000/medical_unit/", {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters.accessToken}`,
+          },
+        })
+        .then((res) => {
+          res.data.forEach((item) => {
+            me.optionDepartments.push({
+              value: `${item.name} `,
+              id: item.id,
+            });
+          });
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-  },
-  created() {
-    this.getLocation();
+    }, 500);
+
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
@@ -409,9 +459,8 @@ export default {
 }
 #cardDoctor {
   width: 720px;
-  height: 490px;
+  height: 540px;
   direction: ltr;
-  
 }
 #cardDoctor button {
   border: none;

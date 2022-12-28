@@ -4,13 +4,16 @@ export default {
     state.tokens = payload.tokens;
     state.username = payload.username;
     state.role = payload.role;
-    console.log(state);
+    state.idProfile = payload.idProfile;
+    state.id = payload.id;
   },
   logout(state) {
     state.email = "";
     state.tokens = "";
     state.username = "";
     state.role = "";
+    state.id = "";
+    state.idProfile = "";
   },
   refreshAccessToken(state, payload) {
     state.tokens.access = payload.access;

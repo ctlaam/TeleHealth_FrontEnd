@@ -34,7 +34,7 @@
             >
             <div class="col-sm-9">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Ex: Hội chuẩn số 1"
@@ -92,6 +92,7 @@
                 :max-tag-count="5"
                 :value="valueOptions"
                 @deselect="deselect"
+                placeholder="abc@gmail.com"
               >
               </a-select>
             </div>
@@ -106,7 +107,7 @@
                 class="form-control"
                 id="inputEmail3"
                 placeholder="Ex:https://www.abc.com.vn/"
-                v-model="formMeeting.url_file"
+                v-model="formMeeting.url_file.fileUrl"
               />
             </div>
           </div>
@@ -130,10 +131,21 @@
 </template>
 
 <script>
+import axios from "axios";
 import moment from "moment";
 export default {
   props: ["showLocations", "isEdit", "dataLocation", "isShow"],
-
+  computed: {
+    accessToken() {
+      return this.$store.getters.accessToken;
+    },
+    email() {
+      return this.$store.getters.email;
+    },
+    role() {
+      return this.$store.getters["role"];
+    },
+  },
   data() {
     return {
       dataSchedule: {},
@@ -144,7 +156,12 @@ export default {
         meeting_time_end: "",
         meeting_content: "",
         meeting_guest: [],
-        url_file: "",
+        url_file: [
+          {
+            fileUrl: "",
+            title: "Tệp đính kèm",
+          },
+        ],
       },
     };
   },
@@ -162,6 +179,7 @@ export default {
       return current && current < moment().subtract(1, "days").endOf("day");
     },
     handleChange(value) {
+      console.log("valueChange");
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
         this.valueOptions.push({
           value: value,
@@ -171,8 +189,9 @@ export default {
       }
     },
     deselect(value) {
-      console.log(value);
-      this.valueOptions.filter((item) => item.value != value);
+      this.valueOptions = this.valueOptions.filter(
+        (item) => item.value !== value
+      );
       console.log(this.valueOptions);
     },
     btnSaveOnClick() {
@@ -186,8 +205,20 @@ export default {
           organizer: true,
         });
       });
-      console.log(this.formMeeting);
-      // viết api
+      // console.log(this.formMeeting);
+      // // viết api
+      axios
+        .post("http://127.0.0.1:8000/meeting/", me.formMeeting, {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        })
+        .then((response) => {
+          console.log(response);
+          me.closeForm();
+          // me.$emit("getListPatients");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     closeForm() {
       this.dataSchedule = {};

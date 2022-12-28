@@ -137,14 +137,13 @@
                 class="list-item"
                 data-id="2"
                 data-sr-id="164"
-                style="
-                  visibility: visible;
+                style="visibility: visible;
                   transform: none;
                   opacity: 1;
                   transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
                     opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
                 "
-                v-for="department in departments"
+                v-for="department in listRendered"
                 :key="department"
               >
                 <div>
@@ -257,8 +256,9 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="departments.length"
               show-less-items
+              @change="changePage"
             />
           </div>
         </div>
@@ -287,6 +287,7 @@ export default {
       pageSize: 10,
       isShowDialog: false,
       departments: [],
+      listRendered:[],
     };
   },
   computed: {
@@ -295,6 +296,12 @@ export default {
     },
   },
   methods: {
+    changePage(value) {
+      this.listRendered = this.departments.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize
+      );
+    },
     btnAddOnClick() {
       this.showOrHideDialog(true);
     },
@@ -316,12 +323,10 @@ export default {
      * Created date: 18:32 05/07/2022
      */
     showChoiceAction(e) {
-      console.log(e.target);
       let choicesAction = e.target.querySelector(
         ".dropdown-menu.dropdown-menu-right.bg-black"
       );
       if (!choicesAction) {
-        console.log(123);
         choicesAction = e.target.parentElement.parentElement.querySelector(
           ".dropdown-menu.dropdown-menu-right.bg-black"
         );
@@ -330,24 +335,24 @@ export default {
         if (choicesAction.classList.contains("show")) {
           choicesAction.classList.remove("show");
         } else {
-          console.log("show");
           choicesAction.classList.add("show");
         }
       } catch (error) {}
     },
   },
-  mounted() {
+  created() {
     const me = this;
     axios
       .get("http://localhost:8000/medical_unit/", {
         headers: { Authorization: `Bearer ${me.accessToken}` },
       })
       .then((res) => {
-        console.log(res);
         me.departments = res.data;
-        console.log(me.department);
+        me.listRendered = me.departments.slice(0, me.pageSize);
       })
-      .catch(console.log);
+      .catch(err =>{
+        console.log(err);
+      });
   },
 };
 </script>

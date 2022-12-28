@@ -148,7 +148,7 @@
           <div class="scroll-y mx-3 mb-0 card">
             <div class="list list-row" v-if="doctors.length > 0">
               <div
-                v-for="doctor in doctors"
+                v-for="doctor in listRendered"
                 :key="doctor.id"
                 class="list-item"
                 data-id="2"
@@ -181,26 +181,40 @@
                     </span>
                   </a>
                 </div>
-                <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">Tên bác sĩ</a>
+                <div class="flex" style="width: 180px">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Tên bác sĩ</a
+                  >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
                     {{ doctor.name }}
                   </div>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">Giới tính</a>
-                  <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ doctor.gender == 'woman' ? 'Nữ' : 'Nam' }}
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Giới tính</a
+                  >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 80px; text-align: left"
+                  >
+                    {{ doctor.gender == "woman" ? "Nữ" : "Nam" }}
                   </div>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">Địa chỉ</a>
-                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Địa chỉ</a
+                  >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 300px; text-align: left"
+                  >
                     {{ doctor.detail_address }}
                   </div>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">Tên không dấu</a>
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Tên không dấu</a
+                  >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
                     {{ doctor.unsignedName }}
                   </div>
@@ -212,7 +226,9 @@
                   </div>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">Số điện thoại</a>
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Số điện thoại</a
+                  >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
                     {{ doctor.phone }}
                   </div>
@@ -293,8 +309,9 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="doctors.length"
               show-less-items
+              @change="changePage"
             />
           </div>
         </div>
@@ -326,6 +343,7 @@ export default {
       isShowDialog: false,
       doctors: [],
       doctorSelected: {},
+      listRendered: [],
       // formMode để biết là form dùng để thêm mới hoặc là sửa
       formMode: this.TeleHealthEnum.FormMode.Add,
     };
@@ -334,8 +352,24 @@ export default {
     accessToken() {
       return this.$store.getters.accessToken;
     },
+    email() {
+      return this.$store.getters.email;
+    },
+    role() {
+      return this.$store.getters["role"];
+    },
+    idProfile() {
+      return this.$store.getters["idProfile"];
+    },
   },
+
   methods: {
+    changePage(value) {
+      this.listRendered = this.doctors.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize
+      );
+    },
     getFirstLetter(name) {
       let a = name.split("");
       return a[0].toUpperCase();
@@ -372,20 +406,26 @@ export default {
     detailDoctor(doctor) {
       this.formMode = this.TeleHealthEnum.FormMode.Update;
       this.doctorSelected = doctor;
-      this.doctorSelected.country = 'Anh'
+      this.doctorSelected.country = "Anh";
       this.showOrHideDialog(true);
     },
   },
   async created() {
-    console.log(this.accessToken);
     const me = this;
+    let url = "";
+    if (this.role == "role3") {
+      url =
+        "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null";
+    } else if (this.role == "role1") {
+      url = `http://127.0.0.1:8000/doctor/`;
+    }
     await axios
-      .get("http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null", {
+      .get(url, {
         headers: { Authorization: `Bearer ${me.accessToken}` },
       })
       .then(function (res) {
-        console.log("aaaa",res.data);
         me.doctors = res.data;
+        me.listRendered = me.doctors.slice(0, me.pageSize);
       })
       .catch(function (err) {
         console.log(err);
