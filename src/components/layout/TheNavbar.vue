@@ -198,7 +198,7 @@
                     style="width: 24px; height: 24px"
                     alt=""
                 /></span>
-                <span class="nav-text">Lịch hội chuẩn</span>
+                <span class="nav-text">Lịch hội chẩn</span>
                 <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
               </a>
             </li>

@@ -30,14 +30,14 @@
         <form v-on:submit.prevent>
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Tên hội chuẩn</label
+              >Tên hội chẩn</label
             >
             <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control"
                 id="inputEmail3"
-                placeholder="Ex: Hội chuẩn số 1"
+                placeholder="Ex: Hội chẩn số 1"
                 v-model="formMeeting.meeting_title"
               />
             </div>
@@ -51,7 +51,7 @@
                 type="text"
                 class="form-control"
                 id="inputEmail3"
-                placeholder="Ex: Hội chuẩn số 1"
+                placeholder="Ex: Hội chẩn số 1"
                 v-model="formMeeting.meeting_content"
               />
             </div>

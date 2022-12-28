@@ -68,7 +68,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Tasks"
-                    style="width: 150px; text-align: center"
+                    style="width: 150px; text-align: left"
                   >
                     <span class="text-muted d-none d-sm-block"
                       >Ngày kết thúc</span
@@ -81,7 +81,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Project: activate to sort column ascending"
-                    style="width: 120px"
+                    style="width: 150px; text-align: left"
                   >
                     <span class="text-muted">Ngày bắt đầu</span>
                   </th>
@@ -92,7 +92,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Owner: activate to sort column ascending"
-                    style="width: 300px; text-align: center"
+                    style="width: 300px; text-align: left"
                   >
                     <span class="text-muted">Nội dung</span>
                   </th>
@@ -226,7 +226,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Tasks"
-                    style="width: 150px; text-align: center"
+                    style="width: 150px; text-align: left"
                   >
                     <span class="text-muted d-none d-sm-block"
                       >Ngày kết thúc</span
@@ -239,7 +239,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Project: activate to sort column ascending"
-                    style="width: 120px"
+                    style="width: 120px;text-align: left"
                   >
                     <span class="text-muted">Ngày bắt đầu</span>
                   </th>
@@ -250,7 +250,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Owner: activate to sort column ascending"
-                    style="width: 300px; text-align: center"
+                    style="width: 300px; text-align: left"
                   >
                     <span class="text-muted">Nội dung</span>
                   </th>
@@ -460,7 +460,7 @@ export default {
         if (this.dataModal.length > 0) {
           this.visibleModalSchedule = true;
         } else {
-          this.$message.warning("Không có lịch hội chuẩn");
+          this.$message.warning("Không có lịch hội chẩn");
         }
       } else if (this.oldDate.getMonth() != dateSelected.getMonth()) {
         this.oldDate = dateSelected;
