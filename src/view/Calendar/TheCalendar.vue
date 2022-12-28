@@ -37,26 +37,82 @@ export default {
   methods: {},
   async created() {
     const me = this;
-    await axios
-      .get("http://localhost:8000/meeting/list_meeting_creator_for_user/", {
-        headers: { Authorization: `Bearer ${me.accessToken}` },
-      })
-      .then(function (res) {
-        me.dataCreated = res.data.data;
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    await axios
-      .get("http://localhost:8000/meeting/list_meeting_valid_for_user/", {
-        headers: { Authorization: `Bearer ${me.accessToken}` },
-      })
-      .then(function (res) {
-        me.dataInvited = res.data.data;
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    // await axios
+    //   .get("http://localhost:8000/meeting/list_meeting_creator_for_user/", {
+    //     headers: { Authorization: `Bearer ${me.accessToken}` },
+    //   })
+    //   .then(function (res) {
+    //     me.dataCreated = res.data.data;
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //   });
+    // await axios
+    //   .get("http://localhost:8000/meeting/list_meeting_valid_for_user/", {
+    //     headers: { Authorization: `Bearer ${me.accessToken}` },
+    //   })
+    //   .then(function (res) {
+    //     me.dataInvited = res.data.data;
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //   });
+    me.dataCreated = [
+      {
+        id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+        meeting_title: "tiêu đề 1",
+        meeting_time_start: "2022-12-28T09:25:00+07:00",
+        meeting_time_end: "2022-12-28T10:25:00+07:00",
+        meeting_content: "reprehenderit Duis labore cillum",
+        calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+        calendar_url:
+          "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+        meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+        conclusion: null,
+        url_file:
+          "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+        is_valid: true,
+        created_at: "2022-12-26T23:44:43.124207+07:00",
+        update_at: "2022-12-26T23:44:43.124207+07:00",
+        meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+      },
+      {
+        id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+        meeting_title: "tiêu đề 112212121",
+        meeting_time_start: "2022-12-29T09:25:00+07:00",
+        meeting_time_end: "2022-12-30T10:25:00+07:00",
+        meeting_content: "reprehenderit Duis labore cillum",
+        calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+        calendar_url:
+          "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+        meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+        conclusion: null,
+        url_file:
+          "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+        is_valid: true,
+        created_at: "2022-12-26T23:44:43.124207+07:00",
+        update_at: "2022-12-26T23:44:43.124207+07:00",
+        meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+      },
+      {
+        id: "62942154-2ac3-4781-a038-9dfb17fbaaae",
+        meeting_title: "tiêu đề 1122121",
+        meeting_time_start: "2022-12-30T09:25:00+07:00",
+        meeting_time_end: "2022-12-30T10:25:00+07:00",
+        meeting_content: "reprehenderit Duis labore cillum",
+        calendar_id: "v0rlnq5a49c9aj56e46g8jnc18",
+        calendar_url:
+          "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
+        meeting_url: "https://meet.google.com/qrz-ufkx-osi",
+        conclusion: null,
+        url_file:
+          "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
+        is_valid: true,
+        created_at: "2022-12-26T23:44:43.124207+07:00",
+        update_at: "2022-12-26T23:44:43.124207+07:00",
+        meeting_creator: "3f58a449-3e0a-4b54-96e1-9d3e91efe968",
+      },
+    ];
   },
 };
 </script>
@@ -72,10 +128,10 @@ export default {
   direction: ltr;
 }
 .custom-celandar-table .ant-select-dropdown {
-    z-index: 10000 !important;
-    max-height: 200px;
-    /* overflow-y: scroll; */
-    direction: ltr;
-    overflow: hidden;
+  z-index: 10000 !important;
+  max-height: 200px;
+  /* overflow-y: scroll; */
+  direction: ltr;
+  overflow: hidden;
 }
 </style>

@@ -16,7 +16,7 @@
         class="custom-celandar-table"
       >
         <template #dateCellRender="{ current }">
-          <ul class="events">
+          <ul class="events" style="list-style: none">
             <li v-for="item in getListData(current)" :key="item.content">
               <a-badge :status="item.type" :text="item.content" />
             </li>
@@ -37,9 +37,330 @@
         :visible="visibleModalSchedule"
         :closable="false"
         :footer="false"
-        style="width: 600px; min-height: 500px"
+        style="width: 900px; height: 700px"
       >
-        <p v-for="item in dataModal" :key="item.id">{{ item.meeting_title }}</p>
+        <a-tabs
+          default-active-key="1"
+          @change="callback"
+          style="direction: ltr"
+        >
+          <a-tab-pane key="1" tab="Hội chẩn đã tạo">
+            <table
+              id="datatable"
+              class="table table-theme table-row v-middle dataTable no-footer"
+              role="grid"
+              aria-describedby="datatable_info"
+              style="direction: rtl"
+            >
+              <thead>
+                <tr role="row">
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label=""
+                    style="width: 150px; text-align: center"
+                  >
+                    <span class="text-muted d-none d-sm-block">Tùy chọn</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Tasks"
+                    style="width: 150px; text-align: center"
+                  >
+                    <span class="text-muted d-none d-sm-block"
+                      >Ngày kết thúc</span
+                    >
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Project: activate to sort column ascending"
+                    style="width: 120px"
+                  >
+                    <span class="text-muted">Ngày bắt đầu</span>
+                  </th>
+                  <th
+                    class="image"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Owner: activate to sort column ascending"
+                    style="width: 300px; text-align: center"
+                  >
+                    <span class="text-muted">Nội dung</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-sort="ascending"
+                    aria-label="ID: activate to sort column descending"
+                    style="width: 120px"
+                  >
+                    <span class="text-muted">Tiêu đề</span>
+                  </th>
+                </tr>
+              </thead>
+              <template v-if="!isLoading && successDataModal.length > 0">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(item, index) in successDataModal"
+                    :key="index"
+                  >
+                    <td>
+                      <a-dropdown-button style="min-width: 120px">
+                        <template #overlay>
+                          <a-menu @click="handleDetail(item.id)">
+                            <a-menu-item key="1">
+                              <UserOutlined />
+                              Thông tin chi tiết
+                            </a-menu-item>
+                            <a-menu-item key="2" @click="seeResults(item.id)">
+                              <UserOutlined />
+                              Xóa
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown-button>
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        {{ formatDate(item.meeting_time_end) }}
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-amount d-none d-sm-block text-sm">{{
+                        formatDate(item.meeting_time_start)
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_content
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_title
+                      }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+              <template v-if="isLoading">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(ethinic, index) in 5"
+                    :key="index"
+                  >
+                    <td>
+                      <a-skeleton
+                        active
+                        class="flex-skeleton"
+                        :paragraph="{ rows: 0 }"
+                      />
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        <a-skeleton
+                          active
+                          class="flex-skeleton"
+                          :paragraph="{ rows: 0 }"
+                        />
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <a-skeleton active :paragraph="{ rows: 1 }" />
+                    </td>
+                    <td class="letter">
+                      <a-skeleton active avatar :paragraph="{ rows: 0 }" />
+                    </td>
+                    <td
+                      style="min-width: 30px; text-align: center"
+                      class="sorting_1"
+                    >
+                      <small class="text-muted">{{ index + 1 }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </table>
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="Hội chẩn chưa kết luận" force-render>
+            <table
+              id="datatable"
+              class="table table-theme table-row v-middle dataTable no-footer"
+              role="grid"
+              aria-describedby="datatable_info"
+              style="direction: rtl"
+            >
+              <thead>
+                <tr role="row">
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label=""
+                    style="width: 150px; text-align: center"
+                  >
+                    <span class="text-muted d-none d-sm-block">Tùy chọn</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Tasks"
+                    style="width: 150px; text-align: center"
+                  >
+                    <span class="text-muted d-none d-sm-block"
+                      >Ngày kết thúc</span
+                    >
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Project: activate to sort column ascending"
+                    style="width: 120px"
+                  >
+                    <span class="text-muted">Ngày bắt đầu</span>
+                  </th>
+                  <th
+                    class="image"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Owner: activate to sort column ascending"
+                    style="width: 300px; text-align: center"
+                  >
+                    <span class="text-muted">Nội dung</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-sort="ascending"
+                    aria-label="ID: activate to sort column descending"
+                    style="width: 120px"
+                  >
+                    <span class="text-muted">Tiêu đề</span>
+                  </th>
+                </tr>
+              </thead>
+              <template v-if="!isLoading && warningDataModal.length > 0">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(item, index) in warningDataModal"
+                    :key="index"
+                  >
+                    <td>
+                      <a-dropdown-button style="min-width: 120px">
+                        <template #overlay>
+                          <a-menu @click="handleDetail(item.id)">
+                            <a-menu-item key="1">
+                              <UserOutlined />
+                              Thông tin chi tiết
+                            </a-menu-item>
+                            <a-menu-item key="2" @click="seeResults(item.id)">
+                              <UserOutlined />
+                              Xóa
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown-button>
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        {{ formatDate(item.meeting_time_end) }}
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-amount d-none d-sm-block text-sm">{{
+                        formatDate(item.meeting_time_start)
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_content
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_title
+                      }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+              <template v-if="isLoading">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(ethinic, index) in 5"
+                    :key="index"
+                  >
+                    <td>
+                      <a-skeleton
+                        active
+                        class="flex-skeleton"
+                        :paragraph="{ rows: 0 }"
+                      />
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        <a-skeleton
+                          active
+                          class="flex-skeleton"
+                          :paragraph="{ rows: 0 }"
+                        />
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <a-skeleton active :paragraph="{ rows: 1 }" />
+                    </td>
+                    <td class="letter">
+                      <a-skeleton active avatar :paragraph="{ rows: 0 }" />
+                    </td>
+                    <td
+                      style="min-width: 30px; text-align: center"
+                      class="sorting_1"
+                    >
+                      <small class="text-muted">{{ index + 1 }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </table>
+          </a-tab-pane>
+        </a-tabs>
         <a-button
           style="float: right; position: absolute; bottom: 10px; right: 10px"
           class="btn-schedule"
@@ -63,6 +384,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       isShow: false,
       valueCalendar: "",
       schedules: [],
@@ -82,8 +404,32 @@ export default {
     role() {
       return this.$store.getters["role"];
     },
+    successDataModal() {
+      let arr1 = this.dataModal.filter((item) => item.type == "success");
+
+      let result = arr1.map((item) => {
+        return item.content;
+      });
+
+      return result;
+    },
+    warningDataModal() {
+      let arr1 = this.dataModal.filter((item) => item.type == "warning");
+
+      let result = arr1.map((item) => {
+        return item.content;
+      });
+
+      return result;
+    },
   },
   methods: {
+    formatDate(data) {
+      let date = new Date(data);
+      return `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    },
     showOrHideForm(bool) {
       this.isShow = bool;
     },
@@ -97,11 +443,18 @@ export default {
       if (this.oldDate.getMonth() == dateSelected.getMonth()) {
         this.dataModal = [];
         this.dataTest.forEach((item) => {
+          let data = {
+            type: "success",
+            content: item,
+          };
+          if (new Date() > new Date(item.meeting_time_end)) {
+            data.type = "warning";
+          }
           if (
             value.date() == new Date(item.meeting_time_start).getDate() &&
             value.month() == new Date(item.meeting_time_start).getMonth()
           ) {
-            this.dataModal.push(item);
+            this.dataModal.push(data);
           }
         });
         if (this.dataModal.length > 0) {
@@ -116,14 +469,18 @@ export default {
     getListData(value) {
       let listData = [];
       this.dataTest.forEach((item) => {
+        let data = {
+          type: "success",
+          content: item.meeting_title,
+        };
+        if (new Date() > new Date(item.meeting_time_end)) {
+          data.type = "warning";
+        }
         if (
           value.date() == new Date(item.meeting_time_start).getDate() &&
           value.month() == new Date(item.meeting_time_start).getMonth()
         ) {
-          listData.push({
-            type: "success",
-            content: item.meeting_title,
-          });
+          listData.push(data);
         }
       });
       return listData || [];
@@ -157,9 +514,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modal-schedule .ant-modal-content {
-  min-height: 300px !important;
+  height: 100% !important;
 }
 .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   z-index: 10000 !important;
