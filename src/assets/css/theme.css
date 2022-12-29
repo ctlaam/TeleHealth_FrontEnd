@@ -6129,5 +6129,9 @@ span.anticon.anticon-left {
 }
 
 .ant-message {
-  z-index: 99999 !important;
+  z-index: 99999999 !important;
+}
+
+.ant-picker-dropdown.ant-picker-dropdown-range.ant-picker-dropdown-placement-bottomLeft {
+  z-index: 5555555 !important;
 }

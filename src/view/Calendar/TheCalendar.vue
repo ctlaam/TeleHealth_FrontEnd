@@ -68,7 +68,7 @@ export default {
         calendar_url:
           "https://www.google.com/calendar/event?eid=djBybG5xNWE0OWM5YWo1NmU0Nmc4am5jMTggdGVsZWhlYWx0aC5pYm1lbGFiQG0",
         meeting_url: "https://meet.google.com/qrz-ufkx-osi",
-        conclusion: null,
+        conclusion: "đã kết luận",
         url_file:
           "https://drive.google.com/file/d/10zVdYm6dYP21yjuEGo_MeOa2s3zMh9y2/view?usp=sharing",
         is_valid: true,

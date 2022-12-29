@@ -122,15 +122,15 @@
                     <td>
                       <a-dropdown-button style="min-width: 120px">
                         <template #overlay>
-                          <a-menu @click="handleDetail(item.id)">
+                          <a-menu @click="detailOrUpdate(item, 'D')">
                             <a-menu-item key="1">
                               <UserOutlined />
                               Thông tin chi tiết
                             </a-menu-item>
-                            <a-menu-item key="2" @click="seeResults(item.id)">
+                            <!-- <a-menu-item key="2" @click="seeResults(item.id)">
                               <UserOutlined />
                               Xóa
-                            </a-menu-item>
+                            </a-menu-item> -->
                           </a-menu>
                         </template>
                       </a-dropdown-button>
@@ -159,7 +159,7 @@
                   </tr>
                 </tbody>
               </template>
-              <template v-if="isLoading">
+              <!-- <template v-if="isLoading">
                 <tbody>
                   <tr
                     class="odd"
@@ -199,10 +199,10 @@
                     </td>
                   </tr>
                 </tbody>
-              </template>
+              </template> -->
             </table>
           </a-tab-pane>
-          <a-tab-pane key="2" tab="Hội chẩn chưa kết luận" force-render>
+          <a-tab-pane key="2" tab="Hội chẩn đang diễn ra" force-render>
             <table
               id="datatable"
               class="table table-theme table-row v-middle dataTable no-footer"
@@ -239,7 +239,7 @@
                     rowspan="1"
                     colspan="1"
                     aria-label="Project: activate to sort column ascending"
-                    style="width: 120px;text-align: left"
+                    style="width: 120px; text-align: left"
                   >
                     <span class="text-muted">Ngày bắt đầu</span>
                   </th>
@@ -280,10 +280,10 @@
                     <td>
                       <a-dropdown-button style="min-width: 120px">
                         <template #overlay>
-                          <a-menu @click="handleDetail(item.id)">
+                          <a-menu @click="detailOrUpdate(item, 'U')">
                             <a-menu-item key="1">
                               <UserOutlined />
-                              Thông tin chi tiết
+                              Sửa hội chẩn
                             </a-menu-item>
                             <a-menu-item key="2" @click="seeResults(item.id)">
                               <UserOutlined />
@@ -317,7 +317,7 @@
                   </tr>
                 </tbody>
               </template>
-              <template v-if="isLoading">
+              <!-- <template v-if="isLoading">
                 <tbody>
                   <tr
                     class="odd"
@@ -357,7 +357,165 @@
                     </td>
                   </tr>
                 </tbody>
+              </template> -->
+            </table>
+          </a-tab-pane>
+          <a-tab-pane key="3" tab="Hội chẩn đã kết thúc" force-render>
+            <table
+              id="datatable"
+              class="table table-theme table-row v-middle dataTable no-footer"
+              role="grid"
+              aria-describedby="datatable_info"
+              style="direction: rtl"
+            >
+              <thead>
+                <tr role="row">
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label=""
+                    style="width: 150px; text-align: center"
+                  >
+                    <span class="text-muted d-none d-sm-block">Tùy chọn</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Tasks"
+                    style="width: 150px; text-align: left"
+                  >
+                    <span class="text-muted d-none d-sm-block"
+                      >Ngày kết thúc</span
+                    >
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Project: activate to sort column ascending"
+                    style="width: 120px; text-align: left"
+                  >
+                    <span class="text-muted">Ngày bắt đầu</span>
+                  </th>
+                  <th
+                    class="image"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Owner: activate to sort column ascending"
+                    style="width: 300px; text-align: left"
+                  >
+                    <span class="text-muted">Nội dung</span>
+                  </th>
+                  <th
+                    class="sorting_disabled"
+                    tabindex="0"
+                    aria-controls="datatable"
+                    rowspan="1"
+                    colspan="1"
+                    aria-sort="ascending"
+                    aria-label="ID: activate to sort column descending"
+                    style="width: 120px"
+                  >
+                    <span class="text-muted">Tiêu đề</span>
+                  </th>
+                </tr>
+              </thead>
+              <template v-if="!isLoading && errorDataModal.length > 0">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(item, index) in errorDataModal"
+                    :key="index"
+                  >
+                    <td>
+                      <a-dropdown-button style="min-width: 120px">
+                        <template #overlay>
+                          <a-menu @click="detailOrUpdate(item, 'D')">
+                            <a-menu-item key="1">
+                              <UserOutlined />
+                              Thông tin chi tiết
+                            </a-menu-item>
+                            <a-menu-item key="2" @click="seeResults(item.id)">
+                              <UserOutlined />
+                              Xóa
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown-button>
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        {{ formatDate(item.meeting_time_end) }}
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-amount d-none d-sm-block text-sm">{{
+                        formatDate(item.meeting_time_start)
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_content
+                      }}</span>
+                    </td>
+                    <td class="flex">
+                      <span class="item-title text-color">{{
+                        item.meeting_title
+                      }}</span>
+                    </td>
+                  </tr>
+                </tbody>
               </template>
+              <!-- <template v-if="isLoading">
+                <tbody>
+                  <tr
+                    class="odd"
+                    data-id="1"
+                    role="row"
+                    v-for="(ethinic, index) in 5"
+                    :key="index"
+                  >
+                    <td>
+                      <a-skeleton
+                        active
+                        class="flex-skeleton"
+                        :paragraph="{ rows: 0 }"
+                      />
+                    </td>
+
+                    <td style="text-align: left">
+                      <span class="item-amount d-none d-sm-block text-sm">
+                        <a-skeleton
+                          active
+                          class="flex-skeleton"
+                          :paragraph="{ rows: 0 }"
+                        />
+                      </span>
+                    </td>
+                    <td class="flex">
+                      <a-skeleton active :paragraph="{ rows: 1 }" />
+                    </td>
+                    <td class="letter">
+                      <a-skeleton active avatar :paragraph="{ rows: 0 }" />
+                    </td>
+                    <td
+                      style="min-width: 30px; text-align: center"
+                      class="sorting_1"
+                    >
+                      <small class="text-muted">{{ index + 1 }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </template> -->
             </table>
           </a-tab-pane>
         </a-tabs>
@@ -368,19 +526,30 @@
           >Thoát</a-button
         >
       </a-modal>
-      <TheFormCalendar :isShow="isShow" @showOrHideForm="showOrHideForm" />
+      <TheFormCalendar
+        :isShow="isShow"
+        @showOrHideForm="showOrHideForm"
+      />
+      <TheFormDetailCalendar
+        :isShow="isShowDetail"
+        @showOrHideForm="showOrHideFormDetail"
+        :method="methodsDetailOrUpdate"
+        :inforCalendar="inforCalendar"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import TheFormCalendar from "../Calendar/TheFormCalendar.vue";
+import TheFormDetailCalendar from "../Calendar/TheFormDetailCalendar.vue";
 import axios from "axios";
 
 export default {
   props: ["dataMeeting", "isInvited"],
   components: {
     TheFormCalendar,
+    TheFormDetailCalendar,
   },
   data() {
     return {
@@ -392,6 +561,9 @@ export default {
       dataModal: [],
       oldDate: new Date(),
       dataTest: [],
+      methodsDetailOrUpdate: "D",
+      inforCalendar: "",
+      isShowDetail: false,
     };
   },
   computed: {
@@ -422,8 +594,22 @@ export default {
 
       return result;
     },
+    errorDataModal() {
+      let arr1 = this.dataModal.filter((item) => item.type == "error");
+
+      let result = arr1.map((item) => {
+        return item.content;
+      });
+
+      return result;
+    },
   },
   methods: {
+    detailOrUpdate(item, methods) {
+      this.isShowDetail = true;
+      this.inforCalendar = item;
+      this.methodsDetailOrUpdate = methods;
+    },
     formatDate(data) {
       let date = new Date(data);
       return `${date.getDate()}-${
@@ -432,6 +618,9 @@ export default {
     },
     showOrHideForm(bool) {
       this.isShow = bool;
+    },
+    showOrHideFormDetail(bool) {
+      this.isShowDetail = bool;
     },
     onPanelChange(value, mode) {
       this.visibleModalSchedule = false;
@@ -447,8 +636,16 @@ export default {
             type: "success",
             content: item,
           };
-          if (new Date() > new Date(item.meeting_time_end)) {
+          if (
+            new Date() > new Date(item.meeting_time_start) &&
+            !item.conclusion
+          ) {
             data.type = "warning";
+          } else if (
+            new Date() > new Date(item.meeting_time_end) &&
+            item.conclusion
+          ) {
+            data.type = "error";
           }
           if (
             value.date() == new Date(item.meeting_time_start).getDate() &&
@@ -473,8 +670,16 @@ export default {
           type: "success",
           content: item.meeting_title,
         };
-        if (new Date() > new Date(item.meeting_time_end)) {
+        if (
+          new Date() > new Date(item.meeting_time_start) &&
+          !item.conclusion
+        ) {
           data.type = "warning";
+        } else if (
+          new Date() > new Date(item.meeting_time_end) &&
+          item.conclusion
+        ) {
+          data.type = "error";
         }
         if (
           value.date() == new Date(item.meeting_time_start).getDate() &&
@@ -519,7 +724,7 @@ export default {
   height: 100% !important;
 }
 .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
-  z-index: 10000 !important;
+  z-index: 999 !important;
   max-height: 200px;
   overflow-y: scroll;
   direction: ltr;

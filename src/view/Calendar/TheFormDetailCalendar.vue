@@ -2,7 +2,7 @@
   <div class="dialog-form-location" v-if="isShow">
     <div class="card card-locations">
       <div class="card-header">
-        <strong>Thêm mới hội chẩn</strong>
+        <strong>Thông tin hội chẩn</strong>
         <div
           @click="closeForm"
           id="closeFormLocation"
@@ -57,13 +57,13 @@
             </div>
           </div>
           <!-- <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Thời gian bắt đầu</label
-            >
-            <div class="col-sm-9">
-              <a-date-picker size="medium" :show-time="{ format: 'HH:mm' }" />
-            </div>
-          </div> -->
+              <label for="inputEmail3" class="col-sm-3 col-form-label"
+                >Thời gian bắt đầu</label
+              >
+              <div class="col-sm-9">
+                <a-date-picker size="medium" :show-time="{ format: 'HH:mm' }" />
+              </div>
+            </div> -->
           <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Thời gian</label
@@ -75,10 +75,55 @@
                 :show-time="{ format: 'HH:mm' }"
                 style="width: 100%"
                 :disabledDate="disabledDate"
+                :v-model="[
+                  'Dec 30 2022 04:13:07 GMT+0700','Dec 31 2022 04:13:07 GMT+0700'
+                ]"
               />
             </div>
           </div>
           <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Đường dẫn</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Ex: Hội chẩn số 1"
+                v-model="formMeeting.meeting_url"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Link đính kèm</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Ex:https://www.abc.com.vn/"
+                v-model="formMeeting.url_file"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Kết luận</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Ex: Kết thúc hội chẩn"
+                v-model="formMeeting.conclusion"
+              />
+            </div>
+          </div>
+          <!-- <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Người tham gia</label
             >
@@ -96,22 +141,8 @@
               >
               </a-select>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Link đính kèm</label
-            >
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail3"
-                placeholder="Ex:https://www.abc.com.vn/"
-                v-model="formMeeting.url_file.fileUrl"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
+          </div> -->
+          <div class="form-group row" v-if="method == 'U'">
             <div class="flex-save-cancle">
               <button
                 @click="btnSaveOnClick"
@@ -119,7 +150,7 @@
                 class="btn btn-primary mt-1"
                 style="min-width: 100px"
               >
-                Thêm mới
+                Xác nhận
               </button>
               <button @click="closeForm">Hủy</button>
             </div>
@@ -134,7 +165,7 @@
 import axios from "axios";
 import moment from "moment";
 export default {
-  props: ["isShow","method"],
+  props: ["isShow", "method", "inforCalendar", "inforCalendar"],
   computed: {
     accessToken() {
       return this.$store.getters.accessToken;
@@ -146,22 +177,29 @@ export default {
       return this.$store.getters["role"];
     },
   },
+  watch: {
+    inforCalendar(newValue, oldValue) {
+      this.formMeeting = newValue;
+    },
+  },
   data() {
     return {
       dataSchedule: {},
       valueOptions: [],
       formMeeting: {
-        meeting_title: "",
-        meeting_time_start: "",
-        meeting_time_end: "",
-        meeting_content: "",
-        meeting_guest: [],
-        url_file: [
-          {
-            fileUrl: "",
-            title: "Tệp đính kèm",
-          },
-        ],
+        // meeting_title: "",
+        // meeting_time_start: "",
+        // meeting_time_end: "",
+        // meeting_content: "",
+        // meeting_guest: [],
+        // meeting_url:"",
+        // conclusion:"",
+        // url_file: [
+        //   {
+        //     fileUrl: "",
+        //     title: "Tệp đính kèm",
+        //   },
+        // ],
       },
     };
   },
@@ -196,29 +234,28 @@ export default {
     },
     btnSaveOnClick() {
       const me = this;
-      this.valueOptions.forEach((item) => {
-        this.formMeeting.meeting_guest.push({
-          email: item.value,
-          displayName: "string",
-          optional: false,
-          responseStatus: "accepted",
-          organizer: true,
-        });
-      });
-      // console.log(this.formMeeting);
-      // // viết api
-      axios
-        .post("http://127.0.0.1:8000/meeting/", me.formMeeting, {
-          headers: { Authorization: `Bearer ${me.accessToken}` },
-        })
-        .then((response) => {
-          console.log(response);
-          me.closeForm();
-          // me.$emit("getListPatients");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log(this.formMeeting);
+      let conclusion = this.formMeeting.conclusion;
+      if (!conclusion || !conclusion.trim()) {
+        this.$message.warning("Vui lòng nhập kết luận để tiếp tục");
+      } else {
+        axios
+          .post(
+            `http://127.0.0.1:8000/meeting/add_meeting_conclusion?pk=6a4b0b52-9567-4789-be24-717854efd633`,
+            { conclusion },
+            {
+              headers: { Authorization: `Bearer ${me.accessToken}` },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            me.closeForm();
+            // me.$emit("getListPatients");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
     closeForm() {
       this.dataSchedule = {};
@@ -260,7 +297,7 @@ div#closeFormLocation:hover {
   right: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 10000 !important;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -302,15 +339,15 @@ div#dropdown-input-location {
   margin-right: 15px;
 }
 /* div#closeFormLocation {
-  cursor: pointer;
-  position: relative;
-  top: -18px;
-  transform: scale(1.3);
-  opacity: 0.7;
-} */
+    cursor: pointer;
+    position: relative;
+    top: -18px;
+    transform: scale(1.3);
+    opacity: 0.7;
+  } */
 /* div#closeFormLocation:hover {
-  opacity: 1;
-} */
+    opacity: 1;
+  } */
 </style>
 
 <style lang="css">
@@ -318,6 +355,6 @@ div#dropdown-input-location {
   direction: ltr;
 }
 /* .rc-virtual-list {
-  display: none;
-} */
+    display: none;
+  } */
 </style>
