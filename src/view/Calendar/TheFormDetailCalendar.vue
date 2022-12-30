@@ -75,8 +75,9 @@
                 :show-time="{ format: 'HH:mm' }"
                 style="width: 100%"
                 :disabledDate="disabledDate"
-                :v-model="[
-                  'Dec 30 2022 04:13:07 GMT+0700','Dec 31 2022 04:13:07 GMT+0700'
+                :default-value="[
+                  moment(valueStart, dateFormat),
+                  moment(valueEnd, dateFormat),
                 ]"
               />
             </div>
@@ -180,10 +181,14 @@ export default {
   watch: {
     inforCalendar(newValue, oldValue) {
       this.formMeeting = newValue;
+      this.valueStart = newValue.meeting_time_start;
+      this.valueEnd = newValue.meeting_time_end;
     },
   },
   data() {
     return {
+      valueStart: "",
+      valueEnd: "",
       dataSchedule: {},
       valueOptions: [],
       formMeeting: {
@@ -204,6 +209,7 @@ export default {
     };
   },
   methods: {
+    moment,
     onChangeDateTime(value) {
       this.formMeeting = {
         ...this.formMeeting,
