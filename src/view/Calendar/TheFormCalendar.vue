@@ -86,7 +86,7 @@
               <a-select
                 class="calendar-select"
                 mode="tags"
-                style="width: 100%"
+                style="width: 450px"
                 :token-separators="[',']"
                 @select="handleChange"
                 :max-tag-count="5"

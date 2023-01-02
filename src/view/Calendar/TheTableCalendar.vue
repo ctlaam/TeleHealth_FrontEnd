@@ -44,7 +44,10 @@
           @change="callback"
           style="direction: ltr"
         >
-          <a-tab-pane key="1" tab="Hội chẩn đã tạo">
+          <a-tab-pane
+            key="1"
+            :tab="isInvited ? 'Hội chẩn tham gia' : 'Hội chẩn đã tạo'"
+          >
             <table
               id="datatable"
               class="table table-theme table-row v-middle dataTable no-footer"
@@ -122,10 +125,14 @@
                     <td>
                       <a-dropdown-button style="min-width: 120px">
                         <template #overlay>
-                          <a-menu @click="detailOrUpdate(item, 'D')">
+                          <a-menu @click="detailOrUpdate(item, 'E')">
                             <a-menu-item key="1">
                               <UserOutlined />
-                              Thông tin chi tiết
+                              {{
+                                isInvited
+                                  ? "Thông tin chi tiết"
+                                  : "Cập nhật thông tin"
+                              }}
                             </a-menu-item>
                             <!-- <a-menu-item key="2" @click="seeResults(item.id)">
                               <UserOutlined />
@@ -280,15 +287,27 @@
                     <td>
                       <a-dropdown-button style="min-width: 120px">
                         <template #overlay>
-                          <a-menu @click="detailOrUpdate(item, 'U')">
-                            <a-menu-item key="1">
+                          <a-menu>
+                            <a-menu-item
+                              key="3"
+                              v-if="isInvited"
+                              @click="detailOrUpdate(item, 'D')"
+                            >
                               <UserOutlined />
-                              Sửa hội chẩn
+                              Thông tin chi tiết
                             </a-menu-item>
-                            <a-menu-item key="2" @click="seeResults(item.id)">
+                            <a-menu-item
+                              v-if="!isInvited"
+                              key="1"
+                              @click="detailOrUpdate(item, 'U')"
+                            >
+                              <UserOutlined />
+                              Thêm kết luận
+                            </a-menu-item>
+                            <!-- <a-menu-item key="2" @click="seeResults(item.id)">
                               <UserOutlined />
                               Xóa
-                            </a-menu-item>
+                            </a-menu-item> -->
                           </a-menu>
                         </template>
                       </a-dropdown-button>
@@ -443,10 +462,10 @@
                               <UserOutlined />
                               Thông tin chi tiết
                             </a-menu-item>
-                            <a-menu-item key="2" @click="seeResults(item.id)">
+                            <!-- <a-menu-item key="2" @click="seeResults(item.id)">
                               <UserOutlined />
                               Xóa
-                            </a-menu-item>
+                            </a-menu-item> -->
                           </a-menu>
                         </template>
                       </a-dropdown-button>
@@ -526,15 +545,13 @@
           >Thoát</a-button
         >
       </a-modal>
-      <TheFormCalendar
-        :isShow="isShow"
-        @showOrHideForm="showOrHideForm"
-      />
+      <TheFormCalendar :isShow="isShow" @showOrHideForm="showOrHideForm" />
       <TheFormDetailCalendar
         :isShow="isShowDetail"
         @showOrHideForm="showOrHideFormDetail"
         :method="methodsDetailOrUpdate"
         :inforCalendar="inforCalendar"
+        :isInvited="isInvited"
       />
     </div>
   </div>
@@ -577,7 +594,9 @@ export default {
       return this.$store.getters["role"];
     },
     successDataModal() {
-      let arr1 = this.dataModal.filter((item) => item.type == "success");
+      let arr1 = this.dataModal.filter(
+        (item) => item.type == "success" && !item.content.conclusion
+      );
 
       let result = arr1.map((item) => {
         return item.content;
@@ -637,8 +656,13 @@ export default {
             content: item,
           };
           if (
-            new Date() > new Date(item.meeting_time_start) &&
-            !item.conclusion
+            (new Date() > new Date(item.meeting_time_start) &&
+              !item.conclusion) ||
+            (new Date() > new Date(item.meeting_time_end) &&
+              !item.conclusion) ||
+            (new Date() < new Date(item.meeting_time_end) &&
+              item.conclusion &&
+              new Date() > new Date(item.meeting_time_end))
           ) {
             data.type = "warning";
           } else if (
@@ -671,8 +695,12 @@ export default {
           content: item.meeting_title,
         };
         if (
-          new Date() > new Date(item.meeting_time_start) &&
-          !item.conclusion
+          (new Date() > new Date(item.meeting_time_start) &&
+            !item.conclusion) ||
+          (new Date() > new Date(item.meeting_time_end) && !item.conclusion) ||
+          (new Date() < new Date(item.meeting_time_end) &&
+            item.conclusion &&
+            new Date() > new Date(item.meeting_time_end))
         ) {
           data.type = "warning";
         } else if (

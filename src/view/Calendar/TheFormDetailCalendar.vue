@@ -39,6 +39,7 @@
                 id="inputEmail3"
                 placeholder="Ex: Hội chẩn số 1"
                 v-model="formMeeting.meeting_title"
+                :readonly="isInvited || method != 'E'"
               />
             </div>
           </div>
@@ -53,6 +54,7 @@
                 id="inputEmail3"
                 placeholder="Ex: Hội chẩn số 1"
                 v-model="formMeeting.meeting_content"
+                :readonly="isInvited || method != 'E'"
               />
             </div>
           </div>
@@ -79,6 +81,10 @@
                   moment(valueStart, dateFormat),
                   moment(valueEnd, dateFormat),
                 ]"
+                :disabled="[
+                  isInvited || method != 'E',
+                  isInvited || method != 'E',
+                ]"
               />
             </div>
           </div>
@@ -93,7 +99,28 @@
                 id="inputEmail3"
                 placeholder="Ex: Hội chẩn số 1"
                 v-model="formMeeting.meeting_url"
+                :readonly="isInvited || method != 'E'"
               />
+            </div>
+          </div>
+          <div class="form-group row" v-if="method == 'E'">
+            <label for="inputEmail3" class="col-sm-3 col-form-label"
+              >Người tham gia</label
+            >
+            <div class="col-sm-9">
+              <a-select
+                class="calendar-select"
+                mode="tags"
+                style="width: 450px"
+                :token-separators="[',']"
+                @select="handleChange"
+                :max-tag-count="5"
+                :value="valueOptions"
+                @deselect="deselect"
+                placeholder="abc@gmail.com"
+                :disabled="isInvited || method != 'E'"
+              >
+              </a-select>
             </div>
           </div>
           <div class="form-group row">
@@ -107,10 +134,11 @@
                 id="inputEmail3"
                 placeholder="Ex:https://www.abc.com.vn/"
                 v-model="formMeeting.url_file"
+                :readonly="isInvited || method != 'E'"
               />
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row" v-if="method != 'E'">
             <label for="inputEmail3" class="col-sm-3 col-form-label"
               >Kết luận</label
             >
@@ -121,29 +149,14 @@
                 id="inputEmail3"
                 placeholder="Ex: Kết thúc hội chẩn"
                 v-model="formMeeting.conclusion"
+                :readonly="isInvited || method == 'D'"
               />
             </div>
           </div>
-          <!-- <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label"
-              >Người tham gia</label
-            >
-            <div class="col-sm-9">
-              <a-select
-                class="calendar-select"
-                mode="tags"
-                style="width: 100%"
-                :token-separators="[',']"
-                @select="handleChange"
-                :max-tag-count="5"
-                :value="valueOptions"
-                @deselect="deselect"
-                placeholder="abc@gmail.com"
-              >
-              </a-select>
-            </div>
-          </div> -->
-          <div class="form-group row" v-if="method == 'U'">
+          <div
+            class="form-group row"
+            v-if="(method == 'U' || method == 'E') && !isInvited"
+          >
             <div class="flex-save-cancle">
               <button
                 @click="btnSaveOnClick"
@@ -166,7 +179,7 @@
 import axios from "axios";
 import moment from "moment";
 export default {
-  props: ["isShow", "method", "inforCalendar", "inforCalendar"],
+  props: ["isShow", "method", "inforCalendar", "inforCalendar", "isInvited"],
   computed: {
     accessToken() {
       return this.$store.getters.accessToken;
@@ -180,9 +193,15 @@ export default {
   },
   watch: {
     inforCalendar(newValue, oldValue) {
-      this.formMeeting = newValue;
+      this.formMeeting = { ...newValue, guest: [] };
       this.valueStart = newValue.meeting_time_start;
       this.valueEnd = newValue.meeting_time_end;
+      newValue.meeting_guest.forEach((item) => {
+        this.valueOptions.push({
+          value: item.meeting_guest_email,
+        });
+      });
+      console.log(this.valueOptions);
     },
   },
   data() {
@@ -196,7 +215,6 @@ export default {
         // meeting_time_start: "",
         // meeting_time_end: "",
         // meeting_content: "",
-        // meeting_guest: [],
         // meeting_url:"",
         // conclusion:"",
         // url_file: [
@@ -233,6 +251,7 @@ export default {
       }
     },
     deselect(value) {
+      console.log(value);
       this.valueOptions = this.valueOptions.filter(
         (item) => item.value !== value
       );
@@ -240,15 +259,44 @@ export default {
     },
     btnSaveOnClick() {
       const me = this;
-      console.log(this.formMeeting);
-      let conclusion = this.formMeeting.conclusion;
-      if (!conclusion || !conclusion.trim()) {
-        this.$message.warning("Vui lòng nhập kết luận để tiếp tục");
-      } else {
+      if (me.method == "U") {
+        let conclusion = this.formMeeting.conclusion;
+        if (!conclusion || !conclusion.trim()) {
+          this.$message.warning("Vui lòng nhập kết luận để tiếp tục");
+        } else {
+          axios
+            .post(
+              `http://127.0.0.1:8000/meeting/add_meeting_conclusion?pk=${this.formMeeting.id}`,
+              { conclusion },
+              {
+                headers: { Authorization: `Bearer ${me.accessToken}` },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              me.closeForm();
+              // me.$emit("getListPatients");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      } else if (me.method == "E") {
+        this.formMeeting.guest = [];
+        this.valueOptions.forEach((item) => {
+          this.formMeeting.guest.push({
+            email: item.value,
+            displayName: "string",
+            optional: false,
+            responseStatus: "accepted",
+            organizer: true,
+          });
+        });
+        console.log(me.formMeeting);
         axios
-          .post(
-            `http://127.0.0.1:8000/meeting/add_meeting_conclusion?pk=6a4b0b52-9567-4789-be24-717854efd633`,
-            { conclusion },
+          .put(
+            `http://127.0.0.1:8000/meeting/:id/?pk=${this.formMeeting.id}`,
+            me.formMeeting,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }
