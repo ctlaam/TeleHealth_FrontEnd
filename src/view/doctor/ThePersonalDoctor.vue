@@ -117,7 +117,7 @@
                     <select
                       name="country"
                       id=""
-                      v-model="doctorProfile.address.country"
+                      v-model="doctorProfile.country"
                       class="form-control"
                       @change="handleCountryChange"
                     >
@@ -144,7 +144,7 @@
                     <select
                       name="city"
                       id="city"
-                      v-model="doctorProfile.address.province"
+                      v-model="doctorProfile.province"
                       class="form-control"
                       @change="handleCityChange"
                     >
@@ -171,7 +171,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.address.district"
+                      v-model="doctorProfile.district"
                       class="form-control"
                       @change="handleDistrictChange"
                     >
@@ -198,7 +198,7 @@
                     <select
                       name="city"
                       id=""
-                      v-model="doctorProfile.address.ward"
+                      v-model="doctorProfile.ward"
                       class="form-control"
                       @change="handleWardChange"
                     >
@@ -292,14 +292,14 @@ export default {
         gender: "",
         unsignedName: "",
         phone: "",
-        address: {
-          country: "",
-          ward: "",
-          district: "",
-          province: "",
-        },
+
+        country: "",
+        ward: "",
+        district: "",
+        province: "",
+
         detail_address: "",
-        medicalUnit:""
+        medicalUnit: "",
       },
       optionDepartments: [],
     };
@@ -326,7 +326,7 @@ export default {
     // hàm lọc thành phố
     handleCityChange() {
       let arr_tmp = this.fullAddress.find(
-        (item) => item.name == this.doctorProfile.address.province
+        (item) => item.name == this.doctorProfile.province
       );
       this.address.districts = arr_tmp.districts.map((item) => {
         return item.name;
@@ -336,11 +336,11 @@ export default {
     // hàm lọc quận huyện
     handleDistrictChange() {
       let city_tmp = this.fullAddress.find(
-        (item) => item.name == this.doctorProfile.address.province
+        (item) => item.name == this.doctorProfile.province
       );
 
       let distric_tmp = city_tmp.districts.find(
-        (item) => item.name == this.doctorProfile.address.district
+        (item) => item.name == this.doctorProfile.district
       );
 
       this.address.wards = distric_tmp.wards.map((item) => {
@@ -382,23 +382,22 @@ export default {
     async btnSaveOnClick() {
       const me = this;
       console.log(me.doctorProfile);
-
-      // me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
-      // await axios
-      //   .post(
-      //     `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
-      //     me.doctorProfile,
-      //     {
-      //       headers: { Authorization: `Bearer ${me.accessToken}` },
-      //     }
-      //   )
-      //   .then((result) => {
-      //     console.log(result);
-      //     me.closeOnClick();
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      me.doctorProfile.medical_unit = "b0dcef8c-b82f-4711-9fd8-cb82f0d0c974";
+      await axios
+        .post(
+          `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
+          me.doctorProfile,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then((result) => {
+          console.log(result);
+          me.closeOnClick();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   async created() {

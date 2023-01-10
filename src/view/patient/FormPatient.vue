@@ -408,12 +408,10 @@ export default {
         identification: "",
         contact: "",
         detail_address: "",
-        address: {
-          country: "",
-          province: "",
-          district: "",
-          ward: "",
-        },
+        country: "",
+        province: "",
+        district: "",
+        ward: "",
       },
       error: {
         email: false,
@@ -434,33 +432,33 @@ export default {
   },
   methods: {
     setSelectedAddress() {
-      if (this.patient.address.country) {
+      if (this.patient.country) {
         this.address.countries.find((item) => {
-          if (item.name == this.patient.address.country) {
+          if (item.name == this.patient.country) {
             this.selectedAddress.country = item.code;
           }
         });
         this.handleCountryChange();
 
-        if (this.patient.address.province) {
+        if (this.patient.province) {
           this.address.cities.find((item) => {
-            if (item.name == this.patient.address.province) {
+            if (item.name == this.patient.province) {
               this.selectedAddress.city = item.code;
             }
           });
           this.handleCityChange();
 
-          if (this.patient.address.district) {
+          if (this.patient.district) {
             this.address.districts.find((item) => {
-              if (item.name == this.patient.address.district) {
+              if (item.name == this.patient.district) {
                 this.selectedAddress.district = item.code;
               }
             });
             this.handleDistricChange();
 
-            if (this.patient.address.ward) {
+            if (this.patient.ward) {
               this.address.wards.find((item) => {
-                if (item.name == this.patient.address.ward) {
+                if (item.name == this.patient.ward) {
                   this.selectedAddress.ward = item.code;
                 }
               });
@@ -485,7 +483,7 @@ export default {
       if (this.selectedAddress.country) {
         this.address.countries.find((item) => {
           if (item.code == this.selectedAddress.country) {
-            this.patient.address.country = item.name;
+            this.patient.country = item.name;
           }
         });
       }
@@ -496,7 +494,7 @@ export default {
       let arr_tmp = this.fullAddress.find(
         (item) => item.code == this.selectedAddress.city
       );
-      this.patient.address.province = arr_tmp.name;
+      this.patient.province = arr_tmp.name;
       this.address.districts = arr_tmp.districts.map((item) => {
         return {
           name: item.name,
@@ -515,7 +513,7 @@ export default {
         (item) => item.code == this.selectedAddress.district
       );
 
-      this.patient.address.district = distric_tmp.name;
+      this.patient.district = distric_tmp.name;
 
       this.address.wards = distric_tmp.wards.map((item) => {
         return {
@@ -529,7 +527,7 @@ export default {
     handleWardChange() {
       this.address.wards.find((item) => {
         if (item.code == this.selectedAddress.ward) {
-          this.patient.address.ward = item.name;
+          this.patient.ward = item.name;
         }
       });
     },

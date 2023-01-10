@@ -280,6 +280,7 @@ export default {
       this.$emit("closeOnClick", false);
     },
     async btnSaveOnClick() {
+      console.log(123456);
       const me = this;
       me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
       await axios
