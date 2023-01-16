@@ -610,9 +610,11 @@ export default {
       }
 
       if (!this.patient.username) {
-        this.$message.warning("Vui lòng nhập Username");
-        this.error.username = true;
-        isValid = false;
+        if (this.formMode != "edit") {
+          this.$message.warning("Vui lòng nhập Username");
+          this.error.username = true;
+          isValid = false;
+        }
       } else {
         this.error.username = false;
         if (!this.validateUsername(this.patient.username)) {
@@ -622,7 +624,7 @@ export default {
         }
       }
 
-      if (!this.patient.password) {
+      if (!this.patient.password && this.formMode != "edit") {
         this.$message.warning("Vui lòng nhập mật khẩu");
         this.error.password = true;
         isValid = false;
@@ -680,6 +682,7 @@ export default {
             console.log(response);
             me.closeOnClick();
             me.$emit("getListPatients");
+            this.$message.success('Thêm bệnh nhân thành công !')
           })
           .catch((err) => {
             console.log(err);
@@ -697,6 +700,7 @@ export default {
             console.log(response);
             me.closeOnClick();
             me.$emit("getListPatients");
+            this.$message.success('Cập nhật bệnh nhân thành công !')
           })
           .catch((err) => {
             console.log(err);

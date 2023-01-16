@@ -455,7 +455,7 @@ export default {
         url =
           "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
       } else if (this.role == "role1") {
-        url = `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`
+        url = `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
       }
       const me = this;
       await axios
@@ -472,7 +472,14 @@ export default {
     },
     selecPatient(patient) {
       this.formMode = "edit";
-      this.patientSelected = patient;
+      this.patientSelected = {
+        ...patient,
+        country: patient.address.country,
+        province: patient.address.province,
+        district: patient.address.district,
+        ward: patient.address.ward,
+      };
+      console.log(this.patientSelected);
       // this.patientSelected = {
       //   email: "abc@gmail.com",
       //   password: "aaaaaa",
@@ -685,8 +692,8 @@ export default {
         )
         .then(function (res) {
           res.data.forEach((item) => {
-            me.patients.push(item.patient)
-          })
+            me.patients.push(item.patient);
+          });
           me.listRendered = me.patients.slice(0, me.pageSize);
         })
         .catch(function (err) {
