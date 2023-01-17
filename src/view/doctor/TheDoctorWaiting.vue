@@ -203,7 +203,7 @@
                         <circle cx="12" cy="19" r="1"></circle>
                       </svg>
                     </p>
-                    <div
+                    <!-- <div
                       class="dropdown-menu dropdown-menu-right bg-black"
                       role="menu"
                     >
@@ -212,7 +212,7 @@
                         data-pjax-state=""
                         @click="detailDoctor(doctor)"
                       >
-                        See detail
+                        
                       </a>
                       <a class="dropdown-item download" data-pjax-state="">
                         Download
@@ -224,7 +224,7 @@
                       <a class="dropdown-item trash" data-pjax-state="">
                         Delete item
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
