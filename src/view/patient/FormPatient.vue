@@ -376,6 +376,13 @@ export default {
     formMode(value) {
       if (value == "edit") {
         this.setSelectedAddress();
+      } else {
+        this.selectedAddress = {
+          country: null,
+          city: null,
+          district: null,
+          ward: null,
+        };
       }
     },
   },
@@ -679,10 +686,11 @@ export default {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           })
           .then((response) => {
+            this.$emit("callData");
             console.log(response);
             me.closeOnClick();
             me.$emit("getListPatients");
-            this.$message.success('Thêm bệnh nhân thành công !')
+            this.$message.success("Thêm bệnh nhân thành công !");
           })
           .catch((err) => {
             console.log(err);
@@ -700,7 +708,8 @@ export default {
             console.log(response);
             me.closeOnClick();
             me.$emit("getListPatients");
-            this.$message.success('Cập nhật bệnh nhân thành công !')
+            this.$emit("callData");
+            this.$message.success("Cập nhật bệnh nhân thành công !");
           })
           .catch((err) => {
             console.log(err);

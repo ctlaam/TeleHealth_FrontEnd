@@ -334,6 +334,7 @@
       :patientSelected="patientSelected"
       :formMode="formMode"
       @getListPatients="getListPatients"
+      @callData="callData"
     ></FormPatient>
     <ResultTlc
       :resultLeft="resultLeft"
@@ -643,85 +644,88 @@ export default {
         }
       } catch (error) {}
     },
+    async callData() {
+      const me = this;
+      if (this.role == "role3") {
+        await axios
+          .get(
+            `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+            {
+              headers: { Authorization: `Bearer ${me.accessToken}` },
+            }
+          )
+          .then(function (res) {
+            me.patients = res.data;
+            me.listRendered = me.patients.slice(0, me.pageSize);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
+        // Danh sách bác sĩ
+        await axios
+          .get(
+            "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+            {
+              headers: { Authorization: `Bearer ${me.accessToken}` },
+            }
+          )
+          .then(function (res) {
+            res.data.forEach((item) => {
+              me.optionDoctor.push({
+                value: `${item.name}  --  email: ${item.email}`,
+                id: item.id,
+              });
+            });
+            console.log(me.optionDoctor);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      } else if (this.role == "role1") {
+        await axios
+          .get(
+            `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+            {
+              headers: { Authorization: `Bearer ${me.accessToken}` },
+            }
+          )
+          .then(function (res) {
+            res.data.forEach((item) => {
+              me.patients.push(item.patient);
+            });
+            me.listRendered = me.patients.slice(0, me.pageSize);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
+        // // Danh sách bác sĩ
+        // await axios
+        //   .get(
+        //     "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        //     {
+        //       headers: { Authorization: `Bearer ${me.accessToken}` },
+        //     }
+        //   )
+        //   .then(function (res) {
+        //     console.log(res.data);
+        //     res.data.forEach((item) => {
+        //       me.optionDoctor.push({
+        //         value: `${item.name}  --  email: ${item.email}`,
+        //         id: item.id,
+        //       });
+        //     });
+        //     console.log(me.optionDoctor);
+        //   })
+        //   .catch(function (err) {
+        //     console.log(err);
+        //   });
+      }
+    },
   },
   async created() {
-    const me = this;
-    if (this.role == "role3") {
-      await axios
-        .get(
-          `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
-          {
-            headers: { Authorization: `Bearer ${me.accessToken}` },
-          }
-        )
-        .then(function (res) {
-          me.patients = res.data;
-          me.listRendered = me.patients.slice(0, me.pageSize);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-
-      // Danh sách bác sĩ
-      await axios
-        .get(
-          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
-          {
-            headers: { Authorization: `Bearer ${me.accessToken}` },
-          }
-        )
-        .then(function (res) {
-          res.data.forEach((item) => {
-            me.optionDoctor.push({
-              value: `${item.name}  --  email: ${item.email}`,
-              id: item.id,
-            });
-          });
-          console.log(me.optionDoctor);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-    } else if (this.role == "role1") {
-      await axios
-        .get(
-          `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
-          {
-            headers: { Authorization: `Bearer ${me.accessToken}` },
-          }
-        )
-        .then(function (res) {
-          res.data.forEach((item) => {
-            me.patients.push(item.patient);
-          });
-          me.listRendered = me.patients.slice(0, me.pageSize);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-
-      // // Danh sách bác sĩ
-      // await axios
-      //   .get(
-      //     "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
-      //     {
-      //       headers: { Authorization: `Bearer ${me.accessToken}` },
-      //     }
-      //   )
-      //   .then(function (res) {
-      //     console.log(res.data);
-      //     res.data.forEach((item) => {
-      //       me.optionDoctor.push({
-      //         value: `${item.name}  --  email: ${item.email}`,
-      //         id: item.id,
-      //       });
-      //     });
-      //     console.log(me.optionDoctor);
-      //   })
-      //   .catch(function (err) {
-      //     console.log(err);
-      //   });
-    }
+    await this.callData();
   },
 };
 </script>
