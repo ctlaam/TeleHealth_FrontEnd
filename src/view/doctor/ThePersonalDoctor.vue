@@ -238,7 +238,7 @@
               v-model:value="valueDoctor"
               show-search
               placeholder="Chọn nơi làm việc"
-              style="width: 100%"
+              style="width: 530px"
               :options="optionDepartments"
               @change="selectDepartment"
             ></a-select>
@@ -392,10 +392,11 @@ export default {
           }
         )
         .then((result) => {
-          console.log(result);
+          this.$message.success("Cập nhật thông tin thành công !");
           me.closeOnClick();
         })
         .catch((err) => {
+          this.$message.error("Cập nhật thất bại !");
           console.log(err);
         });
     },

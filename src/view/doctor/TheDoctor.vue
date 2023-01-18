@@ -162,13 +162,6 @@
                 "
               >
                 <div>
-                  <label class="ui-check m-0">
-                    <input type="checkbox" name="id" value="2" />
-                    <i></i>
-                  </label>
-                </div>
-                <div></div>
-                <div>
                   <a href="app.user.detail.html#16" data-pjax-state="">
                     <span
                       class="w-40 avatar gd-info"
@@ -287,13 +280,13 @@
                           <UserOutlined />
                           Thông tin chi tiết
                         </a-menu-item>
-                        <a-menu-item key="2" @click="seeResults(patient.id)">
-                          <UserOutlined />
-                          Xóa
-                        </a-menu-item>
                         <a-menu-item key="3" @click="clickInput(patient.id)">
                           <UserOutlined />
                           Tính thể tích phổi
+                        </a-menu-item>
+                        <a-menu-item key="2" @click="seeResults(patient.id)">
+                          <UserOutlined />
+                          Xóa
                         </a-menu-item>
                       </a-menu>
                     </template>

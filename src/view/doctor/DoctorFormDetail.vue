@@ -280,7 +280,6 @@ export default {
       this.$emit("closeOnClick", false);
     },
     async btnSaveOnClick() {
-      console.log(123456);
       const me = this;
       me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
       await axios
@@ -299,12 +298,93 @@ export default {
           console.log(err);
         });
     },
+    getLocation() {
+      const url = "https://provinces.open-api.vn/api/";
+      axios
+        .get(
+          url,
+          {
+            params: {
+              depth: 3,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          this.address = res.data;
+          this.setSelectedAddress();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setSelectedAddress() {
+      if (this.patient.country) {
+        this.address.countries.find((item) => {
+          if (item.name == this.patient.country) {
+            this.selectedAddress.country = item.code;
+          }
+        });
+        this.handleCountryChange();
+
+        if (this.patient.province) {
+          this.address.cities.find((item) => {
+            if (item.name == this.patient.province) {
+              this.selectedAddress.city = item.code;
+            }
+          });
+          this.handleCityChange();
+
+          if (this.patient.district) {
+            this.address.districts.find((item) => {
+              if (item.name == this.patient.district) {
+                this.selectedAddress.district = item.code;
+              }
+            });
+            this.handleDistricChange();
+
+            if (this.patient.ward) {
+              this.address.wards.find((item) => {
+                if (item.name == this.patient.ward) {
+                  this.selectedAddress.ward = item.code;
+                }
+              });
+              this.handleWardChange();
+            }
+          }
+        }
+      }
+    },
+    // Hàm lọc Quốc gia
+    handleCountryChange() {
+      if (this.fullAddress.length > 0) {
+        this.address.cities = this.fullAddress.map((item) => {
+          return {
+            name: item.name,
+            code: item.code,
+          };
+        });
+      }
+
+      if (this.selectedAddress.country) {
+        this.address.countries.find((item) => {
+          if (item.code == this.selectedAddress.country) {
+            this.patient.country = item.name;
+          }
+        });
+      }
+    },
   },
   created() {
     const me = this;
+    this.getLocation();
     me.address.cities = ["Hà Nội"];
-    me.address.wards = ["Bạch Mai","abc"];
-    me.address.districts = ["Giải Phóng","Thanh Xuân"];
+    me.address.wards = ["Phường Phúc Xá","abc"];
+    me.address.districts = ["Quận Ba Đình","Thanh Xuân"];
     me.address.countries = ["Việt Nam", "Anh"];
     me.ethnics = ["Kinh"];
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {

@@ -125,12 +125,6 @@
                     opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
                 "
               >
-                <div>
-                  <label class="ui-check m-0">
-                    <input type="checkbox" name="id" value="2" />
-                    <i></i>
-                  </label>
-                </div>
                 <div></div>
                 <div>
                   <a href="app.user.detail.html#16" data-pjax-state="">
@@ -146,15 +140,44 @@
                   </a>
                 </div>
                 <div class="flex">
-                  <a class="item-author text-color" data-pjax-state="">{{
-                    doctor.name
-                  }}</a>
-                  <div class="item-mail text-muted h-1x d-none d-sm-block">
-                    {{ doctor.unsignedName }}
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Tên bác sĩ</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block"  style="width: 180px">
+                    {{ doctor.name }}
                   </div>
-
-                  <div class="item-tag tag hide">
-                    Clients,Team,Personal,Company,Work,Friends,Suppliers,Partners
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Giới tính</a
+                  >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 80px"
+                  >
+                    {{ doctor.gender == "man" ? "Nam" : "Nữ" }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state="">Email</a>
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.email }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Số điện thoại</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ doctor.phone }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a class="item-author text-color" data-pjax-state=""
+                    >Địa chỉ</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block" style="width: 200px" >
+                    {{ doctor.detail_address }}
                   </div>
                 </div>
                 <div>
@@ -268,36 +291,7 @@ export default {
       current: 1,
       pageSize: 10,
       isShowDialog: false,
-      doctorsWait: [
-        {
-          name: "Hoàng Quang Huy",
-          email: "huy.hoangquang@hust.edu.vn",
-        },
-        {
-          name: "Trần Anh Vũ",
-          email: "vu.trananh@hust.edu.vn",
-        },
-        {
-          name: "Nguyễn Việt Dũng",
-          email: "dung.nguyenviet1@hust.edu.vn",
-        },
-        {
-          name: "Trịnh Quang Đức",
-          email: "duc.trinhquang@hust.edu.vn",
-        },
-        {
-          name: "Nguyễn Thái Hà",
-          email: "ha.nguyenthai@hust.edu.vn",
-        },
-        {
-          name: "Dương Trọng Lượng",
-          email: "luong.duongtrong@hust.edu.vn",
-        },
-        {
-          name: "Phạm Phúc Ngọc",
-          email: "ngoc.phamphuc@hust.edu.vn",
-        },
-      ],
+      doctorsWait: [],
       doctorSelected: {},
       // formMode để biết là form dùng để thêm mới hoặc là sửa
       formMode: this.TeleHealthEnum.FormMode.Add,
@@ -320,7 +314,6 @@ export default {
     },
     async confirmDoctor(id) {
       const me = this;
-      console.log(me.accessToken);
       await axios
         .post(
           `http://127.0.0.1:8000/medical_unit/accept_doctor_wait_accept_by_medical_unit?pk=${id}`,
@@ -330,10 +323,11 @@ export default {
           }
         )
         .then(function (res) {
-          console.log(res);
+          me.$message.success("Chấp nhận bác sĩ thành công !");
+          me.callData();
         })
         .catch(function (err) {
-          console.log(err);
+          me.$message.error("Có lỗi xảy ra !");
         });
     },
     declineDoctor(id) {},
@@ -386,22 +380,25 @@ export default {
       this.doctorSelected = doctor;
       this.showOrHideDialog(true);
     },
+    async callData() {
+      const me = this;
+      await axios
+        .get(
+          "http://127.0.0.1:8000/medical_unit/list_doctor_wait_accept_by_medical_unit/",
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          me.doctorsWait = res.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    },
   },
   async mounted() {
-    const me = this;
-    await axios
-      .get(
-        "http://127.0.0.1:8000/medical_unit/list_doctor_wait_accept_by_medical_unit/",
-        {
-          headers: { Authorization: `Bearer ${me.accessToken}` },
-        }
-      )
-      .then(function (res) {
-        me.doctorsWait = res.data;
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    await this.callData();
   },
 };
 </script>

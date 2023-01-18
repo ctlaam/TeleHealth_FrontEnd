@@ -165,13 +165,6 @@
                 :key="patient.id"
               >
                 <div>
-                  <label class="ui-check m-0">
-                    <input type="checkbox" name="id" value="2" />
-                    <i></i>
-                  </label>
-                </div>
-                <div></div>
-                <div>
                   <a href="app.message.html" data-pjax-state="">
                     <span class="w-40 avatar gd-primary">
                       {{ getFirstLetter(patient.name) }}
@@ -256,6 +249,14 @@
                           Thông tin chi tiết
                         </a-menu-item>
                         <a-menu-item
+                          key="4"
+                          @click="showModalDoctor(patient.id)"
+                          v-if="role == 'role3' || role == 'role1'"
+                        >
+                          <UserOutlined />
+                          Bác sĩ quản lý
+                        </a-menu-item>
+                        <a-menu-item
                           key="2"
                           @click="seeResults(patient.id)"
                           v-if="role == 'role3' || role == 'role1'"
@@ -270,14 +271,6 @@
                         >
                           <UserOutlined />
                           Tính thể tích phổi
-                        </a-menu-item>
-                        <a-menu-item
-                          key="4"
-                          @click="showModalDoctor(patient.id)"
-                          v-if="role == 'role3' || role == 'role1'"
-                        >
-                          <UserOutlined />
-                          Bác sĩ quản lý
                         </a-menu-item>
                         <a-menu-item
                           key="5"
@@ -554,6 +547,7 @@ export default {
         formData.append("uploadfiles", event.target.files[i]);
       }
       formData.append("patientId", me.idPatient);
+      this.$message.loading("Đang tải lên dữ liệu. Vui lòng đợi...", 300);
       await axios({
         url: "http://127.0.0.1:8000/tlc/post_file",
         method: "POST",
@@ -563,12 +557,16 @@ export default {
         },
       })
         .then((result) => {
+          this.$message.destroy();
+          this.$message.success("Tải dữ liệu lên thành công.");
           me.resultRight = result.data.data.right_lung;
           me.resultLeft = result.data.data.left_lung;
           me.totalLung = result.data.data.lung_volume;
           me.showResult();
         })
         .catch((err) => {
+          this.$message.destroy();
+          this.$message.error("Có lỗi xảy ra, vui lòng thử lại.");
           console.log(err);
         });
     },

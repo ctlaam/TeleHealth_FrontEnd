@@ -776,7 +776,7 @@ button.btn.btn-primary.mt-1 {
 }
 #cardPatient {
   width: 900px;
-  height: 838px;
+  /* height: 838px; */
 }
 #cardPatient button {
   border: none;
