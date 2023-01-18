@@ -604,13 +604,13 @@ export default {
       let isValid = true;
 
       if (!this.patient.email) {
-        this.$message.warning("Vui lòng nhập Email");
+        // this.$message.warning("Vui lòng nhập Email");
         this.error.email = true;
         isValid = false;
       } else {
         this.error.email = false;
         if (!this.validateEmail(this.patient.email)) {
-          this.$message.warning("Vui lòng nhập Email đúng định dạng");
+          // this.$message.warning("Vui lòng nhập Email đúng định dạng");
           this.error.email = true;
           isValid = false;
         }
@@ -618,21 +618,21 @@ export default {
 
       if (!this.patient.username) {
         if (this.formMode != "edit") {
-          this.$message.warning("Vui lòng nhập Username");
+          // this.$message.warning("Vui lòng nhập Username");
           this.error.username = true;
           isValid = false;
         }
       } else {
         this.error.username = false;
         if (!this.validateUsername(this.patient.username)) {
-          this.$message.warning("Vui lòng nhập Username đúng định dạng");
+          // this.$message.warning("Vui lòng nhập Username đúng định dạng");
           this.error.username = true;
           isValid = false;
         }
       }
 
       if (!this.patient.password && this.formMode != "edit") {
-        this.$message.warning("Vui lòng nhập mật khẩu");
+        // this.$message.warning("Vui lòng nhập mật khẩu");
         this.error.password = true;
         isValid = false;
       } else {
@@ -640,7 +640,7 @@ export default {
       }
 
       if (!this.patient.name) {
-        this.$message.warning("Vui lòng nhập họ và tên");
+        // this.$message.warning("Vui lòng nhập họ và tên");
         this.error.name = true;
         isValid = false;
       } else {
@@ -648,7 +648,7 @@ export default {
       }
 
       if (!this.patient.gender) {
-        this.$message.warning("Vui lòng chọn giới tính");
+        // this.$message.warning("Vui lòng chọn giới tính");
         this.error.gender = true;
         isValid = false;
       } else {
@@ -656,7 +656,7 @@ export default {
       }
 
       if (!this.patient.dateOfBirth) {
-        this.$message.warning("Vui lòng nhập ngày sinh");
+        // this.$message.warning("Vui lòng nhập ngày sinh");
         this.error.dateOfBirth = true;
         isValid = false;
       } else {
@@ -664,7 +664,7 @@ export default {
       }
 
       if (!this.patient.ethnic) {
-        this.$message.warning("Vui lòng chọn dân tộc");
+        // this.$message.warning("Vui lòng chọn dân tộc");
         this.error.ethnic = true;
         isValid = false;
       } else {
@@ -678,6 +678,7 @@ export default {
       const me = this;
       console.log(this.patient);
       if (!this.validateForm()) {
+        this.$message.warning("Thiếu dữ liệu yêu cầu");
         return;
       }
       if (this.formMode == "add") {
