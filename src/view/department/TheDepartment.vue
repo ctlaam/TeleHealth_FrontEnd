@@ -28,48 +28,13 @@
                 </svg>
                 <span class="mx-1">Thêm</span>
               </button>
-              <div class="dropdown">
-                <button
-                  class="btn btn-sm btn-white no-wrap"
-                  data-toggle="dropdown"
-                >
-                  A-Z
-                </button>
-                <div class="dropdown-menu p-3" id="filter">
-                  <span class="badge pointer">A</span>
-                  <span class="badge pointer">B</span>
-                  <span class="badge pointer">C</span>
-                  <span class="badge pointer">D</span>
-                  <span class="badge pointer">E</span>
-                  <span class="badge pointer">F</span>
-                  <span class="badge pointer">G</span>
-                  <span class="badge pointer">H</span>
-                  <span class="badge pointer">I</span>
-                  <span class="badge pointer">J</span>
-                  <span class="badge pointer">K</span>
-                  <span class="badge pointer">L</span>
-                  <span class="badge pointer">M</span>
-                  <span class="badge pointer">N</span>
-                  <span class="badge pointer">O</span>
-                  <span class="badge pointer">P</span>
-                  <span class="badge pointer">Q</span>
-                  <span class="badge pointer">R</span>
-                  <span class="badge pointer">S</span>
-                  <span class="badge pointer">T</span>
-                  <span class="badge pointer">U</span>
-                  <span class="badge pointer">V</span>
-                  <span class="badge pointer">W</span>
-                  <span class="badge pointer">X</span>
-                  <span class="badge pointer">Y</span>
-                  <span class="badge pointer">Z</span>
-                </div>
-              </div>
+
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm"
                     required=""
                   />
                   <span class="input-group-append">
@@ -137,7 +102,8 @@
                 class="list-item"
                 data-id="2"
                 data-sr-id="164"
-                style="visibility: visible;
+                style="
+                  visibility: visible;
                   transform: none;
                   opacity: 1;
                   transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
@@ -147,22 +113,9 @@
                 :key="department"
               >
                 <div>
-                  <label class="ui-check m-0">
-                    <input type="checkbox" name="id" value="2" />
-                    <i></i>
-                  </label>
-                </div>
-                <div></div>
-                <div>
-                  <a href="app.user.detail.html#2" data-pjax-state="">
-                    <span
-                      class="w-40 avatar gd-primary"
-                      data-toggle-class="loading"
-                    >
-                      <span
-                        class="avatar-status off b-white avatar-right"
-                      ></span>
-                      <img src="../../assets/img/a2.jpg" alt="." />
+                  <a href="app.message.html" data-pjax-state="">
+                    <span class="w-40 avatar gd-primary">
+                      {{ getFirstLetter(department.name) }}
                     </span>
                   </a>
                 </div>
@@ -221,30 +174,24 @@
                   >
                   <div
                     class="item-mail text-muted h-1x d-none d-sm-block"
-                    style="width: 300px"
+                    style="width: 200px"
                   >
                     {{ department.detail_address }}
                   </div>
                 </div>
-                <div>
-                  <a-dropdown-button>
-                    <template #overlay>
-                      <a-menu @click="detailDoctor(doctor)">
-                        <a-menu-item key="1">
-                          <UserOutlined />
-                          Thông tin chi tiết
-                        </a-menu-item>
-                        <a-menu-item key="2" @click="seeResults(patient.id)">
-                          <UserOutlined />
-                          Xóa
-                        </a-menu-item>
-                        <!-- <a-menu-item key="3"  @click="clickInput(patient.id)">
-                          <UserOutlined />
-                          Tính thể tích phổi
-                        </a-menu-item> -->
-                      </a-menu>
-                    </template>
-                  </a-dropdown-button>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Ngày tạo</a
+                  >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 200px"
+                  >
+                    {{ new Date(department.created_at) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -287,7 +234,7 @@ export default {
       pageSize: 10,
       isShowDialog: false,
       departments: [],
-      listRendered:[],
+      listRendered: [],
     };
   },
   computed: {
@@ -295,7 +242,15 @@ export default {
       return this.$store.getters.accessToken;
     },
   },
+
   methods: {
+    getFirstLetter(name) {
+      if (name) {
+        let a = name.split("");
+        return a[0].toUpperCase();
+      }
+      return "";
+    },
     changePage(value) {
       this.listRendered = this.departments.slice(
         (value - 1) * this.pageSize,
@@ -350,7 +305,7 @@ export default {
         me.departments = res.data;
         me.listRendered = me.departments.slice(0, me.pageSize);
       })
-      .catch(err =>{
+      .catch((err) => {
         console.log(err);
       });
   },

@@ -6,48 +6,13 @@
         <div class="d-flex flex-column flex" id="user-list">
           <div class="p-3">
             <div class="toolbar">
-              <div class="dropdown">
-                <button
-                  class="btn btn-sm btn-white no-wrap"
-                  data-toggle="dropdown"
-                >
-                  A-Z
-                </button>
-                <div class="dropdown-menu p-3" id="filter">
-                  <span class="badge pointer">A</span>
-                  <span class="badge pointer">B</span>
-                  <span class="badge pointer">C</span>
-                  <span class="badge pointer">D</span>
-                  <span class="badge pointer">E</span>
-                  <span class="badge pointer">F</span>
-                  <span class="badge pointer">G</span>
-                  <span class="badge pointer">H</span>
-                  <span class="badge pointer">I</span>
-                  <span class="badge pointer">J</span>
-                  <span class="badge pointer">K</span>
-                  <span class="badge pointer">L</span>
-                  <span class="badge pointer">M</span>
-                  <span class="badge pointer">N</span>
-                  <span class="badge pointer">O</span>
-                  <span class="badge pointer">P</span>
-                  <span class="badge pointer">Q</span>
-                  <span class="badge pointer">R</span>
-                  <span class="badge pointer">S</span>
-                  <span class="badge pointer">T</span>
-                  <span class="badge pointer">U</span>
-                  <span class="badge pointer">V</span>
-                  <span class="badge pointer">W</span>
-                  <span class="badge pointer">X</span>
-                  <span class="badge pointer">Y</span>
-                  <span class="badge pointer">Z</span>
-                </div>
-              </div>
+              
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm"
                     required=""
                   />
                   <span class="input-group-append">

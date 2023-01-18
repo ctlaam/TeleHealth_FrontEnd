@@ -32,58 +32,14 @@
                     ></path>
                   </svg>
                 </button>
-                <button
-                  class="btn btn-sm btn-icon btn-white sort"
-                  data-sort="item-author"
-                  data-toggle="tooltip"
-                  title=""
-                  data-original-title="Sort"
-                >
-                  <i class="sorting"></i>
-                </button>
-              </div>
-              <div class="dropdown">
-                <button
-                  class="btn btn-sm btn-white no-wrap"
-                  data-toggle="dropdown"
-                >
-                  A-Z
-                </button>
-                <div class="dropdown-menu p-3" id="filter">
-                  <span class="badge pointer">A</span>
-                  <span class="badge pointer">B</span>
-                  <span class="badge pointer">C</span>
-                  <span class="badge pointer">D</span>
-                  <span class="badge pointer">E</span>
-                  <span class="badge pointer">F</span>
-                  <span class="badge pointer">G</span>
-                  <span class="badge pointer">H</span>
-                  <span class="badge pointer">I</span>
-                  <span class="badge pointer">J</span>
-                  <span class="badge pointer">K</span>
-                  <span class="badge pointer">L</span>
-                  <span class="badge pointer">M</span>
-                  <span class="badge pointer">N</span>
-                  <span class="badge pointer">O</span>
-                  <span class="badge pointer">P</span>
-                  <span class="badge pointer">Q</span>
-                  <span class="badge pointer">R</span>
-                  <span class="badge pointer">S</span>
-                  <span class="badge pointer">T</span>
-                  <span class="badge pointer">U</span>
-                  <span class="badge pointer">V</span>
-                  <span class="badge pointer">W</span>
-                  <span class="badge pointer">X</span>
-                  <span class="badge pointer">Y</span>
-                  <span class="badge pointer">Z</span>
-                </div>
+
               </div>
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm"
                     required=""
                   />
                   <span class="input-group-append">
@@ -195,7 +151,7 @@
                 </div>
                 <div class="flex">
                   <a class="item-author text-color" data-pjax-state=""
-                    >Địa chỉ</a
+                    >Địa chỉ thường trú</a
                   >
                   <div
                     class="item-mail text-muted h-1x d-none d-sm-block"
@@ -280,11 +236,11 @@
                           <UserOutlined />
                           Thông tin chi tiết
                         </a-menu-item>
-                        <a-menu-item key="3" @click="clickInput(patient.id)">
+                        <!-- <a-menu-item key="3" @click="clickInput(patient.id)">
                           <UserOutlined />
                           Tính thể tích phổi
-                        </a-menu-item>
-                        <a-menu-item key="2" @click="seeResults(patient.id)">
+                        </a-menu-item> -->
+                        <a-menu-item key="2" @click="seeResults(patient.id)" v-if="role == 'role3'">
                           <UserOutlined />
                           Xóa
                         </a-menu-item>
@@ -312,7 +268,7 @@
     </div>
     <!-- :isShow="isShowDialog" -->
     <FormDoctor
-      :isShow="true"
+      :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
       :formMode="formMode"
       :doctorSelected="doctorSelected"

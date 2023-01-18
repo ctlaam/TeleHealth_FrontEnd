@@ -47,7 +47,7 @@
                   <input
                     type="text"
                     class="form-control no-bg no-border no-shadow search"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm"
                     required=""
                     v-model="searchValue"
                   />

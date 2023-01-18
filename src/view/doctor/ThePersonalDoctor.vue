@@ -235,7 +235,7 @@
           >
           <div class="col-sm-8">
             <a-select
-              v-model:value="valueDoctor"
+              v-model:value="nameDepartment"
               show-search
               placeholder="Chọn nơi làm việc"
               style="width: 530px"
@@ -302,11 +302,18 @@ export default {
         medicalUnit: "",
       },
       optionDepartments: [],
+      nameDepartment: "",
     };
   },
   computed: {
     accessToken() {
       return this.$store.getters.accessToken;
+    },
+    idDoctor() {
+      return this.$store.getters.idProfile;
+    },
+    role() {
+      return this.$store.getters.role;
     },
   },
   methods: {
@@ -406,7 +413,7 @@ export default {
     await this.getLocation();
     setTimeout(() => {
       axios
-        .get("http://localhost:8000/medical_unit/", {
+        .get(`http://localhost:8000/medical_unit`, {
           headers: {
             Authorization: `Bearer ${this.$store.getters.accessToken}`,
           },
@@ -423,6 +430,40 @@ export default {
           console.log(err);
         });
     }, 500);
+    setTimeout(() => {
+      axios
+        .get(`http://127.0.0.1:8000/doctor/detail_doctor?pk=${this.idDoctor}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters.accessToken}`,
+          },
+        })
+        .then((res) => {
+          this.doctorProfile = {
+            ...res.data,
+            country: res.data.address.country,
+            ward: res.data.address.ward,
+            province: res.data.address.province,
+            district: res.data.address.district,
+          };
+          this.handleWardChange();
+          this.handleDistrictChange();
+          this.handleCityChange();
+          this.handleCountryChange();
+          console.log(me.optionDepartments);
+          me.optionDepartments.forEach((item) => {
+            if (item.id == res.data.medicalUnit) {
+              this.nameDepartment = item.value;
+              console.log(this.nameDepartment);
+              this.doctorProfile.medicalUnit = item.id;
+            }
+          });
+        })
+        .catch((err) => {
+          if (this.role == "role1") {
+            this.$message.warning("Bạn nên cập nhật thông tin cá nhân !");
+          }
+        });
+    }, 1000);
 
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;

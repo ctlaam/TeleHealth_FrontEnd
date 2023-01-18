@@ -20,6 +20,7 @@
                 @click="btnAddOnClick"
                 id="addPatient"
                 class="btn btn-white"
+                v-if="role == 'role3'"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -64,30 +65,14 @@
                     ></path>
                   </svg>
                 </button>
-                <button
-                  class="btn btn-sm btn-icon btn-white sort"
-                  data-sort="item-author"
-                  data-toggle="tooltip"
-                  title=""
-                  data-original-title="Sort"
-                >
-                  <i class="sorting"></i>
-                </button>
-              </div>
-              <div class="dropdown">
-                <button
-                  class="btn btn-sm btn-white no-wrap"
-                  data-toggle="dropdown"
-                >
-                  A-Z
-                </button>
+
               </div>
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Search"
+                    placeholder="Tìm kiếm"
                     required=""
                   />
                   <span class="input-group-append">
