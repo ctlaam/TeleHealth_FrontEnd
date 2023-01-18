@@ -794,7 +794,8 @@ button.btn.btn-primary.mt-1 {
 .flex-save-cancle {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   width: 100%;
   padding: 0 20px;
 }

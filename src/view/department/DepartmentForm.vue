@@ -130,6 +130,7 @@ export default {
 .flex-save-cancle {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   justify-content: space-between;
   width: 100%;
   padding: 0 20px;
