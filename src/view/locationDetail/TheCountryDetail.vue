@@ -2,7 +2,7 @@
   <div class="dialog-form-location" :class="{ 'show-location': showLocations }">
     <div class="card card-locations">
       <div class="card-header">
-        <strong>Chi tiết đất nước</strong>
+        <strong>Chi tiết Quốc gia</strong>
         <div
           @click="closeLocations"
           id="closeFormLocation"

@@ -247,7 +247,7 @@
               <div class="col-6">
                 <div class="form-group row">
                   <label class="col-form-label" style="width: 80px"
-                    >Đất nước</label
+                    >Quốc gia</label
                   >
                   <div class="col-sm-8">
                     <select
@@ -476,7 +476,7 @@ export default {
       }
     },
 
-    // Hàm lọc đất nước
+    // Hàm lọc Quốc gia
     handleCountryChange() {
       if (this.fullAddress.length > 0) {
         this.address.cities = this.fullAddress.map((item) => {

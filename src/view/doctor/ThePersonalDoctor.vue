@@ -111,7 +111,7 @@
                     style="min-width: 80px"
                     class="col-form-label"
                     for="inlineRadio1"
-                    >Đất nước</label
+                    >Quốc gia</label
                   >
                   <div class="col-sm-8">
                     <select
@@ -237,7 +237,7 @@
             <a-select
               v-model:value="valueDoctor"
               show-search
-              placeholder="Chọn một bác sĩ"
+              placeholder="Chọn nơi làm việc"
               style="width: 100%"
               :options="optionDepartments"
               @change="selectDepartment"
@@ -314,7 +314,7 @@ export default {
       this.doctorProfile.medicalUnit = object.id;
       console.log(this.doctorProfile);
     },
-    // Hàm lọc đất nước
+    // Hàm lọc Quốc gia
     handleCountryChange() {
       if (this.fullAddress.length > 0) {
         this.address.cities = this.fullAddress.map((item) => {

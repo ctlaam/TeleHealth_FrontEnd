@@ -113,7 +113,7 @@
               <div class="col-6">
                 <div class="form-group row">
                   <label class="col-form-label" for="inlineRadio1"
-                    >Đất nước</label
+                    >Quốc gia</label
                   >
                   <div class="col-sm-6">
                     <select
