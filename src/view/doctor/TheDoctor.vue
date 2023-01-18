@@ -310,8 +310,9 @@
         </div>
       </div>
     </div>
+    <!-- :isShow="isShowDialog" -->
     <FormDoctor
-      :isShow="isShowDialog"
+      :isShow="true"
       @closeOnClick="showOrHideDialog"
       :formMode="formMode"
       :doctorSelected="doctorSelected"

@@ -112,16 +112,16 @@
             <div class="row row-cols-2">
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio1"
+                  <label class="col-form-label"  style="min-width: 80px" for="inlineRadio1"
                     >Quốc gia</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="country"
                       id=""
                       v-model="doctorProfile.address.country"
                       class="form-control"
-                      disabled
+                      @change="handleCountryChange"
                     >
                       <option
                         :value="country"
@@ -136,16 +136,16 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio2"
+                  <label class="col-form-label" style="min-width: 80px" for="inlineRadio2"
                     >Thành phố</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
                       v-model="doctorProfile.address.province"
                       class="form-control"
-                      disabled
+                      @change="handleCityChange"
                     >
                       <option
                         :value="city"
@@ -160,16 +160,16 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label class="col-form-label" style="min-width: 80px" for="inlineRadio3"
                     >Quận/huyện</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
                       v-model="doctorProfile.address.district"
                       class="form-control"
-                      disabled
+                      @change="handleDistrictChange"
                     >
                       <option
                         :value="district"
@@ -184,15 +184,16 @@
               </div>
               <div class="col-6">
                 <div class="form-group row">
-                  <label class="col-form-label" for="inlineRadio3"
+                  <label class="col-form-label" style="min-width: 80px" for="inlineRadio3"
                     >Xã Phường</label
                   >
-                  <div class="col-sm-6">
+                  <div class="col-sm-8">
                     <select
                       name="city"
                       id=""
                       v-model="doctorProfile.address.ward"
                       class="form-control"
+                      @change="handleWardChange"
                     >
                       <option
                         :value="ward"
@@ -250,11 +251,21 @@ export default {
     doctorSelected: function (newValue) {
       this.doctorProfile = newValue;
       console.log(this.doctorProfile);
+      this.handleCountryChange();
+      this.handleCityChange();
+      this.handleDistrictChange();
+      this.handleWardChange();
     },
   },
   data() {
     return {
-      address: {},
+      fullAddress: [],
+      address: {
+        countries: ["Việt Nam"],
+        cities: [],
+        districts: [],
+        wards: [],
+      },
       doctorProfile: {
         name: "",
         gender: "",
@@ -315,78 +326,61 @@ export default {
           }
         )
         .then((res) => {
-          this.address = res.data;
-          this.setSelectedAddress();
+          console.log(res.data);
+          this.fullAddress = res.data;
+          // this.setSelectedAddress();
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    setSelectedAddress() {
-      if (this.patient.country) {
-        this.address.countries.find((item) => {
-          if (item.name == this.patient.country) {
-            this.selectedAddress.country = item.code;
-          }
-        });
-        this.handleCountryChange();
-
-        if (this.patient.province) {
-          this.address.cities.find((item) => {
-            if (item.name == this.patient.province) {
-              this.selectedAddress.city = item.code;
-            }
-          });
-          this.handleCityChange();
-
-          if (this.patient.district) {
-            this.address.districts.find((item) => {
-              if (item.name == this.patient.district) {
-                this.selectedAddress.district = item.code;
-              }
-            });
-            this.handleDistricChange();
-
-            if (this.patient.ward) {
-              this.address.wards.find((item) => {
-                if (item.name == this.patient.ward) {
-                  this.selectedAddress.ward = item.code;
-                }
-              });
-              this.handleWardChange();
-            }
-          }
-        }
-      }
-    },
     // Hàm lọc Quốc gia
     handleCountryChange() {
       if (this.fullAddress.length > 0) {
         this.address.cities = this.fullAddress.map((item) => {
-          return {
-            name: item.name,
-            code: item.code,
-          };
+          return item.name;
         });
       }
+    },
 
-      if (this.selectedAddress.country) {
-        this.address.countries.find((item) => {
-          if (item.code == this.selectedAddress.country) {
-            this.patient.country = item.name;
-          }
-        });
-      }
+    // hàm lọc thành phố
+    handleCityChange() {
+      let arr_tmp = this.fullAddress.find(
+        (item) => item.name == this.doctorProfile.address.province
+      );
+      this.address.districts = arr_tmp.districts.map((item) => {
+        return item.name;
+      });
+    },
+
+    // hàm lọc quận huyện
+    handleDistrictChange() {
+      let city_tmp = this.fullAddress.find(
+        (item) => item.name == this.doctorProfile.address.province
+      );
+
+      let distric_tmp = city_tmp.districts.find(
+        (item) => item.name == this.doctorProfile.address.district
+      );
+
+      this.address.wards = distric_tmp.wards.map((item) => {
+        return item.name;
+      });
+    },
+
+    // hàm lọc xã phường
+    handleWardChange() {
+      console.log(this.doctorProfile);
     },
   },
   created() {
     const me = this;
     this.getLocation();
-    me.address.cities = ["Hà Nội"];
-    me.address.wards = ["Phường Phúc Xá","abc"];
-    me.address.districts = ["Quận Ba Đình","Thanh Xuân"];
-    me.address.countries = ["Việt Nam", "Anh"];
-    me.ethnics = ["Kinh"];
+    // me.address.cities = ["Hà Nội"];
+    // me.address.wards = ["Phường Phúc Xá", "abc"];
+    // me.address.districts = ["Quận Ba Đình", "Thanh Xuân"];
+    // me.address.countries = ["Việt Nam", "Anh"];
+    // me.ethnics = ["Kinh"];
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
