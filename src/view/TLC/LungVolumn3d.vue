@@ -3,7 +3,7 @@
     <div class="" id="contentTlc">
       <div class="modal-content box-shadow mb-4">
         <div class="modal-header">
-          <h5 class="modal-title">Phổi 3d</h5>
+          <h5 class="modal-title">PHỔI 3D</h5>
           <button class="close" data-dismiss="modal" @click="closeResult">
             ×
           </button>
@@ -32,8 +32,8 @@ export default {
 
 <style scoped>
 #lungVolumn .modal-content.box-shadow.mb-4 {
-    width: 1000px;
-    height: 820px;
+  width: 1000px;
+  height: 820px;
 }
 .modal-result {
   position: fixed;
@@ -48,7 +48,7 @@ export default {
   display: flex;
 }
 .iframe-lung {
-    margin-bottom: 35px;
+  margin-bottom: 35px;
   margin-left: 55px;
   width: 900px;
   height: 800px;
@@ -62,7 +62,7 @@ div#contentTlc {
 }
 .modal-footer.flex {
   display: flex;
-  justify-content:center;
+  justify-content: center;
 }
 button.btn.btn-primary {
   width: 75px;

@@ -3,7 +3,7 @@
     <div class="" id="contentTlc">
       <div class="modal-content box-shadow mb-4">
         <div class="modal-header">
-          <h5 class="modal-title">Các lần tính thể tích phổi</h5>
+          <h5 class="modal-title">LỊCH SỬ TÍNH THỂ TÍCH PHỔI</h5>
           <button class="close" data-dismiss="modal" @click="closeListResult">
             ×
           </button>
@@ -19,7 +19,7 @@
                 <b>Lần {{ index + 1 }}</b>
               </p>
               <p class="date-result">
-                <b>Ngày: {{ item.create_at }}</b>
+                <b>Ngày: {{ new Date(item.create_at) }}</b>
               </p>
               <button class="btn see-result" @click="seeDetailResult(item.id)">
                 Xem chi tiết
@@ -83,7 +83,7 @@ li.item-result {
   margin-bottom: 20px;
 }
 div#contentTlc {
-  width: 500px;
+  width: 700px;
   direction: ltr;
 }
 .modal-footer.flex {

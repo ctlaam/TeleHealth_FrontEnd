@@ -127,7 +127,6 @@
                         <template #overlay>
                           <a-menu @click="detailOrUpdate(item, 'E')">
                             <a-menu-item key="1">
-                              <UserOutlined />
                               {{
                                 isInvited
                                   ? "Thông tin chi tiết"
@@ -135,7 +134,6 @@
                               }}
                             </a-menu-item>
                             <!-- <a-menu-item key="2" @click="seeResults(item.id)">
-                              <UserOutlined />
                               Xóa
                             </a-menu-item> -->
                           </a-menu>
@@ -293,7 +291,6 @@
                               v-if="isInvited"
                               @click="detailOrUpdate(item, 'D')"
                             >
-                              <UserOutlined />
                               Thông tin chi tiết
                             </a-menu-item>
                             <a-menu-item
@@ -301,11 +298,9 @@
                               key="1"
                               @click="detailOrUpdate(item, 'U')"
                             >
-                              <UserOutlined />
                               Thêm kết luận
                             </a-menu-item>
                             <!-- <a-menu-item key="2" @click="seeResults(item.id)">
-                              <UserOutlined />
                               Xóa
                             </a-menu-item> -->
                           </a-menu>
@@ -459,11 +454,9 @@
                         <template #overlay>
                           <a-menu @click="detailOrUpdate(item, 'D')">
                             <a-menu-item key="1">
-                              <UserOutlined />
                               Thông tin chi tiết
                             </a-menu-item>
                             <!-- <a-menu-item key="2" @click="seeResults(item.id)">
-                              <UserOutlined />
                               Xóa
                             </a-menu-item> -->
                           </a-menu>
@@ -681,7 +674,7 @@ export default {
         if (this.dataModal.length > 0) {
           this.visibleModalSchedule = true;
         } else {
-          this.$message.warning("Không có lịch hội chẩn");
+          this.$message.warning({ content: "Không có lịch hội chẩn", key:"No content" });
         }
       } else if (this.oldDate.getMonth() != dateSelected.getMonth()) {
         this.oldDate = dateSelected;

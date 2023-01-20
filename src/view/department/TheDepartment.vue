@@ -34,8 +34,11 @@
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Tìm kiếm"
+                    placeholder="Tìm kiếm theo tên hoặc địa chỉ bệnh viện"
+                    v-model="inputSearch"
+                    @change="changeValueInputSeach"
                     required=""
+                    style="font-size:14px"
                   />
                   <span class="input-group-append">
                     <button
@@ -195,7 +198,27 @@
                 </div>
               </div>
             </div>
-            <template v-else>
+            <template v-if="listRendered.length == 0 && this.isLoading == true">
+              <div
+                style="display: flex; padding: 20px; align-items: center"
+                v-for="(i, index) in 4"
+                :key="index"
+              >
+                <a-skeleton
+                  active
+                  avatar
+                  :paragraph="{ rows: 2 }"
+                  style="width: 100px; position: relative; top: 30px"
+                />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+              </div>
+            </template>
+            <template v-if="listRendered.length == 0 && this.isLoading == false">
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -228,8 +251,30 @@ export default {
   components: {
     DepartmentForm,
   },
+  watch: {
+    inputSearch: _.debounce( function(newValue) {
+      this.departments = [];
+      this.listRendered = [];
+      this.isLoading = true;
+      this.cloneFull.forEach((item) => {
+        if (
+          item.name.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.detail_address.toUpperCase().includes(newValue.toUpperCase())
+        ) {
+          this.departments.push(item);
+        }
+      });
+      setTimeout(() => {
+        this.listRendered = this.departments.slice(0, this.pageSize);
+        this.isLoading = false;
+      }, 1000);
+    }, 500),
+  },
   data() {
     return {
+      isLoading: false,
+      cloneFull: [],
+      inputSearch: "",
       current: 1,
       pageSize: 10,
       isShowDialog: false,
@@ -303,6 +348,7 @@ export default {
       })
       .then((res) => {
         me.departments = res.data;
+        me.cloneFull = res.data
         me.listRendered = me.departments.slice(0, me.pageSize);
       })
       .catch((err) => {

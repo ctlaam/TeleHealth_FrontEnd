@@ -151,14 +151,12 @@
                             <template #overlay>
                               <a-menu @click="handleDetail(city)">
                                 <a-menu-item key="1">
-                                  <UserOutlined />
                                   Thông tin chi tiết
                                 </a-menu-item>
                                 <a-menu-item
                                   key="2"
                                   @click="seeResults(patient.id)"
                                 >
-                                  <UserOutlined />
                                   Xóa
                                 </a-menu-item>
                               </a-menu>

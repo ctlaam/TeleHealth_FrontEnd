@@ -10,7 +10,6 @@ import axios from "axios";
 
 export default {
   async created() {
-    console.log(123);
     const me = this;
     if (
       localStorage.getItem("usernameTele") &&
@@ -26,7 +25,6 @@ export default {
         .then(async (result) => {
           user = result.data.data;
           await me.$store.dispatch("login", user);
-          console.log(123);
         })
         .catch((err) => {
           console.log(err);

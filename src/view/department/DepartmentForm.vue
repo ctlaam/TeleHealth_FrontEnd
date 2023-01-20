@@ -87,7 +87,7 @@
 <script>
 export default {
   name: "the-department-detail",
-  props: ["isShow", "formMode", "doctorSelected"],
+  props: ["isShow", "doctorSelected"],
   watch: {
     doctorSelected: function (newValue) {
       this.doctor = newValue;

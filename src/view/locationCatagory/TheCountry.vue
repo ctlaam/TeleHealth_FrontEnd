@@ -174,18 +174,15 @@
                             <template #overlay>
                               <a-menu @click="handleDetail(country)">
                                 <a-menu-item key="1">
-                                  <UserOutlined />
                                   Thông tin chi tiết
                                 </a-menu-item>
                                 <a-menu-item
                                   key="2"
                                   @click="seeResults(patient.id)"
                                 >
-                                  <UserOutlined />
                                   Xóa
                                 </a-menu-item>
                                 <!-- <a-menu-item key="3"  @click="clickInput(patient.id)">
-                                <UserOutlined />
                                 Tính thể tích phổi
                               </a-menu-item> -->
                               </a-menu>

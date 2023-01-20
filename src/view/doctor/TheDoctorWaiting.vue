@@ -6,14 +6,16 @@
         <div class="d-flex flex-column flex" id="user-list">
           <div class="p-3">
             <div class="toolbar">
-              
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Tìm kiếm"
+                    placeholder="Tìm kiếm theo tên, số điện thoại hoặc email"
+                    v-model="inputSearch"
+                    @change="changeValueInputSeach"
                     required=""
+                    style="font-size:14px"
                   />
                   <span class="input-group-append">
                     <button
@@ -75,9 +77,12 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row" v-if="doctorsWait.length > 0">
+            <div
+              class="list list-row"
+              v-if="listRendered.length > 0 && !this.isLoading"
+            >
               <div
-                v-for="doctor in doctorsWait"
+                v-for="doctor in listRendered"
                 :key="doctor.id"
                 class="list-item"
                 data-id="2"
@@ -108,7 +113,10 @@
                   <a class="item-author text-color" data-pjax-state=""
                     >Tên bác sĩ</a
                   >
-                  <div class="item-mail text-muted h-1x d-none d-sm-block"  style="width: 180px">
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 180px"
+                  >
                     {{ doctor.name }}
                   </div>
                 </div>
@@ -141,7 +149,10 @@
                   <a class="item-author text-color" data-pjax-state=""
                     >Địa chỉ</a
                   >
-                  <div class="item-mail text-muted h-1x d-none d-sm-block" style="width: 200px" >
+                  <div
+                    class="item-mail text-muted h-1x d-none d-sm-block"
+                    style="width: 200px"
+                  >
                     {{ doctor.detail_address }}
                   </div>
                 </div>
@@ -217,7 +228,29 @@
                 </div>
               </div>
             </div>
-            <template v-else>
+            <template v-if="listRendered.length == 0 && this.isLoading == true">
+              <div
+                style="display: flex; padding: 20px; align-items: center"
+                v-for="(i, index) in 4"
+                :key="index"
+              >
+                <a-skeleton
+                  active
+                  avatar
+                  :paragraph="{ rows: 2 }"
+                  style="width: 100px; position: relative; top: 30px"
+                />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+              </div>
+            </template>
+            <template
+              v-if="listRendered.length == 0 && this.isLoading == false"
+            >
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -227,6 +260,7 @@
               v-model:current="current"
               :total="50"
               show-less-items
+              @change="changePage"
             />
           </div>
         </div>
@@ -251,13 +285,38 @@ export default {
   components: {
     FormDoctor,
   },
+  watch: {
+    inputSearch: _.debounce(function (newValue) {
+      this.doctorsWait = [];
+      this.listRendered = [];
+      this.isLoading = true;
+      this.cloneFull.forEach((item) => {
+        if (
+          item.name.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.email.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.phone.toUpperCase().includes(newValue.toUpperCase())
+        ) {
+          this.doctorsWait.push(item);
+        }
+      });
+      setTimeout(() => {
+        this.listRendered = this.doctorsWait.slice(0, this.pageSize);
+        this.isLoading = false;
+      }, 1000);
+    }, 500),
+  },
+
   data() {
     return {
+      inputSearch: "",
+      isLoading: false,
+      cloneFull: [],
       current: 1,
       pageSize: 10,
       isShowDialog: false,
       doctorsWait: [],
       doctorSelected: {},
+      listRendered: [],
       // formMode để biết là form dùng để thêm mới hoặc là sửa
       formMode: this.TeleHealthEnum.FormMode.Add,
     };
@@ -268,6 +327,12 @@ export default {
     },
   },
   methods: {
+    changePage(value) {
+      this.listRendered = this.doctorsWait.slice(
+        (value - 1) * this.pageSize,
+        value * this.pageSize
+      );
+    },
     getFirstLetter(name) {
       let a = name.split("");
       return a[0].toUpperCase();
@@ -356,6 +421,8 @@ export default {
         )
         .then(function (res) {
           me.doctorsWait = res.data;
+          me.cloneFull = res.data;
+          me.listRendered = me.doctorsWait.slice(0, me.pageSize);
         })
         .catch(function (err) {
           console.log(err);

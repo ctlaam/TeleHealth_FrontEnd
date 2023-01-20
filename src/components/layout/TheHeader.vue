@@ -119,15 +119,12 @@
           <template #overlay>
             <a-menu style="min-width: 140px">
               <a-menu-item key="1" @click="updateProfileDoctor" v-if="role == 'role1'">
-                <UserOutlined />
                 Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
               </a-menu-item>
               <a-menu-item key="2">
-                <UserOutlined />
                 Cài đặt <i class="fa-solid fa-gear"></i>
               </a-menu-item>
               <a-menu-item key="3" @click="LogOut">
-                <UserOutlined />
                 Đăng xuất <i class="fa-solid fa-right-from-bracket"></i>
               </a-menu-item>
             </a-menu>
@@ -145,7 +142,6 @@
     <FormPersonalDoctor
       :isShow="isShowDialog"
       @closeOnClick="showOrHideDialog"
-      :formMode="formMode"
       :inforDoctor="inforDoctor"
     ></FormPersonalDoctor>
   </div>
@@ -197,7 +193,6 @@ export default {
       this.isShowDialog = isShow;
     },
     updateProfileDoctor() {
-      this.formMode = this.TeleHealthEnum.FormMode.Add;
       this.showOrHideDialog(true);
     },
   },

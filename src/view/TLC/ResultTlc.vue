@@ -3,16 +3,16 @@
     <div class="" id="contentTlc" >
       <div class="modal-content box-shadow mb-4">
         <div class="modal-header">
-          <h5 class="modal-title">Kết quả thể tích phổi</h5>
+          <h5 class="modal-title">KẾT QUẢ TÍNH THỂ TÍCH PHỔI</h5>
           <button class="close" data-dismiss="modal" @click="closeResult">
             ×
           </button>
         </div>
         <div class="modal-body">
-          <p>Phổi trái : {{ resultLeft }}</p>
-          <p>Phổi trái : {{ resultRight }}</p>
+          <p>Phổi trái : {{ resultLeft }} ml</p>
+          <p>Phổi trái : {{ resultRight }} ml</p>
           <p>
-            <b> Tổng : {{ total }}</b>
+            <b> Tổng : {{ total }} ml</b>
           </p>
         </div>
         <div class="modal-footer flex">

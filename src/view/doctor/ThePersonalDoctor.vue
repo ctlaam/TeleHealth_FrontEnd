@@ -272,7 +272,7 @@
 import axios from "axios";
 export default {
   name: "the-doctor-detail",
-  props: ["isShow", "formMode", "inforDoctor"],
+  props: ["isShow", "inforDoctor"],
   watch: {
     inforDoctor: function (newValue) {
       this.doctorProfile = newValue;
@@ -430,40 +430,46 @@ export default {
           console.log(err);
         });
     }, 500);
-    setTimeout(() => {
-      axios
-        .get(`http://127.0.0.1:8000/doctor/detail_doctor?pk=${this.idDoctor}`, {
-          headers: {
-            Authorization: `Bearer ${this.$store.getters.accessToken}`,
-          },
-        })
-        .then((res) => {
-          this.doctorProfile = {
-            ...res.data,
-            country: res.data.address.country,
-            ward: res.data.address.ward,
-            province: res.data.address.province,
-            district: res.data.address.district,
-          };
-          this.handleWardChange();
-          this.handleDistrictChange();
-          this.handleCityChange();
-          this.handleCountryChange();
-          console.log(me.optionDepartments);
-          me.optionDepartments.forEach((item) => {
-            if (item.id == res.data.medicalUnit) {
-              this.nameDepartment = item.value;
-              console.log(this.nameDepartment);
-              this.doctorProfile.medicalUnit = item.id;
+    if (this.role == "role1") {
+      setTimeout(() => {
+        axios
+          .get(
+            `http://127.0.0.1:8000/doctor/detail_doctor?pk=${this.idDoctor}`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.$store.getters.accessToken}`,
+              },
+            }
+          )
+          .then((res) => {
+            this.doctorProfile = {
+              ...res.data,
+              country: res.data.address.country,
+              ward: res.data.address.ward,
+              province: res.data.address.province,
+              district: res.data.address.district,
+            };
+            this.handleWardChange();
+            this.handleDistrictChange();
+            this.handleCityChange();
+            this.handleCountryChange();
+
+            me.optionDepartments.forEach((item) => {
+              if (item.id == res.data.medicalUnit) {
+                this.nameDepartment = item.value;
+                console.log(this.nameDepartment);
+                this.doctorProfile.medicalUnit = item.id;
+              }
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            if (this.role == "role1") {
+              this.$message.warning("Bạn nên cập nhật thông tin cá nhân !");
             }
           });
-        })
-        .catch((err) => {
-          if (this.role == "role1") {
-            this.$message.warning("Bạn nên cập nhật thông tin cá nhân !");
-          }
-        });
-    }, 1000);
+      }, 1000);
+    }
 
     // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
     //   me.address.cities = res.data;

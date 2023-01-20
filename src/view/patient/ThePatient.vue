@@ -65,15 +65,16 @@
                     ></path>
                   </svg>
                 </button>
-
               </div>
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Tìm kiếm"
-                    required=""
+                    placeholder="Tìm kiếm theo tên, số điện thoại, CMT/CCCD hoặc email"
+                    v-model="inputSearch"
+                    @change="changeValueInputSeach"
+                    style="font-size: 14px"
                   />
                   <span class="input-group-append">
                     <button
@@ -135,16 +136,17 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row" v-if="patients.length > 0">
+            <div
+              class="list list-row"
+              v-if="listRendered.length > 0  && !this.isLoading"
+            >
               <div
                 class="list-item"
                 data-id="2"
                 data-sr-id="164"
-                style="
-                  transform: none;
-                  opacity: 1;
-                  transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
-                    opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
+                style="transform: none;opacity: 1;
+                transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
+                opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
                 "
                 v-for="patient in listRendered"
                 :key="patient.id"
@@ -224,21 +226,19 @@
                 <div>
                   <a-dropdown-button>
                     <template #overlay>
-                      <a-menu @click="handleMenuClick">
+                      <a-menu>
                         <a-menu-item
                           key="1"
                           v-if="role == 'role3' || role == 'role1'"
                           @click="selecPatient(patient)"
                         >
-                          <UserOutlined />
                           Thông tin chi tiết
                         </a-menu-item>
                         <a-menu-item
                           key="4"
                           @click="showModalDoctor(patient.id)"
-                          v-if="role == 'role3' || role == 'role1'"
+                          v-if="role == 'role3'"
                         >
-                          <UserOutlined />
                           Bác sĩ quản lý
                         </a-menu-item>
                         <a-menu-item
@@ -246,7 +246,6 @@
                           @click="seeResults(patient.id)"
                           v-if="role == 'role3' || role == 'role1'"
                         >
-                          <UserOutlined />
                           Xem các kết quả trước
                         </a-menu-item>
                         <a-menu-item
@@ -254,7 +253,6 @@
                           @click="clickInput(patient.id)"
                           v-if="role == 'role3' || role == 'role1'"
                         >
-                          <UserOutlined />
                           Tính thể tích phổi
                         </a-menu-item>
                         <a-menu-item
@@ -262,7 +260,6 @@
                           @click="clickInput(patient.id)"
                           v-if="role == 'role3'"
                         >
-                          <UserOutlined />
                           Xóa
                         </a-menu-item>
                       </a-menu>
@@ -271,7 +268,27 @@
                 </div>
               </div>
             </div>
-            <template v-else>
+            <template v-if="listRendered.length == 0 && this.isLoading == true">
+              <div
+                style="display: flex; padding: 20px; align-items: center"
+                v-for="(i, index) in 4"
+                :key="index"
+              >
+                <a-skeleton
+                  active
+                  avatar
+                  :paragraph="{ rows: 2 }"
+                  style="width: 100px; position: relative; top: 30px"
+                />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+              </div>
+            </template>
+            <template v-if="listRendered.length == 0 && this.isLoading == false">
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -279,7 +296,6 @@
             style="height: 200px"
             v-model:visible="visible"
             title="Chọn bác sĩ quản lý"
-            :confirm-loading="confirmLoading"
             @ok="assignPatient"
           >
             <!-- :filter-option="filterOption"
@@ -329,14 +345,40 @@
 /* eslint-disable */
 import FormPatient from "../patient/FormPatient.vue";
 import axios from "axios";
+import _ from "lodash";
+
 
 export default {
   name: "the-patient",
   components: {
     FormPatient,
   },
+  watch: {
+    inputSearch: _.debounce( function(newValue) {
+      this.patients = [];
+      this.listRendered = [];
+      this.isLoading = true;
+      this.cloneFull.forEach((item) => {
+        if (
+          item.name.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.email.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.phone.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.identification.toUpperCase().includes(newValue.toUpperCase())
+        ) {
+          this.patients.push(item);
+        }
+      });
+      setTimeout(() => {
+        this.listRendered = this.patients.slice(0, this.pageSize);
+        this.isLoading = false;
+      }, 1000);
+    }, 500),
+  },
   data() {
     return {
+      isLoading: false,
+      cloneFull: [],
+      inputSearch: "",
       valueDoctor: "",
       idDoctorForPatient: "",
       optionDoctor: [],
@@ -391,6 +433,10 @@ export default {
     },
   },
   methods: {
+    // changeValueInputSeach() {
+    //   console.log(123);
+    //   console.log(this.inputSearch);
+    // },
     changePage(value) {
       this.listRendered = this.patients.slice(
         (value - 1) * this.pageSize,
@@ -485,6 +531,7 @@ export default {
     assignResult(result) {
       if (result) {
         this.link = `http://127.0.0.1:8000/tlc_result/result/${result.id}/`;
+        console.log(this.link);
         this.resultRight = result.right_lung;
         this.resultLeft = result.left_lung;
         this.totalLung = result.lung_volume;
@@ -514,6 +561,18 @@ export default {
     showLung3D() {
       const a = document.getElementById("lungVolumn");
       a.removeAttribute("hidden", true);
+      this.$message.warning(
+        "Lần đầu sẽ mất nhiều thời gian để tạo phổi 3D. Vui lòng đợi ..."
+      );
+      // var iframe = document.querySelector(".iframe-lung");
+      // setInterval(() => {
+      //   var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      //   console.log(innerDoc);
+      // }, 1000);
+      // console.log(123323);
+      // setInterval(() => {
+      //   console.log(document.querySelector("#myDiv"));
+      // }, 1000);
     },
     showResult() {
       const a = document.getElementById("resultTlc");
@@ -532,7 +591,7 @@ export default {
         formData.append("uploadfiles", event.target.files[i]);
       }
       formData.append("patientId", me.idPatient);
-      this.$message.loading("Đang tải lên dữ liệu. Vui lòng đợi...", 300);
+      this.$message.loading("Đang tính toán dữ liệu. Vui lòng đợi...", 500);
       await axios({
         url: "http://127.0.0.1:8000/tlc/post_file",
         method: "POST",
@@ -543,7 +602,7 @@ export default {
       })
         .then((result) => {
           this.$message.destroy();
-          this.$message.success("Tải dữ liệu lên thành công.");
+          this.$message.success("Tính toán dữ liệu thành công!");
           me.resultRight = result.data.data.right_lung;
           me.resultLeft = result.data.data.left_lung;
           me.totalLung = result.data.data.lung_volume;
@@ -551,7 +610,9 @@ export default {
         })
         .catch((err) => {
           this.$message.destroy();
-          this.$message.error("Có lỗi xảy ra, vui lòng thử lại.");
+          this.$message.error(
+            "Đã có lỗi xảy ra do tệp tải lên không hợp lệ. Vui lòng thử lại!"
+          );
           console.log(err);
         });
     },
@@ -630,6 +691,7 @@ export default {
     async callData() {
       const me = this;
       if (this.role == "role3") {
+        this.isLoading = true;
         await axios
           .get(
             `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
@@ -639,12 +701,14 @@ export default {
           )
           .then(function (res) {
             me.patients = res.data;
+            me.cloneFull = res.data;
             me.listRendered = me.patients.slice(0, me.pageSize);
+            me.isLoading == false;
           })
           .catch(function (err) {
             console.log(err);
+            me.isLoading == false;
           });
-
         // Danh sách bác sĩ
         await axios
           .get(
@@ -666,6 +730,7 @@ export default {
             console.log(err);
           });
       } else if (this.role == "role1") {
+        this.isLoading = true;
         await axios
           .get(
             `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
@@ -676,10 +741,13 @@ export default {
           .then(function (res) {
             res.data.forEach((item) => {
               me.patients.push(item.patient);
+              me.cloneFull.push(item.patient);
             });
             me.listRendered = me.patients.slice(0, me.pageSize);
+            me.isLoading = false;
           })
           .catch(function (err) {
+            me.isLoading = false;
             console.log(err);
           });
 
@@ -692,7 +760,6 @@ export default {
         //     }
         //   )
         //   .then(function (res) {
-        //     console.log(res.data);
         //     res.data.forEach((item) => {
         //       me.optionDoctor.push({
         //         value: `${item.name}  --  email: ${item.email}`,

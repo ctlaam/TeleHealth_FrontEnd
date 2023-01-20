@@ -246,7 +246,7 @@
 import axios from "axios";
 export default {
   name: "the-doctor-detail",
-  props: ["isShow", "formMode", "doctorSelected"],
+  props: ["isShow", "doctorSelected"],
   watch: {
     doctorSelected: function (newValue) {
       this.doctorProfile = newValue;
@@ -326,7 +326,6 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res.data);
           this.fullAddress = res.data;
           // this.setSelectedAddress();
         })

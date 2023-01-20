@@ -32,15 +32,18 @@
                     ></path>
                   </svg>
                 </button>
-
               </div>
               <form class="flex">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Tìm kiếm"
+                    placeholder="Tìm kiếm theo tên, số điện thoại hoặc email"
+                    v-model="inputSearch"
+                    @change="changeValueInputSeach"
                     required=""
+                    style="font-size:14px"
+
                   />
                   <span class="input-group-append">
                     <button
@@ -102,7 +105,10 @@
           </a>
           <!-- / brand -->
           <div class="scroll-y mx-3 mb-0 card">
-            <div class="list list-row" v-if="doctors.length > 0">
+            <div
+              class="list list-row"
+              v-if="listRendered.length > 0 && !this.isLoading"
+            >
               <div
                 v-for="doctor in listRendered"
                 :key="doctor.id"
@@ -232,16 +238,15 @@
                   <a-dropdown-button>
                     <template #overlay>
                       <a-menu @click="detailDoctor(doctor)">
-                        <a-menu-item key="1">
-                          <UserOutlined />
-                          Thông tin chi tiết
-                        </a-menu-item>
+                        <a-menu-item key="1"> Thông tin chi tiết </a-menu-item>
                         <!-- <a-menu-item key="3" @click="clickInput(patient.id)">
-                          <UserOutlined />
                           Tính thể tích phổi
                         </a-menu-item> -->
-                        <a-menu-item key="2" @click="seeResults(patient.id)" v-if="role == 'role3'">
-                          <UserOutlined />
+                        <a-menu-item
+                          key="2"
+                          @click="seeResults(patient.id)"
+                          v-if="role == 'role3'"
+                        >
                           Xóa
                         </a-menu-item>
                       </a-menu>
@@ -250,7 +255,29 @@
                 </div>
               </div>
             </div>
-            <template v-else>
+            <template v-if="listRendered.length == 0 && this.isLoading == true">
+              <div
+                style="display: flex; padding: 20px; align-items: center"
+                v-for="(i, index) in 4"
+                :key="index"
+              >
+                <a-skeleton
+                  active
+                  avatar
+                  :paragraph="{ rows: 2 }"
+                  style="width: 100px; position: relative; top: 30px"
+                />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+                <a-skeleton active :paragraph="{ rows: 1 }" />
+              </div>
+            </template>
+            <template
+              v-if="listRendered.length == 0 && this.isLoading == false"
+            >
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -286,8 +313,31 @@ export default {
   components: {
     FormDoctor,
   },
+  watch: {
+    inputSearch: _.debounce(function (newValue) {
+      this.doctors = [];
+      this.listRendered = [];
+      this.isLoading = true;
+      this.cloneFull.forEach((item) => {
+        if (
+          item.name.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.email.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.phone.toUpperCase().includes(newValue.toUpperCase())
+        ) {
+          this.doctors.push(item);
+        }
+      });
+      setTimeout(() => {
+        this.listRendered = this.doctors.slice(0, this.pageSize);
+        this.isLoading = false;
+      }, 1000);
+    }, 500),
+  },
   data() {
     return {
+      inputSearch: "",
+      isLoading: false,
+      cloneFull: [],
       current: 1,
       pageSize: 10,
       isShowDialog: false,
@@ -375,6 +425,7 @@ export default {
       })
       .then(function (res) {
         me.doctors = res.data;
+        me.cloneFull = res.data;
         me.listRendered = me.doctors.slice(0, me.pageSize);
       })
       .catch(function (err) {
