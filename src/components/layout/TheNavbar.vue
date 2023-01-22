@@ -39,10 +39,10 @@
             <li class="nav-header hidden-folded" v-if="role != 'role2' && role">
               <span class="text-muted">Quản lý</span>
             </li>
-            
-            <!-- v-if="role != 'role2' && role" -->
+
             <router-link
               to="/content/maincontent/patient"
+              v-if="role != 'role2' && role"
             >
               <li class="">
                 <a href="app.user.html" data-pjax-state="load">
@@ -57,8 +57,8 @@
               </li>
             </router-link>
 
-              <!-- v-if="role == 'role3'" -->
             <router-link
+              v-if="role == 'role3'"
               to="/content/maincontent/doctor"
             >
               <li class="">
@@ -186,22 +186,22 @@
                 </a>
               </li>
             </router-link>
-               <!-- v-if="role != 'role2' && role" -->
             <router-link
               to="/content/maincontent/calendar"
+              v-if="role != 'role2' && role"
             >
-            <li class="" >
-              <a href="app.calendar.html" data-pjax-state="load">
-                <span class="nav-icon text-info"
-                  ><img
-                    src="../../assets/img/icons8-calender-85.png"
-                    style="width: 24px; height: 24px"
-                    alt=""
-                /></span>
-                <span class="nav-text">Lịch hội chẩn</span>
-                <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
-              </a>
-            </li>
+              <li class="">
+                <a href="app.calendar.html" data-pjax-state="load">
+                  <span class="nav-icon text-info"
+                    ><img
+                      src="../../assets/img/icons8-calender-85.png"
+                      style="width: 24px; height: 24px"
+                      alt=""
+                  /></span>
+                  <span class="nav-text">Lịch hội chẩn</span>
+                  <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
+                </a>
+              </li>
             </router-link>
             <router-link
               to="/content/maincontent/viewdicom"
