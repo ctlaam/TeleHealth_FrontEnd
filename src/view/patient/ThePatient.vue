@@ -145,9 +145,7 @@
                 data-id="2"
                 data-sr-id="164"
                 style="transform: none;opacity: 1;
-                transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
-                opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
-                "
+                transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;"
                 v-for="patient in listRendered"
                 :key="patient.id"
               >
@@ -624,29 +622,30 @@ export default {
       return "";
     },
     btnAddOnClick() {
-      this.formMode = "add";
-      this.patientSelected = {
-        email: "",
-        password: "",
-        username: "",
-        name: "",
-        unsignedName: "",
-        gender: "",
-        ethnic: "",
-        phone: "",
-        dateOfBirth: "",
-        insuranceCode: "",
-        identification: "",
-        address: {
-          country: "",
-          province: "",
-          district: "",
-          ward: "",
-        },
-        contact: "",
-        detail_address: "",
-      };
-      this.showOrHideDialog(true);
+      console.log(this.listRendered);
+      // this.formMode = "add";
+      // this.patientSelected = {
+      //   email: "",
+      //   password: "",
+      //   username: "",
+      //   name: "",
+      //   unsignedName: "",
+      //   gender: "",
+      //   ethnic: "",
+      //   phone: "",
+      //   dateOfBirth: "",
+      //   insuranceCode: "",
+      //   identification: "",
+      //   address: {
+      //     country: "",
+      //     province: "",
+      //     district: "",
+      //     ward: "",
+      //   },
+      //   contact: "",
+      //   detail_address: "",
+      // };
+      // this.showOrHideDialog(true);
     },
     /**
      * Mô tả : Mô tả code
@@ -702,12 +701,12 @@ export default {
           .then(function (res) {
             me.patients = res.data;
             me.cloneFull = res.data;
-            me.listRendered = me.patients.slice(0, me.pageSize);
-            me.isLoading == false;
+            me.listRendered = res.data.slice(0, me.pageSize);
+            me.isLoading = false;
           })
           .catch(function (err) {
             console.log(err);
-            me.isLoading == false;
+            me.isLoading = false;
           });
         // Danh sách bác sĩ
         await axios
