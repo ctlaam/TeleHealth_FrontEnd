@@ -622,30 +622,29 @@ export default {
       return "";
     },
     btnAddOnClick() {
-      console.log(this.listRendered);
-      // this.formMode = "add";
-      // this.patientSelected = {
-      //   email: "",
-      //   password: "",
-      //   username: "",
-      //   name: "",
-      //   unsignedName: "",
-      //   gender: "",
-      //   ethnic: "",
-      //   phone: "",
-      //   dateOfBirth: "",
-      //   insuranceCode: "",
-      //   identification: "",
-      //   address: {
-      //     country: "",
-      //     province: "",
-      //     district: "",
-      //     ward: "",
-      //   },
-      //   contact: "",
-      //   detail_address: "",
-      // };
-      // this.showOrHideDialog(true);
+      this.formMode = "add";
+      this.patientSelected = {
+        email: "",
+        password: "",
+        username: "",
+        name: "",
+        unsignedName: "",
+        gender: "",
+        ethnic: "",
+        phone: "",
+        dateOfBirth: "",
+        insuranceCode: "",
+        identification: "",
+        address: {
+          country: "",
+          province: "",
+          district: "",
+          ward: "",
+        },
+        contact: "",
+        detail_address: "",
+      };
+      this.showOrHideDialog(true);
     },
     /**
      * Mô tả : Mô tả code
