@@ -34,11 +34,11 @@
                   <input
                     type="text"
                     class="form-control form-control-theme form-control-sm search"
-                    placeholder="Tìm kiếm theo tên hoặc địa chỉ bệnh viện"
+                    placeholder="Tìm kiếm theo tên, email, số điện thoại hoặc địa chỉ bệnh viện"
                     v-model="inputSearch"
                     @change="changeValueInputSeach"
                     required=""
-                    style="font-size:14px"
+                    style="font-size: 14px"
                   />
                   <span class="input-group-append">
                     <button
@@ -140,10 +140,32 @@
                     href="app.user.detail.html#2"
                     class="item-author text-color"
                     data-pjax-state=""
+                    >Email</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ department.email }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
                     >Tên bệnh viện</a
                   >
                   <div class="item-mail text-muted h-1x d-none d-sm-block">
                     {{ department.name }}
+                  </div>
+                </div>
+                <div class="flex">
+                  <a
+                    href="app.user.detail.html#2"
+                    class="item-author text-color"
+                    data-pjax-state=""
+                    >Số điện thoại</a
+                  >
+                  <div class="item-mail text-muted h-1x d-none d-sm-block">
+                    {{ department.phone }}
                   </div>
                 </div>
                 <div class="flex">
@@ -218,7 +240,9 @@
                 <a-skeleton active :paragraph="{ rows: 1 }" />
               </div>
             </template>
-            <template v-if="listRendered.length == 0 && this.isLoading == false">
+            <template
+              v-if="listRendered.length == 0 && this.isLoading == false"
+            >
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -236,6 +260,7 @@
       <DepartmentForm
         :isShow="isShowDialog"
         @closeOnClick="showOrHideDialog"
+        @callData="callData"
       ></DepartmentForm>
     </div>
   </div>
@@ -252,14 +277,16 @@ export default {
     DepartmentForm,
   },
   watch: {
-    inputSearch: _.debounce( function(newValue) {
+    inputSearch: _.debounce(function (newValue) {
       this.departments = [];
       this.listRendered = [];
       this.isLoading = true;
       this.cloneFull.forEach((item) => {
         if (
           item.name.toUpperCase().includes(newValue.toUpperCase()) ||
-          item.detail_address.toUpperCase().includes(newValue.toUpperCase())
+          item.detail_address.toUpperCase().includes(newValue.toUpperCase()) ||
+          item.email.toUpperCase().includes(newValue.toUpperCase()) || 
+          item.phone.toUpperCase().includes(newValue.toUpperCase())
         ) {
           this.departments.push(item);
         }
@@ -339,6 +366,21 @@ export default {
         }
       } catch (error) {}
     },
+    callData() {
+      const me = this;
+      axios
+        .get("http://localhost:8000/medical_unit/", {
+          headers: { Authorization: `Bearer ${me.accessToken}` },
+        })
+        .then((res) => {
+          me.departments = res.data;
+          me.cloneFull = res.data;
+          me.listRendered = me.departments.slice(0, me.pageSize);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
     const me = this;
@@ -348,7 +390,7 @@ export default {
       })
       .then((res) => {
         me.departments = res.data;
-        me.cloneFull = res.data
+        me.cloneFull = res.data;
         me.listRendered = me.departments.slice(0, me.pageSize);
       })
       .catch((err) => {

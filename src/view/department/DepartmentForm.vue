@@ -29,41 +29,84 @@
         </div>
       </div>
 
-      <div id="formDetailDoctor" class="card-body">
+      <div id="formDetailDoctor" class="card-body" style="direction: ltr">
         <div class="form-group row">
-          <label class="col-sm-4 col-form-label">Tên phòng ban</label>
+          <label class="col-sm-4 col-form-label">Email</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" v-model="doctor.name" />
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.email"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Mật khẩu</label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.password"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Username</label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.username"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Số điện thoại </label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.phone"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Tên bệnh viện</label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.name"
+            />
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Tên không dấu</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" />
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.unsignedName"
+            />
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Địa chỉ</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" />
+            <input
+              type="text"
+              class="form-control"
+              v-model="formDepartment.detail_address"
+            />
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Mô tả</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" />
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label class="col-sm-4 col-form-label" for="formGroupInputSmall"
-            >Tài khoản đăng kí</label
-          >
-          <div class="col-sm-8">
             <input
-              class="form-control form-control-sm"
               type="text"
-              id="formGroupInputSmall"
+              class="form-control"
+              v-model="formDepartment.description"
             />
           </div>
         </div>
@@ -85,22 +128,73 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "the-department-detail",
   props: ["isShow", "doctorSelected"],
   watch: {
     doctorSelected: function (newValue) {
-      this.doctor = newValue;
+      this.formDepartment = newValue;
+    },
+  },
+  computed: {
+    accessToken() {
+      return this.$store.getters.accessToken;
     },
   },
   data() {
     return {
-      doctor: {},
+      formDepartment: {
+        email: "",
+        password: "",
+        username: "",
+        phone: "",
+        name: "",
+        unsignedName: "",
+        detail_address: "",
+        description: "",
+        country: "serializers",
+        ward: "serializers",
+        district: "serializers",
+        province: "serializers",
+      },
     };
   },
   methods: {
     closeOnClick() {
       this.$emit("closeOnClick", false);
+    },
+    async btnSaveOnClick() {
+      let form = this.formDepartment;
+      let me = this;
+      if (
+        !form.email.trim() ||
+        !form.phone.trim() ||
+        !form.description.trim() ||
+        !form.username.trim() ||
+        !form.password.trim() ||
+        !form.name.trim() ||
+        !form.unsignedName.trim() ||
+        !form.detail_address.trim()
+      ) {
+        this.$message.warning({
+          content: "Vui lòng nhập hết dữ liệu yêu cầu !",
+          key: 123,
+        });
+      } else {
+        await axios
+          .post("http://localhost:8000/medical_unit/", form, {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          })
+          .then((res) => {
+            this.$message.success("Thêm bệnh viên thành công !");
+            this.closeOnClick();
+            this.$emit("callData");
+          })
+          .catch((err) => {
+            this.$message.error("Email hoặc Tên đăng nhập đã tồn tại");
+          });
+      }
     },
   },
 };
@@ -124,7 +218,7 @@ export default {
 }
 #cardDepartment {
   width: 700px;
-  height: 400px;
+  height: 530px;
 }
 
 .flex-save-cancle {
@@ -136,8 +230,8 @@ export default {
   padding: 0 20px;
 }
 button.btn.btn-primary.mt-1 {
-    position: relative;
-    top: 10px;
+  position: relative;
+  top: 10px;
 }
 #cardDepartment button {
   border: none;

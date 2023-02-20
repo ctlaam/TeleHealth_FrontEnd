@@ -12,11 +12,13 @@
     "apexcharts": "^3.36.3",
     "axios": "^0.27.2",
     "babel-plugin-import": "^1.13.5",
+    "bootstrap": "^5.2.3",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "vue": "^3.2.13",
+    "vue": "^3.2.47",
     "vue-router": "^4.1.0",
     "vue3-apexcharts": "^1.4.1",
     "vuex": "^4.0.2"
@@ -41,8 +43,7 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {
-    }
+    "rules": {}
   },
   "browserslist": [
     "> 1%",

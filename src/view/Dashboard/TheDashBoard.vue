@@ -169,6 +169,12 @@ export default {
         urlPatient: `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
         urlDepartment: "http://localhost:8000/medical_unit/",
       };
+    } else if (this.role == "role4") {
+      urlRole = {
+        urlDoctor: "http://localhost:8000/doctor/",
+        urlPatient: `http://localhost:8000/patient/`,
+        urlDepartment: "http://localhost:8000/medical_unit/",
+      };
     }
     if (this.role != "role2" && this.role) {
       await axios
@@ -187,7 +193,7 @@ export default {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then(function (res) {
-          if (me.role == "role3") {
+          if (me.role == "role3" || me.role=="role4") {
             me.patients = res.data;
           } else if (me.role == "role1") {
             res.data.forEach((item) => {

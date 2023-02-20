@@ -15,7 +15,7 @@
                     v-model="inputSearch"
                     @change="changeValueInputSeach"
                     required=""
-                    style="font-size:14px"
+                    style="font-size: 14px"
                   />
                   <span class="input-group-append">
                     <button
@@ -258,7 +258,7 @@
             <a-pagination
               v-model:pageSize="pageSize"
               v-model:current="current"
-              :total="50"
+              :total="doctorsWait.length"
               show-less-items
               @change="changePage"
             />
@@ -360,7 +360,24 @@ export default {
           me.$message.error("Có lỗi xảy ra !");
         });
     },
-    declineDoctor(id) {},
+    async declineDoctor(id) {
+      const me = this
+      await axios
+        .post(
+          `http://127.0.0.1:8000/medical_unit/delete_doctor_wait_accept_by_medical_unit?pk=${id}`,
+          { id: "f913cf6f-790c-457e-8216-f2685fb4519b" },
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then(function (res) {
+          me.$message.success("Từ chối bác sĩ thành công !");
+          me.callData();
+        })
+        .catch(function (err) {
+          me.$message.error("Có lỗi xảy ra !");
+        });
+    },
     /**
      * Mô tả : Mô tả code
      * @param

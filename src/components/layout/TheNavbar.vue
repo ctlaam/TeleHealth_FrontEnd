@@ -75,7 +75,7 @@
             </router-link>
             <router-link
               to="/content/maincontent/department"
-              v-if="role == 'role3'"
+              v-if="role == 'role3' || role == 'role4'"
             >
               <li class="">
                 <a href="app.user.html" data-pjax-state="load">
@@ -216,6 +216,23 @@
                       alt=""
                   /></span>
                   <span class="nav-text">Xem ảnh DICOM</span>
+                  <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
+                </a>
+              </li>
+            </router-link>
+            <router-link
+              to="/content/maincontent/cancer"
+              v-if="role != 'role2' && role"
+            >
+              <li class="">
+                <a href="app.calendar.html" data-pjax-state="load">
+                  <span class="nav-icon text-info"
+                    ><img
+                      src="../../assets/img/iconscancer.png"
+                      style="width: 24px; height: 24px"
+                      alt=""
+                  /></span>
+                  <span class="nav-text">Chẩn đoán ung thư</span>
                   <!-- <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span> -->
                 </a>
               </li>

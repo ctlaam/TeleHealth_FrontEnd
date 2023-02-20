@@ -138,14 +138,18 @@
           <div class="scroll-y mx-3 mb-0 card">
             <div
               class="list list-row"
-              v-if="listRendered.length > 0  && !this.isLoading"
+              v-if="listRendered.length > 0 && !this.isLoading"
             >
               <div
                 class="list-item"
                 data-id="2"
                 data-sr-id="164"
-                style="transform: none;opacity: 1;
-                transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;"
+                style="
+                  transform: none;
+                  opacity: 1;
+                  transition: transform 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s,
+                    opacity 0.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0s;
+                "
                 v-for="patient in listRendered"
                 :key="patient.id"
               >
@@ -254,12 +258,18 @@
                           Tính thể tích phổi
                         </a-menu-item>
                         <a-menu-item
+                          key="6"
+                          @click="showModalHistory(patient.id)"
+                        >
+                          Thêm tiểu sử bệnh nhân
+                        </a-menu-item>
+                        <!-- <a-menu-item
                           key="5"
                           @click="clickInput(patient.id)"
                           v-if="role == 'role3'"
                         >
                           Xóa
-                        </a-menu-item>
+                        </a-menu-item> -->
                       </a-menu>
                     </template>
                   </a-dropdown-button>
@@ -286,7 +296,9 @@
                 <a-skeleton active :paragraph="{ rows: 1 }" />
               </div>
             </template>
-            <template v-if="listRendered.length == 0 && this.isLoading == false">
+            <template
+              v-if="listRendered.length == 0 && this.isLoading == false"
+            >
               <a-empty style="margin-top: 200" description="Không có dữ liệu" />
             </template>
           </div>
@@ -307,6 +319,127 @@
               :options="optionDoctor"
               @change="handleChangeDoctorForPatient"
             ></a-select>
+          </a-modal>
+          <a-modal
+            style="height: 200px; direction: ltr; width: 650px"
+            v-model:visible="modalHistory1"
+            title="Tiểu sử bệnh nhân"
+            @ok="addHistory"
+          >
+            <div
+              class="form-group row"
+              style="margin-left: 5px; margin-bottom: 10px"
+            >
+              <label class="col-form-label" style="width: 80px"
+                >Thông tin <span class="red-text">*</span></label
+              >
+              <div class="col-sm-8">
+                <textarea
+                  v-model="historyPatient.patientInfo"
+                  style="width: 480px; margin-left: 10px"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex: nguyenvana123"
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+              style="margin-left: 5px; margin-bottom: 10px"
+            >
+              <label class="col-form-label" style="width: 80px"
+                >Kết quả<span class="red-text">*</span></label
+              >
+              <div class="col-sm-8">
+                <textarea
+                  v-model="historyPatient.result"
+                  style="width: 480px; margin-left: 10px"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex: nguyenvana123"
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+              style="margin-left: 5px; margin-bottom: 10px"
+            >
+              <!-- <label class="col-form-label" style="width: 80px"
+                >User name <span class="red-text">*</span></label
+              > -->
+              <!-- <div class="col-sm-8">
+                <input
+                  v-model="historyPatient.creator"
+                  style="width: 480px; margin-left: 10px"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex: nguyenvana123"
+                />
+              </div> -->
+            </div>
+            <div
+              class="form-group row"
+              style="margin-left: 5px; margin-bottom: 10px"
+            >
+              <label class="col-form-label" style="width: 80px"
+                >Files <span class="red-text">*</span></label
+              >
+              <div class="col-sm-8" style="margin-left: 10px">
+                <input
+                  type="file"
+                  multiple
+                  @change="addFileHistory"
+                  id="historyFile"
+                />
+              </div>
+            </div>
+          </a-modal>
+          <a-modal
+            style="height: 200px; width: 650px"
+            v-model:visible="modalHistory"
+            title="Tiểu sử bệnh nhân"
+            :footer="null"
+          >
+            <div
+              class="modal-body"
+              style="
+                max-height: 555px;
+                direction: ltr;
+                overflow-y: auto;
+                padding: 20px 10px 0 0;
+              "
+            >
+              <ul v-if="listHistoryPatient.length > 0">
+                <li
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 25px;
+                  "
+                  class="item-result"
+                  v-for="(item, index) in listHistoryPatient"
+                  :key="item.id"
+                >
+                  <p class="name-result">
+                    <b>Lần {{ index + 1 }}</b>
+                  </p>
+                  <p class="date-result">
+                    <b>Ngày: {{ new Date(item.created_at) }}</b>
+                  </p>
+                  <a-button
+                    type="primary"
+                    class="btn see-result"
+                    @click="seeDetailHistory(item.id)"
+                  >
+                    Xem chi tiết
+                  </a-button>
+                </li>
+              </ul>
+              <template v-else>
+                <a-empty description="Không có dữ liệu" />
+              </template>
+            </div>
           </a-modal>
           <div class="pagination" v-if="patients.length > 0">
             <a-pagination
@@ -345,14 +478,13 @@ import FormPatient from "../patient/FormPatient.vue";
 import axios from "axios";
 import _ from "lodash";
 
-
 export default {
   name: "the-patient",
   components: {
     FormPatient,
   },
   watch: {
-    inputSearch: _.debounce( function(newValue) {
+    inputSearch: _.debounce(function (newValue) {
       this.patients = [];
       this.listRendered = [];
       this.isLoading = true;
@@ -374,6 +506,12 @@ export default {
   },
   data() {
     return {
+      listHistoryPatient: [],
+      test: true,
+      historyPatient: {},
+      fileHistory: "",
+      modalHistory: false,
+      modalHistory1: false,
       isLoading: false,
       cloneFull: [],
       inputSearch: "",
@@ -431,6 +569,76 @@ export default {
     },
   },
   methods: {
+    async seeDetailHistory(id) {
+      const me = this;
+      await axios
+        .get(
+          `http://127.0.0.1:8000/medical_record/detail_medical_record?pk=${id}`,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then((res) => {
+          this.historyPatient = res.data.data;
+          this.modalHistory1 = true;
+          console.log(this.historyPatient);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async addHistory() {
+      let me = this;
+      var formData = new FormData();
+      for (var i = 0; i < this.fileHistory.target.files.length; i++) {
+        console.log(this.fileHistory.target.files[i]);
+        formData.append("files", this.fileHistory.target.files[i]);
+      }
+      // return;
+      for (const [key, value] of Object.entries(this.historyPatient)) {
+        formData.append(key, value);
+      }
+      formData.append("patient", this.idPatient);
+      await axios({
+        url: "http://127.0.0.1:8000/medical_record/",
+        method: "POST",
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${me.accessToken}`,
+        },
+      })
+        .then((result) => {
+          this.$message.success("Thêm tiểu sử bệnh nhân thành công !");
+          this.modalHistory = false;
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addFileHistory(event) {
+      this.modalHistory = true;
+      this.fileHistory = event;
+    },
+    async showModalHistory(id) {
+      const me = this;
+      this.modalHistory = true;
+      this.idPatient = id;
+      await axios
+        .get(
+          `http://127.0.0.1:8000/medical_record/list_medical_record_by_patient_id?pk=${id}`,
+          {
+            headers: { Authorization: `Bearer ${me.accessToken}` },
+          }
+        )
+        .then((res) => {
+          this.listHistoryPatient = res.data.data;
+          console.log(this.listHistoryPatient);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     // changeValueInputSeach() {
     //   console.log(123);
     //   console.log(this.inputSearch);
@@ -586,6 +794,7 @@ export default {
       const me = this;
       var formData = new FormData();
       for (var i = 0; i < event.target.files.length; i++) {
+        console.log(event.target.files[i]);
         formData.append("uploadfiles", event.target.files[i]);
       }
       formData.append("patientId", me.idPatient);

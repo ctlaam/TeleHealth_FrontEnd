@@ -1,11 +1,12 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRouter, createWebHashHistory } from "vue-router";
 
+import { createRouter, createWebHashHistory } from "vue-router";
 // Dashboard
 import Dasboard from "./view/Dashboard/TheDashBoard.vue";
 import Calendar from "./view/Calendar/TheCalendar.vue";
 import Dicom from "./view/Dashboard/TheViewDicom.vue";
+import Cancer from "./view/Dashboard/TheViewCancer.vue";
 // Patient
 import Patient from "./view/patient/ThePatient.vue";
 //Department
@@ -46,6 +47,7 @@ const abc = [
           { path: "calendar", name: "calendar", component: Calendar },
           { path: "dashboard", name: "Dasboard", component: Dasboard },
           { path: "viewdicom", name: "Dicom", component: Dicom },
+          { path: "cancer", name: "Cancer", component: Cancer },
           {
             path: "patient",
             name: "Patient",
@@ -95,7 +97,6 @@ const router = createRouter({
 //     next();
 //   }
 // });
-
 let app = createApp(App);
 app.config.productionTip = false;
 app.use(DatePicker);
