@@ -465,7 +465,7 @@ export default {
           .catch((err) => {
             console.log(err);
             if (this.role == "role1") {
-              this.$message.warning("Bạn nên cập nhật thông tin cá nhân !");
+              this.$message.warning("Bạn nên cập nhật đẩy đủ thông tin cá nhân !");
             }
           });
       }, 1000);

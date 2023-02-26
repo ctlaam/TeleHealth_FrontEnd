@@ -307,6 +307,7 @@
 /* eslint-disable */
 import FormDoctor from "./DoctorFormDetail.vue";
 import axios from "axios";
+import _ from "lodash";
 
 export default {
   name: "the-doctor",

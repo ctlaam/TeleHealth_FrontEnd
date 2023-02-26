@@ -1,12 +1,25 @@
 <template>
   <div id="content-cancer">
+    <div
+      @click="test"
+      style="
+        width: 820px;
+        height: 240px;
+        background-color: transparent;
+        position: absolute;
+        left: 680px;
+        top: 207px;
+        z-index: 100000000;
+        cursor: pointer;
+      "
+    ></div>
     <a-upload-dragger
       name="file"
       :multiple="true"
       style="width: 800px; height: 500px"
       accept="image/png, image/jpeg"
-      @change="handleChange"
-      :default-file-list="defaultFileList"
+      @click="handleChange"
+      :fileList="defaultFileList"
       listType="picture"
       :showUploadLis="false"
     >
@@ -21,20 +34,30 @@
       <p class="ant-upload-text">
         Nhấp hoặc kéo tệp vào khu vực này để tải lên
       </p>
-      <p class="ant-upload-hint">Chỉ hộ trợ cho ảnh có dạng .png hoặc .jpg</p>
+      <p class="ant-upload-hint">Chỉ hỗ trợ cho ảnh có dạng .png hoặc .jpg</p>
     </a-upload-dragger>
+    <input
+      hidden
+      type="file"
+      multiple
+      @change="onFilesSelected"
+      id="file-input"
+      accept="image/png, image/gif, image/jpeg"
+    />
     <a-modal
       style="height: 700px; width: 800px"
       v-model:visible="visible"
-      title="Chọn bác sĩ quản lý"
+      title="Chuẩn đoán ung thư"
       @ok="assignPatient"
+      class="view-cancer"
+      :footer="null"
     >
+      <div class="view-image" style="margin-bottom: 30px">
+        <img :src="thumUrl" alt="" width="200" />
+      </div>
       <div class="title">
         Kết quả chuẩn đoán dựa trên hình ảnh :
-        {{ isHave ? "Bị ung thư" : "Không bị" }}
-      </div>
-      <div class="view-image">
-        <img :src="thumUrl" alt="" />
+        <b>{{ isHave ? "Bị ung thư" : "Không bị" }}</b>
       </div>
     </a-modal>
   </div>
@@ -49,6 +72,7 @@ export default {
       visible: false,
       isHave: false,
       thumUrl: "",
+      defaultFileList: [],
     };
   },
   computed: {
@@ -57,35 +81,37 @@ export default {
     },
   },
   methods: {
-    async handleChange(file) {
+    test() {
+      document.querySelector("#file-input").click();
+    },
+    async onFilesSelected(files) {
+      this.defaultFileList.push({
+        uid: "-2",
+        name: files.target.files[0].name,
+        status: "done",
+        url: window.URL.createObjectURL(files.target.files[0]),
+        thumbUrl: window.URL.createObjectURL(files.target.files[0]),
+      });
       const me = this;
-      if (file.file.type == "image/jpeg" || file.file.type == "image/png") {
-        file.file.status = "success";
-        this.thumbUrl = file.thumbUrl;
-        this.visible = true;
-        var formData = new FormData();
-        formData.append("uploadfiles", file.file);
-        await axios({
-          url: "http://127.0.0.1:8000/pc/pc_result",
-          method: "POST",
-          data: formData,
-          headers: {
-            Authorization: `Bearer ${me.accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
+      var formData = new FormData();
+      formData.append("uploadfiles", files.target.files[0]);
+      await axios({
+        url: "http://127.0.0.1:8000/pc/pc_result",
+        method: "POST",
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${me.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((result) => {
+          this.visible = true;
+          this.thumUrl = window.URL.createObjectURL(files.target.files[0]);
+          this.isHave = result.data.data.result;
         })
-          .then((result) => {
-            alert(result.data.result);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        this.$message.warning({
-          content: "File tải lên không đúng định dang !",
-          key: 567,
+        .catch((err) => {
+          console.log(err);
         });
-      }
     },
   },
 };
@@ -102,5 +128,10 @@ div#content-cancer {
 }
 #content-cancer .ant-upload-list.ant-upload-list-text {
   width: 800px;
+}
+.view-cancer .ant-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
