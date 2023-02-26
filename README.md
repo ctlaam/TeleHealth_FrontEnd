@@ -12,4 +12,4 @@
 
 7.Gõ npm install -g @vue/cli
 
-8.Gõ npm run serve để chạy prj
+8.Gõ npm run s để chạy prj
