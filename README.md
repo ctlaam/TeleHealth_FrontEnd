@@ -8,8 +8,8 @@
 
 5.Mở project bằng Visual Studio Code
 
-6.Gõ npm -i trong VSC
+6.Gõ npm i trong terminal VSC
 
 7.Gõ npm install -g @vue/cli
 
-8.Gõ npm run serve để chạy prj
+8.Gõ npm run s để chạy prj
