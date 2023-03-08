@@ -145,10 +145,10 @@ export default {
         .then((result) => {
           user = result.data.data;
           me.$store.dispatch("login", user);
-          console.log(result.data.success);
           if (result.data.success) {
             localStorage.setItem("usernameTele", me.email);
             localStorage.setItem("passwordTele", me.password);
+            localStorage.setItem("role", result.data.data.role);
             this.$router.replace("/content/maincontent/dashboard");
           }
         })

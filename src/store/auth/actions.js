@@ -11,4 +11,7 @@ export default {
     console.log(refreshToken);
     axios.get("");
   },
+  async role(context, payload) {
+    await context.commit("role", payload);
+  },
 };

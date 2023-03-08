@@ -260,8 +260,9 @@
                         <a-menu-item
                           key="6"
                           @click="showModalHistory(patient.id)"
+                          v-if="role == 'role3'"
                         >
-                          Thêm tiểu sử bệnh nhân
+                          Thêm tiểu sử khám bệnh
                         </a-menu-item>
                         <!-- <a-menu-item
                           key="5"
@@ -321,9 +322,10 @@
             ></a-select>
           </a-modal>
           <a-modal
-            style="height: 200px; direction: ltr; width: 650px"
+            style="height: 350px; direction: ltr; width: 650px"
             v-model:visible="modalHistory1"
-            title="Tiểu sử bệnh nhân"
+            title="Tiểu sử khám bệnh"
+            :footer="null"
             @ok="addHistory"
           >
             <div
@@ -393,11 +395,23 @@
                 />
               </div>
             </div>
+            <div
+              class="group-btn"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                margin-top: 10px;
+                margin-right: 10px;
+              "
+            >
+              <a-button type="primary" @click="addHistory" style="width: 80px;">Thêm</a-button>
+            </div>
           </a-modal>
           <a-modal
             style="height: 200px; width: 650px"
             v-model:visible="modalHistory"
-            title="Tiểu sử bệnh nhân"
+            title="Tiểu sử khám bệnh"
             :footer="null"
           >
             <div
@@ -608,7 +622,7 @@ export default {
         },
       })
         .then((result) => {
-          this.$message.success("Thêm tiểu sử bệnh nhân thành công !");
+          this.$message.success("Thêm tiểu sử khám bệnh thành công !");
           this.modalHistory = false;
           console.log(result);
         })

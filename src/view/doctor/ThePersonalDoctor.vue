@@ -413,7 +413,7 @@ export default {
     await this.getLocation();
     setTimeout(() => {
       axios
-        .get(`http://localhost:8000/medical_unit`, {
+        .get(`http://localhost:8000/medical_unit/`, {
           headers: {
             Authorization: `Bearer ${this.$store.getters.accessToken}`,
           },
@@ -431,6 +431,7 @@ export default {
         });
     }, 500);
     if (this.role == "role1") {
+      console.log('vào đâty');
       setTimeout(() => {
         axios
           .get(

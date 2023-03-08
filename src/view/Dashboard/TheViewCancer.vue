@@ -32,7 +32,7 @@
         />
       </p>
       <p class="ant-upload-text">
-        Nhấp hoặc kéo tệp vào khu vực này để tải lên
+        Nhấp vào khu vực này để tải ảnh lên
       </p>
       <p class="ant-upload-hint">Chỉ hỗ trợ cho ảnh có dạng .png hoặc .jpg</p>
     </a-upload-dragger>

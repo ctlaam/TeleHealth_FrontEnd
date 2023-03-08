@@ -18,4 +18,7 @@ export default {
   refreshAccessToken(state, payload) {
     state.tokens.access = payload.access;
   },
+  role(state, payload) {
+    state.role = payload;
+  },
 };

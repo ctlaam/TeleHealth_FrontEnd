@@ -15,6 +15,7 @@ export default {
       localStorage.getItem("usernameTele") &&
       localStorage.getItem("passwordTele")
     ) {
+      me.$store.dispatch("role", localStorage.getItem("role"));
       const accountLoggin = {
         email: localStorage.getItem("usernameTele"),
         password: localStorage.getItem("passwordTele"),

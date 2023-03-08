@@ -118,7 +118,11 @@
         <a-dropdown v-if="true">
           <template #overlay>
             <a-menu style="min-width: 140px">
-              <a-menu-item key="1" @click="updateProfileDoctor" v-if="role == 'role1'">
+              <a-menu-item
+                key="1"
+                @click="updateProfileDoctor"
+                v-if="role == 'role1'"
+              >
                 Thông tin cá nhân <i class="fa-solid fa-circle-info"></i>
               </a-menu-item>
               <a-menu-item key="2">
@@ -138,6 +142,13 @@
         to="/auth"
         ><a-button type="primary">Đăng nhập</a-button></router-link
       >
+      <div class="nav navbar-menu order-1 order-lg-2" v-if="isAuthenticated">
+        <div
+          class="icon-notification"
+          style="position: absolute; z-index: 100; right: 80px"
+        >
+        </div>
+      </div>
     </div>
     <FormPersonalDoctor
       :isShow="isShowDialog"
@@ -186,6 +197,7 @@ export default {
     LogOut() {
       localStorage.removeItem("usernameTele");
       localStorage.removeItem("passwordTele");
+      localStorage.removeItem("role");
       this.$router.push("/");
       this.$store.dispatch("logout");
     },
