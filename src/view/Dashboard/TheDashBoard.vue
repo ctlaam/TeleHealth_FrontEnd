@@ -142,13 +142,13 @@ export default {
       },
       series: [
         {
-          data: [10, 15, 20],
+          data: [0, 0, 0],
         },
       ],
       pieChartOptions: {
         labels: ["Bác sĩ", "Bệnh nhân", "Bệnh viện"],
       },
-      pieChartSeries: [10, 15, 20],
+      pieChartSeries: [0, 0, 0],
     };
   },
   async created() {
@@ -166,7 +166,7 @@ export default {
     } else if (this.role == "role1") {
       urlRole = {
         urlDoctor: "http://localhost:8000/doctor/",
-        urlPatient: `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+        urlPatient: `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
         urlDepartment: "http://localhost:8000/medical_unit/",
       };
     } else if (this.role == "role4") {

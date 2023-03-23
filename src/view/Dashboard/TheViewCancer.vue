@@ -654,7 +654,7 @@ export default {
         url =
           "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
       } else if (this.role == "role1") {
-        url = `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
+        url = `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
       }
       const me = this;
       await axios
@@ -851,7 +851,7 @@ export default {
         this.isLoading = true;
         await axios
           .get(
-            `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+            `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }

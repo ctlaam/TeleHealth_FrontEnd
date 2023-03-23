@@ -405,7 +405,9 @@
                 margin-right: 10px;
               "
             >
-              <a-button type="primary" @click="addHistory" style="width: 80px;">Thêm</a-button>
+              <a-button type="primary" @click="addHistory" style="width: 80px"
+                >Thêm</a-button
+              >
             </div>
           </a-modal>
           <a-modal
@@ -414,12 +416,27 @@
             title="Tiểu sử khám bệnh"
             :footer="null"
           >
+            <a-button
+              type="primary"
+              class="btn see-result"
+              @click="addNewHistory()"
+              style="
+                position: absolute;
+                top: 65px;
+                right: 38px;
+                width: 105px;
+                height: 32px;
+              "
+            >
+              Thêm mới
+            </a-button>
             <div
               class="modal-body"
               style="
                 max-height: 555px;
                 direction: ltr;
                 overflow-y: auto;
+                margin-top: 20px;
                 padding: 20px 10px 0 0;
               "
             >
@@ -429,7 +446,8 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 25px;
+                    padding:  12px 0;
+                    border-top: 1px solid #ccc;
                   "
                   class="item-result"
                   v-for="(item, index) in listHistoryPatient"
@@ -583,6 +601,10 @@ export default {
     },
   },
   methods: {
+    addNewHistory() {
+      this.modalHistory1 = true;
+      this.historyPatient = {};
+    },
     async seeDetailHistory(id) {
       const me = this;
       await axios
@@ -623,8 +645,8 @@ export default {
       })
         .then((result) => {
           this.$message.success("Thêm tiểu sử khám bệnh thành công !");
+          this.modalHistory1 = false;
           this.modalHistory = false;
-          console.log(result);
         })
         .catch((err) => {
           console.log(err);
@@ -700,7 +722,7 @@ export default {
         url =
           "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
       } else if (this.role == "role1") {
-        url = `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
+        url = `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
       }
       const me = this;
       await axios
@@ -954,7 +976,7 @@ export default {
         this.isLoading = true;
         await axios
           .get(
-            `http://127.0.0.1:8000//patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+            `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }
