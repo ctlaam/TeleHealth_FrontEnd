@@ -297,7 +297,7 @@
                     <b>Lần {{ index + 1 }}</b>
                   </p>
                   <p class="date-result">
-                    <b>Ngày: {{ new Date(item.created_at) }}</b>
+                    <b>Ngày: {{ $filters.formatDateTime(item.created_at, 'HH:mm DD/MM/YYYY') }}</b>
                   </p>
                   <b style="position: relative; top: -8px">{{
                     item.result ? "Bị ung thư" : "Không bị"

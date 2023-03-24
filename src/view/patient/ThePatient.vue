@@ -457,7 +457,7 @@
                     <b>Lần {{ index + 1 }}</b>
                   </p>
                   <p class="date-result">
-                    <b>Ngày: {{ new Date(item.created_at) }}</b>
+                    <b>Ngày: {{ $filters.formatDateTime(item.created_at, 'HH:mm DD/MM/YYYY') }}</b>
                   </p>
                   <a-button
                     type="primary"

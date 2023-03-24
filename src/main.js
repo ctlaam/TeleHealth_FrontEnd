@@ -2,6 +2,9 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 import { createRouter, createWebHashHistory } from "vue-router";
+
+import filters from './utils/filters';
+
 // Dashboard
 import Dasboard from "./view/Dashboard/TheDashBoard.vue";
 import Calendar from "./view/Calendar/TheCalendar.vue";
@@ -105,6 +108,7 @@ app.component('ResultTlc',ResultTlc)
 app.component('ListResults',ListResults)
 app.component('LungVolumn3d',LungVolumn3d)
 app.config.globalProperties.TeleHealthEnum = TeleHealthEnum;
+app.config.globalProperties.$filters = filters;
 app.use(router);
 app.use(store);
 app.mount("#app");

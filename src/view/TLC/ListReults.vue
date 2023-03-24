@@ -19,7 +19,7 @@
                 <b>Lần {{ index + 1 }}</b>
               </p>
               <p class="date-result">
-                <b>Ngày: {{ new Date(item.create_at) }}</b>
+                <b>Ngày: {{ $filters.formatDateTime(item.created_at, 'HH:mm DD/MM/YYYY') }}</b>
               </p>
               <button class="btn see-result" @click="seeDetailResult(item.id)">
                 Xem chi tiết

@@ -215,7 +215,7 @@
                     class="item-mail text-muted h-1x d-none d-sm-block"
                     style="width: 200px"
                   >
-                    {{ new Date(department.created_at) }}
+                    {{ $filters.formatDateTime(department.created_at, 'HH:mm DD/MM/YYYY') }}
                   </div>
                 </div>
               </div>
