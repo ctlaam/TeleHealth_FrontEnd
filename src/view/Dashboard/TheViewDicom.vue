@@ -6,12 +6,20 @@
       src="http://localhost:3000/"
       title="W3Schools Free Online Web Tutorials"
     ></iframe>
-
-    <div
-      class="red"
-      style="color: red; width: 200px; height: 200px"
-      v-show="!show"
-    ></div>
+    <div>
+      <a-spin
+        v-if="!show"
+        size="large"
+        style="
+          display: inline-block;
+          opacity: 1;
+          position: fixed;
+          top: 50%;
+          left: 54%;
+          transform: scale(1.5);
+        "
+      />
+    </div>
   </div>
 </template>
 

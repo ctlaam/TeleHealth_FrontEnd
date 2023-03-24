@@ -213,6 +213,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$message.success('Tạo hội chẩn mới thành công')
           me.closeForm();
           // me.$emit("getListPatients");
         })

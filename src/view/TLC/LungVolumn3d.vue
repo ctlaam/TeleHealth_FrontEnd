@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-result" hidden id="lungVolumn">
+  <div class="modal-result"  id="lungVolumn">
     <div class="" id="contentTlc">
       <div class="modal-content box-shadow mb-4">
         <div class="modal-header">
@@ -8,7 +8,21 @@
             ×
           </button>
         </div>
-        <iframe class="iframe-lung" :src="link"></iframe>
+        <div>
+          <a-spin
+            v-if="!showLung"
+            size="large"
+            style="
+              display: inline-block;
+              opacity: 1;
+              position: fixed;
+              top: 48%;
+              left: 50%;
+              transform: scale(1.5);
+            "
+          />
+        </div>
+        <iframe v-if="showLung" class="iframe-lung" :src="link"></iframe>
       </div>
     </div>
   </div>
@@ -16,7 +30,7 @@
 
 <script>
 export default {
-  props: ["link"],
+  props: ["link","showLung"],
   methods: {
     closeResult() {
       const a = document.getElementById("lungVolumn");

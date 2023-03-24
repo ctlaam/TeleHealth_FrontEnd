@@ -446,7 +446,7 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding:  12px 0;
+                    padding: 12px 0;
                     border-top: 1px solid #ccc;
                   "
                   class="item-result"
@@ -500,7 +500,7 @@
       @showLung3D="showLung3D"
     />
     <ListResults :listResults="listResults" @assignResult="assignResult" />
-    <LungVolumn3d :link="link" />
+    <LungVolumn3d :link="link" :showLung="showLung" />
   </div>
 </template>
 
@@ -584,6 +584,7 @@ export default {
       },
       formMode: "",
       listRendered: [],
+      showLung: false,
     };
   },
   computed: {
@@ -801,20 +802,14 @@ export default {
         });
     },
     showLung3D() {
+      this.showLung = false;
       const a = document.getElementById("lungVolumn");
       a.removeAttribute("hidden", true);
-      this.$message.warning(
-        "Lần đầu sẽ mất nhiều thời gian để tạo phổi 3D. Vui lòng đợi ..."
-      );
-      // var iframe = document.querySelector(".iframe-lung");
-      // setInterval(() => {
-      //   var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-      //   console.log(innerDoc);
-      // }, 1000);
-      // console.log(123323);
-      // setInterval(() => {
-      //   console.log(document.querySelector("#myDiv"));
-      // }, 1000);
+      this.$message.warning("Đang tạo phổi 3D. Vui lòng đợi ...", 1000);
+      document.querySelector(".iframe-lung").onload = () => {
+        this.showLung = true;
+        this.$message.destroy();
+      };
     },
     showResult() {
       const a = document.getElementById("resultTlc");

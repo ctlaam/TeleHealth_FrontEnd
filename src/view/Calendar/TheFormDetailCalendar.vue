@@ -251,7 +251,6 @@ export default {
       }
     },
     deselect(value) {
-      console.log(value);
       this.valueOptions = this.valueOptions.filter(
         (item) => item.value !== value
       );
