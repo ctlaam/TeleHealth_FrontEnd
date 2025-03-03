@@ -418,7 +418,7 @@ export default {
       url =
         "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null";
     } else if (this.role == "role1") {
-      url = `http://127.0.0.1:8000/doctor/`;
+      url = `http://202.191.56.11:18000/doctor/`;
     }
     await axios
       .get(url, {

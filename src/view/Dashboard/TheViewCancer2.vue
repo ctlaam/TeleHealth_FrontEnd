@@ -96,7 +96,7 @@ export default {
       var formData = new FormData();
       formData.append("uploadfiles", files.target.files[0]);
       await axios({
-        url: "http://127.0.0.1:8000/pc/pc_result",
+        url: "http://202.191.56.11:18000/pc/pc_result",
         method: "POST",
         data: formData,
         headers: {

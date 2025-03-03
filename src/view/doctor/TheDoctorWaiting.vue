@@ -347,7 +347,7 @@ export default {
       const me = this;
       await axios
         .post(
-          `http://127.0.0.1:8000/medical_unit/accept_doctor_wait_accept_by_medical_unit?pk=${id}`,
+          `http://202.191.56.11:18000/medical_unit/accept_doctor_wait_accept_by_medical_unit?pk=${id}`,
           {},
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -365,7 +365,7 @@ export default {
       const me = this
       await axios
         .post(
-          `http://127.0.0.1:8000/medical_unit/delete_doctor_wait_accept_by_medical_unit?pk=${id}`,
+          `http://202.191.56.11:18000/medical_unit/delete_doctor_wait_accept_by_medical_unit?pk=${id}`,
           { id: "f913cf6f-790c-457e-8216-f2685fb4519b" },
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -432,7 +432,7 @@ export default {
       const me = this;
       await axios
         .get(
-          "http://127.0.0.1:8000/medical_unit/list_doctor_wait_accept_by_medical_unit/",
+          "http://202.191.56.11:18000/medical_unit/list_doctor_wait_accept_by_medical_unit/",
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           }

@@ -610,7 +610,7 @@ export default {
       const me = this;
       await axios
         .get(
-          `http://127.0.0.1:8000/medical_record/detail_medical_record?pk=${id}`,
+          `http://202.191.56.11:18000/medical_record/detail_medical_record?pk=${id}`,
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           }
@@ -637,7 +637,7 @@ export default {
       }
       formData.append("patient", this.idPatient);
       await axios({
-        url: "http://127.0.0.1:8000/medical_record/",
+        url: "http://202.191.56.11:18000/medical_record/",
         method: "POST",
         data: formData,
         headers: {
@@ -663,7 +663,7 @@ export default {
       this.idPatient = id;
       await axios
         .get(
-          `http://127.0.0.1:8000/medical_record/list_medical_record_by_patient_id?pk=${id}`,
+          `http://202.191.56.11:18000/medical_record/list_medical_record_by_patient_id?pk=${id}`,
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           }
@@ -690,7 +690,7 @@ export default {
       const me = this;
       await axios
         .post(
-          `http://127.0.0.1:8000/patient_management/`,
+          `http://202.191.56.11:18000/patient_management/`,
           {
             doctor: this.idDoctorForPatient,
             patient: this.idPatient,
@@ -721,9 +721,9 @@ export default {
       let url = "";
       if (this.role == "role3") {
         url =
-          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
+          "http://202.191.56.11:18000/medical_unit/list_patient_by_medical_unit/?dataFilter=null";
       } else if (this.role == "role1") {
-        url = `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
+        url = `http://202.191.56.11:18000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`;
       }
       const me = this;
       await axios
@@ -773,7 +773,7 @@ export default {
     },
     assignResult(result) {
       if (result) {
-        this.link = `http://127.0.0.1:8000/tlc_result/result/${result.id}/`;
+        this.link = `http://202.191.56.11:18000/tlc_result/result/${result.id}/`;
         console.log(this.link);
         this.resultRight = result.right_lung;
         this.resultLeft = result.left_lung;
@@ -792,7 +792,7 @@ export default {
     seeResults(id) {
       const me = this;
       axios
-        .get(`http://127.0.0.1:8000/tlc/get_result_by_patient_id?pk=${id}`)
+        .get(`http://202.191.56.11:18000/tlc/get_result_by_patient_id?pk=${id}`)
         .then((res) => {
           me.listResults = res.data.data;
           me.showListResult();
@@ -831,7 +831,7 @@ export default {
       formData.append("patientId", me.idPatient);
       this.$message.loading("Đang tính toán dữ liệu. Vui lòng đợi...", 500);
       await axios({
-        url: "http://127.0.0.1:8000/tlc/post_file",
+        url: "http://202.191.56.11:18000/tlc/post_file",
         method: "POST",
         data: formData,
         headers: {
@@ -932,7 +932,7 @@ export default {
         this.isLoading = true;
         await axios
           .get(
-            `http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
+            `http://202.191.56.11:18000/medical_unit/list_patient_by_medical_unit/?dataFilter=null`,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }
@@ -971,7 +971,7 @@ export default {
         this.isLoading = true;
         await axios
           .get(
-            `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+            `http://202.191.56.11:18000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }

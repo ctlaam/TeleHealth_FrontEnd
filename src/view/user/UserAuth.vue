@@ -141,7 +141,7 @@ export default {
 
       let user = null;
       axios
-        .post("http://127.0.0.1:8000/auth/login/", accountLoggin)
+        .post("http://202.191.56.11:18000/auth/login/", accountLoggin)
         .then((result) => {
           user = result.data.data;
           me.$store.dispatch("login", user);
@@ -158,7 +158,7 @@ export default {
           console.log(err);
         });
       // axios({
-      //   url: "http://127.0.0.1:8000/auth/login/",
+      //   url: "http://202.191.56.11:18000/auth/login/",
       //   method: "POST",
       //   body: {
       //     email: "doctor@gmail.com",
@@ -175,7 +175,7 @@ export default {
       //     console.log(err);
       //   });
       // axios
-      //   .post("http://127.0.0.1:8000/auth/login/",accountLoggin)
+      //   .post("http://202.191.56.11:18000/auth/login/",accountLoggin)
       //   .then((result) => {
       //     console.log(result);
       //   })

@@ -22,7 +22,7 @@ export default {
       };
       let user = null;
       await axios
-        .post("http://127.0.0.1:8000/auth/login/", accountLoggin)
+        .post("http://202.191.56.11:18000/auth/login/", accountLoggin)
         .then(async (result) => {
           user = result.data.data;
           await me.$store.dispatch("login", user);

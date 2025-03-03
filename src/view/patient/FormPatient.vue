@@ -683,7 +683,7 @@ export default {
       }
       if (this.formMode == "add") {
         axios
-          .post("http://127.0.0.1:8000/medical_unit/add_patient/", me.patient, {
+          .post("http://202.191.56.11:18000/medical_unit/add_patient/", me.patient, {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           })
           .then((response) => {
@@ -699,7 +699,7 @@ export default {
       } else if (this.formMode == "edit") {
         axios
           .post(
-            `http://127.0.0.1:8000/medical_unit/update_patient_by_medical_unit?pk=${me.patient.id}`,
+            `http://202.191.56.11:18000/medical_unit/update_patient_by_medical_unit?pk=${me.patient.id}`,
             me.patient,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -733,20 +733,20 @@ export default {
     // me.address.wards = ["Bạch Mai"];
     // me.address.districts = ["Giải Phóng"];
     // me.address.countries = ["Việt Nam"];
-    // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/ward/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/ward/").then((res) => {
     //   me.address.wards = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/country/").then((result) => {
+    // axios.get("http://202.191.56.11:18000/address/country/").then((result) => {
     //   me.address.countries = result.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/district/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/district/").then((res) => {
     //   me.address.districts = res.data;
     //   console.log(me.address);
     // });
-    // axios.get("http://127.0.0.1:8000/address/ethnic/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/ethnic/").then((res) => {
     //   me.ethnics = res.data;
     //   console.log(me.ethnics);
     // });

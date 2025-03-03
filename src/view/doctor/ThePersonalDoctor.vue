@@ -392,7 +392,7 @@ export default {
       me.doctorProfile.medical_unit = "b0dcef8c-b82f-4711-9fd8-cb82f0d0c974";
       await axios
         .post(
-          `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
+          `http://202.191.56.11:18000/doctor/update_profile_doctor/`,
           me.doctorProfile,
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -435,7 +435,7 @@ export default {
       setTimeout(() => {
         axios
           .get(
-            `http://127.0.0.1:8000/doctor/detail_doctor?pk=${this.idDoctor}`,
+            `http://202.191.56.11:18000/doctor/detail_doctor?pk=${this.idDoctor}`,
             {
               headers: {
                 Authorization: `Bearer ${this.$store.getters.accessToken}`,
@@ -472,16 +472,16 @@ export default {
       }, 1000);
     }
 
-    // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/ward/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/ward/").then((res) => {
     //   me.address.wards = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/country/").then((result) => {
+    // axios.get("http://202.191.56.11:18000/address/country/").then((result) => {
     //   me.address.countries = result.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/district/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/district/").then((res) => {
     //   me.address.districts = res.data;
     //   console.log(me.address);
     // });

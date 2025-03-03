@@ -40,7 +40,7 @@ export default {
       }
       formData.append("patientId", "d6a480e9-f3ad-427c-8278-85bb67c150be");
       // axios({
-      //   url: "http://127.0.0.1:8000/tlc/post_file",
+      //   url: "http://202.191.56.11:18000/tlc/post_file",
       //   method: "POST",
       //   data: formData,
       //   headers: {

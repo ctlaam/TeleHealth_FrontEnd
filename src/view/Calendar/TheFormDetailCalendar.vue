@@ -265,7 +265,7 @@ export default {
         } else {
           axios
             .post(
-              `http://127.0.0.1:8000/meeting/add_meeting_conclusion?pk=${this.formMeeting.id}`,
+              `http://202.191.56.11:18000/meeting/add_meeting_conclusion?pk=${this.formMeeting.id}`,
               { conclusion },
               {
                 headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -294,7 +294,7 @@ export default {
         console.log(me.formMeeting);
         axios
           .put(
-            `http://127.0.0.1:8000/meeting/:id/?pk=${this.formMeeting.id}`,
+            `http://202.191.56.11:18000/meeting/:id/?pk=${this.formMeeting.id}`,
             me.formMeeting,
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },

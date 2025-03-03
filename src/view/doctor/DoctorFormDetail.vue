@@ -295,7 +295,7 @@ export default {
       me.doctorProfile.medical_unit = "79a42bd6-353f-4e5f-8b18-6dfebf986103";
       await axios
         .post(
-          `http://127.0.0.1:8000/doctor/update_profile_doctor/`,
+          `http://202.191.56.11:18000/doctor/update_profile_doctor/`,
           me.doctorProfile,
           {
             headers: { Authorization: `Bearer ${me.accessToken}` },
@@ -380,16 +380,16 @@ export default {
     // me.address.districts = ["Quận Ba Đình", "Thanh Xuân"];
     // me.address.countries = ["Việt Nam", "Anh"];
     // me.ethnics = ["Kinh"];
-    // axios.get("http://127.0.0.1:8000/address/province/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/province/").then((res) => {
     //   me.address.cities = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/ward/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/ward/").then((res) => {
     //   me.address.wards = res.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/country/").then((result) => {
+    // axios.get("http://202.191.56.11:18000/address/country/").then((result) => {
     //   me.address.countries = result.data;
     // });
-    // axios.get("http://127.0.0.1:8000/address/district/").then((res) => {
+    // axios.get("http://202.191.56.11:18000/address/district/").then((res) => {
     //   me.address.districts = res.data;
     //   console.log(me.address);
     // });

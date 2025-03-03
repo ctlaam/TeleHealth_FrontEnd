@@ -177,7 +177,7 @@ export default {
         phone: this.phone,
       };
       axios
-        .post("http://127.0.0.1:8000/auth/doctor_register/", accountDoctor)
+        .post("http://202.191.56.11:18000/auth/doctor_register/", accountDoctor)
         .then((result) => {
           console.log(result);
           this.$message.success("Tạo tài khoản thành công !");

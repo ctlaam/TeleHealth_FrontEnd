@@ -52,7 +52,7 @@ export default {
     seeDetailResult(id) {
       const me = this;
       axios
-        .get(`http://127.0.0.1:8000/tlc/detail_result?pk=${id}`)
+        .get(`http://202.191.56.11:18000/tlc/detail_result?pk=${id}`)
         .then((res) => {
           me.closeListResult();
           me.assignResult(res.data.data);

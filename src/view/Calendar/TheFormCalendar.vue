@@ -208,7 +208,7 @@ export default {
       // console.log(this.formMeeting);
       // // viết api
       axios
-        .post("http://127.0.0.1:8000/meeting/", me.formMeeting, {
+        .post("http://202.191.56.11:18000/meeting/", me.formMeeting, {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then((response) => {

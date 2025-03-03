@@ -160,13 +160,13 @@ export default {
         urlDoctor:
           "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
         urlPatient:
-          "http://127.0.0.1:8000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
+          "http://202.191.56.11:18000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
         urlDepartment: "http://localhost:8000/medical_unit/",
       };
     } else if (this.role == "role1") {
       urlRole = {
         urlDoctor: "http://localhost:8000/doctor/",
-        urlPatient: `http://127.0.0.1:8000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
+        urlPatient: `http://202.191.56.11:18000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
         urlDepartment: "http://localhost:8000/medical_unit/",
       };
     } else if (this.role == "role4") {
