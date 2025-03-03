@@ -158,22 +158,22 @@ export default {
     if (this.role == "role3") {
       urlRole = {
         urlDoctor:
-          "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+          "http://202.191.56.11:18000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
         urlPatient:
           "http://202.191.56.11:18000/medical_unit/list_patient_by_medical_unit/?dataFilter=null",
-        urlDepartment: "http://localhost:8000/medical_unit/",
+        urlDepartment: "http://202.191.56.11:18000/medical_unit/",
       };
     } else if (this.role == "role1") {
       urlRole = {
-        urlDoctor: "http://localhost:8000/doctor/",
+        urlDoctor: "http://202.191.56.11:18000/doctor/",
         urlPatient: `http://202.191.56.11:18000/patient_management/list_patient_by_doctor?pk=${this.idProfile}`,
-        urlDepartment: "http://localhost:8000/medical_unit/",
+        urlDepartment: "http://202.191.56.11:18000/medical_unit/",
       };
     } else if (this.role == "role4") {
       urlRole = {
-        urlDoctor: "http://localhost:8000/doctor/",
-        urlPatient: `http://localhost:8000/patient/`,
-        urlDepartment: "http://localhost:8000/medical_unit/",
+        urlDoctor: "http://202.191.56.11:18000/doctor/",
+        urlPatient: `http://202.191.56.11:18000/patient/`,
+        urlDepartment: "http://202.191.56.11:18000/medical_unit/",
       };
     }
     if (this.role != "role2" && this.role) {

@@ -38,7 +38,7 @@ export default {
   async created() {
     const me = this;
     await axios
-      .get("http://localhost:8000/meeting/list_meeting_creator_for_user/", {
+      .get("http://202.191.56.11:18000/meeting/list_meeting_creator_for_user/", {
         headers: { Authorization: `Bearer ${me.accessToken}` },
       })
       .then(function (res) {
@@ -48,7 +48,7 @@ export default {
         console.log(err);
       });
     await axios
-      .get("http://localhost:8000/meeting/list_meeting_valid_for_user/", {
+      .get("http://202.191.56.11:18000/meeting/list_meeting_valid_for_user/", {
         headers: { Authorization: `Bearer ${me.accessToken}` },
       })
       .then(function (res) {

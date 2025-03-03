@@ -183,7 +183,7 @@ export default {
         });
       } else {
         await axios
-          .post("http://localhost:8000/medical_unit/", form, {
+          .post("http://202.191.56.11:18000/medical_unit/", form, {
             headers: { Authorization: `Bearer ${me.accessToken}` },
           })
           .then((res) => {

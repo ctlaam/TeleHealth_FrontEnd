@@ -413,7 +413,7 @@ export default {
     await this.getLocation();
     setTimeout(() => {
       axios
-        .get(`http://localhost:8000/medical_unit/`, {
+        .get(`http://202.191.56.11:18000/medical_unit/`, {
           headers: {
             Authorization: `Bearer ${this.$store.getters.accessToken}`,
           },

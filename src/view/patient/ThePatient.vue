@@ -950,7 +950,7 @@ export default {
         // Danh sách bác sĩ
         await axios
           .get(
-            "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+            "http://202.191.56.11:18000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
             {
               headers: { Authorization: `Bearer ${me.accessToken}` },
             }
@@ -992,7 +992,7 @@ export default {
         // // Danh sách bác sĩ
         // await axios
         //   .get(
-        //     "http://localhost:8000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
+        //     "http://202.191.56.11:18000/medical_unit/list_doctor_by_medical_unit/?dataFilter=null",
         //     {
         //       headers: { Authorization: `Bearer ${me.accessToken}` },
         //     }

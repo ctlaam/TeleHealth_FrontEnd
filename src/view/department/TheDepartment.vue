@@ -370,7 +370,7 @@ export default {
     callData() {
       const me = this;
       axios
-        .get("http://localhost:8000/medical_unit/", {
+        .get("http://202.191.56.11:18000/medical_unit/", {
           headers: { Authorization: `Bearer ${me.accessToken}` },
         })
         .then((res) => {
@@ -386,7 +386,7 @@ export default {
   created() {
     const me = this;
     axios
-      .get("http://localhost:8000/medical_unit/", {
+      .get("http://202.191.56.11:18000/medical_unit/", {
         headers: { Authorization: `Bearer ${me.accessToken}` },
       })
       .then((res) => {
