@@ -500,7 +500,7 @@
       @showLung3D="showLung3D"
     />
     <ListResults :listResults="listResults" @assignResult="assignResult" />
-    <LungVolumn3d :link="link" :showLung="showLung" />
+    <LungVolumn3d v-if="showLung" :link="link" :showLung="showLung" />
   </div>
 </template>
 
